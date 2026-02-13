@@ -38,6 +38,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         border: 1px solid rgba(255,255,255,.08);
         display: block;
         margin: 0 auto;
+        cursor: zoom-in;
       }
       /* Use #wide in caption to make image fill the content column. */
       article :global(figure.wide img) {
@@ -49,6 +50,40 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       article :global(hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }
       .callout { background: rgba(125,211,252,.08); border: 1px solid rgba(125,211,252,.18); padding: 10px 12px; border-radius: 12px; }
       footer { border-top: 1px solid rgba(255,255,255,.08); }
+
+      /* Lightbox */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        background: rgba(0,0,0,.82);
+        z-index: 9999;
+        padding: 24px;
+      }
+      .lightbox.open { display: grid; }
+      .lightbox__img {
+        max-width: min(96vw, 1600px);
+        max-height: 92vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 14px;
+        box-shadow: 0 20px 80px rgba(0,0,0,.6);
+        cursor: zoom-out;
+      }
+      .lightbox__close {
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        background: rgba(18,20,27,.9);
+        color: var(--fg);
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 14px;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -67,6 +102,58 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         <slot />
       </div>
     </main>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <button class="lightbox__close" type="button" id="lightboxClose">Закрыть (Esc)</button>
+      <img class="lightbox__img" id="lightboxImg" alt="" />
+    </div>
+
+    <script>
+      (() => {
+        const lb = document.getElementById('lightbox');
+        const img = document.getElementById('lightboxImg');
+        const closeBtn = document.getElementById('lightboxClose');
+        if (!lb || !img || !closeBtn) return;
+
+        const open = (src, alt) => {
+          img.src = src;
+          img.alt = alt || '';
+          lb.classList.add('open');
+          lb.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        };
+
+        const close = () => {
+          lb.classList.remove('open');
+          lb.setAttribute('aria-hidden', 'true');
+          img.src = '';
+          document.body.style.overflow = '';
+        };
+
+        // Event delegation: click any article image
+        document.addEventListener('click', (e) => {
+          const target = e.target;
+          if (!(target instanceof HTMLElement)) return;
+
+          // Close when clicking backdrop or close button or the image itself
+          if (target === lb || target === img || target === closeBtn) {
+            close();
+            return;
+          }
+
+          const el = target.closest('article img');
+          if (!(el instanceof HTMLImageElement)) return;
+          if (!el.src) return;
+
+          open(el.src, el.alt);
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') close();
+        });
+      })();
+    </script>
+
     <footer>
       <div class="wrap muted">© {new Date().getFullYear()} Dmitry Korchagin</div>
     </footer>
