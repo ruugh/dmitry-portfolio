@@ -24,7 +24,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       :global(.cases-grid .card img) { width:100%; }
       .card { background: var(--card); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 14px 16px; display:block; transition: transform .12s ease, border-color .12s ease, background .12s ease; }
       .card:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.14); }
-      .card img { width:100%; height: 220px; object-fit: contain; border-radius: 12px; margin-bottom: 10px; display:block; background: rgba(255,255,255,.03); }
+      :global(.card img) { width:100%; height: 220px; object-fit: contain; border-radius: 12px; margin-bottom: 10px; display:block; background: rgba(255,255,255,.03); }
       .card .title { display:block; font-weight: 700; }
       .muted { color: var(--muted); }
       article :global(h1, h2, h3) { margin: 22px 0 10px; }
