@@ -5,12 +5,16 @@ import type {
   PartialBlockObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 import { transliterate as tr } from 'transliteration';
+import crypto from 'node:crypto';
+import path from 'node:path';
+import { promises as fs } from 'node:fs';
 
 export type NotionNavItem = {
   id: string;
   title: string;
   slug: string;
   kind: 'case' | 'cv' | 'certificates';
+  coverUrl?: string; // Notion page cover (preferred for cards)
 };
 
 function assertEnv(name: string): string {
@@ -59,6 +63,19 @@ async function listAllChildren(notion: Client, blockId: string) {
   return out;
 }
 
+async function getPageCoverUrl(notion: Client, pageId: string): Promise<string | undefined> {
+  try {
+    const page: any = await notion.pages.retrieve({ page_id: pageId });
+    const cover = page?.cover;
+    if (!cover) return undefined;
+    if (cover.type === 'external') return cover.external?.url;
+    if (cover.type === 'file') return cover.file?.url;
+    return undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export async function getNavItemsFromRoot(): Promise<NotionNavItem[]> {
   const notion = getNotionClient();
   const rootId = ROOT_PAGE_ID();
@@ -81,6 +98,11 @@ export async function getNavItemsFromRoot(): Promise<NotionNavItem[]> {
     });
   }
 
+  // Fill covers (useful for cards). This adds a few API calls but keeps content simple.
+  for (const it of items) {
+    it.coverUrl = await getPageCoverUrl(notion, it.id);
+  }
+
   // Stable order: keep Notion order
   return items;
 }
@@ -99,7 +121,51 @@ function escapeHtml(s: string) {
     .replace(/'/g, '&#39;');
 }
 
-function renderBlock(block: any): string {
+async function ensureDir(p: string) {
+  await fs.mkdir(p, { recursive: true });
+}
+
+function guessExt(url: string, contentType?: string): string {
+  const fromType = (contentType || '').split(';')[0].trim().toLowerCase();
+  if (fromType === 'image/png') return 'png';
+  if (fromType === 'image/jpeg') return 'jpg';
+  if (fromType === 'image/webp') return 'webp';
+  if (fromType === 'image/gif') return 'gif';
+  if (fromType === 'image/svg+xml') return 'svg';
+
+  const m = url.split('?')[0].match(/\.([a-zA-Z0-9]{2,5})$/);
+  return (m?.[1] || 'jpg').toLowerCase();
+}
+
+async function downloadToDistAsset(url: string): Promise<string> {
+  // Write directly into dist so it is guaranteed to be published.
+  const distDir = path.join(process.cwd(), 'dist');
+  const assetsDir = path.join(distDir, 'notion-assets');
+  await ensureDir(assetsDir);
+
+  const hash = crypto.createHash('sha1').update(url).digest('hex');
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch asset: ${res.status}`);
+  const contentType = res.headers.get('content-type') ?? undefined;
+  const ext = guessExt(url, contentType);
+  const filename = `${hash}.${ext}`;
+  const filePath = path.join(assetsDir, filename);
+
+  // Skip if already downloaded in this build
+  try {
+    await fs.access(filePath);
+    return `/notion-assets/${filename}`;
+  } catch {
+    // continue
+  }
+
+  const buf = Buffer.from(await res.arrayBuffer());
+  await fs.writeFile(filePath, buf);
+  return `/notion-assets/${filename}`;
+}
+
+async function renderBlock(block: any): Promise<string> {
   const t = block.type;
   const v = block[t];
 
@@ -135,7 +201,19 @@ function renderBlock(block: any): string {
       const url = v?.type === 'external' ? v?.external?.url : v?.file?.url;
       const cap = richTextToPlain(v?.caption);
       if (!url) return '';
-      return `<figure><img src="${escapeHtml(url)}" alt="${escapeHtml(cap || 'image')}" />${cap ? `<figcaption>${escapeHtml(cap)}</figcaption>` : ''}</figure>`;
+
+      // Notion "file" URLs are signed and expire. Download them into dist and reference locally.
+      let src = url;
+      if (v?.type === 'file') {
+        try {
+          src = await downloadToDistAsset(url);
+        } catch {
+          // fallback to original URL
+          src = url;
+        }
+      }
+
+      return `<figure><img src="${escapeHtml(src)}" alt="${escapeHtml(cap || 'image')}" loading="lazy" />${cap ? `<figcaption>${escapeHtml(cap)}</figcaption>` : ''}</figure>`;
     }
     default:
       // ignore unsupported block types for MVP
@@ -168,18 +246,18 @@ export async function renderNotionPageToHtml(pageId: string): Promise<string> {
     if (type === 'bulleted_list_item') {
       if (listMode && listMode !== 'ul') flushList();
       listMode = 'ul';
-      listItems.push(renderBlock(b));
+      listItems.push(await renderBlock(b));
       continue;
     }
     if (type === 'numbered_list_item') {
       if (listMode && listMode !== 'ol') flushList();
       listMode = 'ol';
-      listItems.push(renderBlock(b));
+      listItems.push(await renderBlock(b));
       continue;
     }
 
     flushList();
-    const html = renderBlock(b);
+    const html = await renderBlock(b);
     if (html) parts.push(html);
   }
 

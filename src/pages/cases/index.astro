@@ -13,7 +13,8 @@ const cases = items.filter((x) => x.kind === 'case');
   <div class="grid">
     {cases.map((c) => (
       <a class="card" href={`/cases/${c.slug}/`}>
-        <strong>{c.title}</strong>
+        {c.coverUrl ? <img src={c.coverUrl} alt={c.title} loading="lazy" /> : null}
+        <span class="title">{c.title}</span>
         <div class="muted">Открыть →</div>
       </a>
     ))}
