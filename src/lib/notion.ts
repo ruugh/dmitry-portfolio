@@ -314,7 +314,10 @@ async function renderBlock(notion: Client, block: any, depth: number): Promise<s
   const t = block.type;
   const v = block[t];
 
-  const childHtml = block?.has_children ? await renderChildrenHtml(notion, block.id, depth) : '';
+  // Some blocks are containers, others are references to separate pages.
+  // We MUST NOT recursively inline child pages into the current page.
+  const shouldInlineChildren = !!block?.has_children && !['child_page', 'child_database', 'link_to_page'].includes(t);
+  const childHtml = shouldInlineChildren ? await renderChildrenHtml(notion, block.id, depth) : '';
 
   switch (t) {
     case 'heading_1':
@@ -390,6 +393,14 @@ async function renderBlock(notion: Client, block: any, depth: number): Promise<s
       // Note: child blocks on image are rare; ignore childHtml.
       return `<figure class="${cls}"><img${style} src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure>`;
     }
+    case 'child_page': {
+      const title = escapeHtml(v?.title ?? '');
+      return title ? `<p><a href="/cases">${title}</a></p>` : '';
+    }
+    case 'child_database':
+      return '';
+    case 'link_to_page':
+      return '';
     default:
       return childHtml || '';
   }
