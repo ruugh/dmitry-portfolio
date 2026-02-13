@@ -150,14 +150,26 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
   const notion = getNotionClient();
   const databaseId = CASES_DATABASE_ID();
 
+  // We must use exact property names as defined in Notion (case-sensitive).
+  // Fetch DB schema and map properties by case-insensitive keys.
+  const schema: any = await notion.databases.retrieve({ database_id: databaseId });
+  const propsSchema: Record<string, any> = schema?.properties ?? {};
+  const byLower: Record<string, string> = {};
+  for (const key of Object.keys(propsSchema)) {
+    byLower[key.toLowerCase()] = key;
+  }
+
+  const pPublished = byLower['published'] ?? 'published';
+  const pOrder = byLower['order'] ?? 'order';
+
   const queryBody: any = {
     filter: {
-      property: 'published',
+      property: pPublished,
       checkbox: { equals: true },
     },
     sorts: [
       {
-        property: 'order',
+        property: pOrder,
         direction: 'descending',
       },
     ],
@@ -185,28 +197,36 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
 
   const data: any = await resp.json();
 
+  const pName = byLower['name'] ?? 'Name';
+  const pSlug = byLower['slug'] ?? 'slug';
+  const pSummary = byLower['summary'] ?? 'summary';
+  const pRole = byLower['role'] ?? 'role';
+  const pTimeline = byLower['timeline'] ?? 'timeline';
+  const pPlatforms = byLower['platforms'] ?? 'platforms';
+  const pTags = byLower['tags'] ?? 'tags';
+
   const out: CaseItem[] = [];
   for (const page of data.results || []) {
     const props = page.properties || {};
-    const title = propText(props.Name) || propText(props.name) || 'Untitled';
-    const slug = propText(props.slug) || slugifyTitle(title);
+    const title = propText(props[pName]) || 'Untitled';
+    const slug = propText(props[pSlug]) || slugifyTitle(title);
 
     out.push({
       id: page.id,
       title,
       slug,
-      summary: propText(props.summary) || undefined,
-      role: propSelect(props.role),
-      timeline: propText(props.timeline) || undefined,
-      platforms: propMultiSelect(props.platforms),
-      tags: propMultiSelect(props.tags),
+      summary: propText(props[pSummary]) || undefined,
+      role: propSelect(props[pRole]),
+      timeline: propText(props[pTimeline]) || undefined,
+      platforms: propMultiSelect(props[pPlatforms]),
+      tags: propMultiSelect(props[pTags]),
       coverUrl:
         page.cover?.type === 'external'
           ? page.cover.external?.url
           : page.cover?.type === 'file'
             ? page.cover.file?.url
             : undefined,
-      order: propNumber(props.order),
+      order: propNumber(props[pOrder]),
     });
   }
 
