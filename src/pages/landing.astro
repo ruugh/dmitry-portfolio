@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCasesFromDatabase } from '../lib/notion';
+
+const cases = await getCasesFromDatabase();
+---
+
+<BaseLayout title="Лендинг — Дмитрий Корчагин" description="Продуктовый UX/UI-дизайнер. B2B SaaS. Сложные интерфейсы.">
+  <section class="card" style="padding:22px 22px;">
+    <h1 style="margin:0 0 10px;">Дмитрий Корчагин</h1>
+    <p class="muted" style="margin:0 0 14px; font-size:16px;">
+      Продуктовый UX/UI-дизайнер · B2B SaaS · Сложные интерфейсы
+    </p>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <a class="card" style="padding:10px 12px;" href="/cases">Кейсы</a>
+      <a class="card" style="padding:10px 12px;" href="/cv">CV</a>
+      <a class="card" style="padding:10px 12px;" href="https://t.me/ruugh" target="_blank" rel="noreferrer">Telegram</a>
+    </div>
+  </section>
+
+  <section style="margin-top:18px;">
+    <h2>О чём я</h2>
+    <div class="grid">
+      <div class="card">
+        <strong>Продуктовое мышление</strong>
+        <div class="muted">Проблема → гипотезы → прототипы → метрики → итерации.</div>
+      </div>
+      <div class="card">
+        <strong>Сложные системы</strong>
+        <div class="muted">CRM/CMS/админки, роли и права, таблицы, сценарии, флоу.</div>
+      </div>
+      <div class="card">
+        <strong>Коммуникация</strong>
+        <div class="muted">Воркшопы, синки со стейкхолдерами, документация, handoff.</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-top:18px;">
+    <h2>Кейсы</h2>
+    <p class="muted">Последние опубликованные (из базы Notion).</p>
+
+    <div class="grid">
+      {cases.slice(0, 6).map((c) => (
+        <a class="card" href={`/cases/${c.slug}/`}>
+          {c.coverUrl ? <img src={c.coverUrl} alt={c.title} loading="lazy" /> : null}
+          <span class="title">{c.title}</span>
+          {c.summary ? <div class="muted">{c.summary}</div> : <div class="muted">Открыть →</div>}
+        </a>
+      ))}
+    </div>
+
+    <div style="margin-top:12px;">
+      <a href="/cases">Все кейсы →</a>
+    </div>
+  </section>
+
+  <section style="margin-top:18px;" class="card">
+    <h2 style="margin-top:0;">Контакты</h2>
+    <ul>
+      <li>Email: <a href="mailto:nemokor@gmail.com">nemokor@gmail.com</a></li>
+      <li>Telegram: <a href="https://t.me/ruugh" target="_blank" rel="noreferrer">@ruugh</a></li>
+    </ul>
+  </section>
+</BaseLayout>
