@@ -27,7 +27,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       article :global(p, li, blockquote) { line-height: 1.55; }
       article :global(figure) { margin: 18px 0; }
       article :global(figure img) {
-        max-width: 100%;
+        max-width: min(100%, 820px);
         width: auto;
         height: auto;
         max-height: 72vh;
