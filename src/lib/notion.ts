@@ -17,6 +17,19 @@ export type NotionNavItem = {
   coverUrl?: string; // Notion page cover (preferred for cards)
 };
 
+export type CaseItem = {
+  id: string;
+  title: string;
+  slug: string;
+  summary?: string;
+  role?: string;
+  timeline?: string;
+  platforms?: string[];
+  tags?: string[];
+  coverUrl?: string;
+  order?: number;
+};
+
 function assertEnv(name: string): string {
   const v = process.env[name];
   if (!v) throw new Error(`Missing env var: ${name}`);
@@ -39,6 +52,8 @@ export function slugifyTitle(title: string): string {
     .replace(/-+/g, '-');
   return base || 'page';
 }
+
+export const CASES_DATABASE_ID = () => assertEnv('CASES_DATABASE_ID');
 
 function isChildPageBlock(
   b: PartialBlockObjectResponse | BlockObjectResponse,
@@ -105,6 +120,77 @@ export async function getNavItemsFromRoot(): Promise<NotionNavItem[]> {
 
   // Stable order: keep Notion order
   return items;
+}
+
+function propText(p: any): string {
+  if (!p) return '';
+  if (p.type === 'rich_text') return richTextToPlain(p.rich_text);
+  if (p.type === 'title') return richTextToPlain(p.title);
+  if (p.type === 'text') return p.text?.content ?? '';
+  return '';
+}
+
+function propCheckbox(p: any): boolean {
+  return !!(p && p.type === 'checkbox' && p.checkbox);
+}
+
+function propNumber(p: any): number | undefined {
+  return p && p.type === 'number' ? (typeof p.number === 'number' ? p.number : undefined) : undefined;
+}
+
+function propSelect(p: any): string | undefined {
+  return p && p.type === 'select' ? p.select?.name : undefined;
+}
+
+function propMultiSelect(p: any): string[] | undefined {
+  return p && p.type === 'multi_select' ? (p.multi_select || []).map((x: any) => x.name) : undefined;
+}
+
+export async function getCasesFromDatabase(): Promise<CaseItem[]> {
+  const notion = getNotionClient();
+  const databaseId = CASES_DATABASE_ID();
+
+  const resp: any = await notion.databases.query({
+    database_id: databaseId,
+    filter: {
+      property: 'published',
+      checkbox: { equals: true },
+    },
+    sorts: [
+      {
+        property: 'order',
+        direction: 'descending',
+      },
+    ],
+    page_size: 100,
+  });
+
+  const out: CaseItem[] = [];
+  for (const page of resp.results || []) {
+    const props = page.properties || {};
+    const title = propText(props.Name) || propText(props.name) || 'Untitled';
+    const slug = propText(props.slug) || slugifyTitle(title);
+
+    out.push({
+      id: page.id,
+      title,
+      slug,
+      summary: propText(props.summary) || undefined,
+      role: propSelect(props.role),
+      timeline: propText(props.timeline) || undefined,
+      platforms: propMultiSelect(props.platforms),
+      tags: propMultiSelect(props.tags),
+      coverUrl:
+        page.cover?.type === 'external'
+          ? page.cover.external?.url
+          : page.cover?.type === 'file'
+            ? page.cover.file?.url
+            : undefined,
+      order: propNumber(props.order),
+    });
+  }
+
+  return out;
 }
 
 function richTextToPlain(richText: any[] | undefined): string {

@@ -1,9 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getNavItemsFromRoot, renderNotionPageToHtml, ROOT_PAGE_ID } from '../lib/notion';
+import { getCasesFromDatabase, renderNotionPageToHtml, ROOT_PAGE_ID } from '../lib/notion';
 
-const items = await getNavItemsFromRoot();
-const cases = items.filter((x) => x.kind === 'case');
+const cases = await getCasesFromDatabase();
 const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID());
 ---
 

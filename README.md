@@ -47,4 +47,4 @@ Slug строится транслитерацией заголовка.
 
 
 ## Build note
-Cloudflare Pages build requires env vars: NOTION_TOKEN, ROOT_PAGE_ID.
+Cloudflare Pages build requires env vars: NOTION_TOKEN, ROOT_PAGE_ID, CASES_DATABASE_ID.
