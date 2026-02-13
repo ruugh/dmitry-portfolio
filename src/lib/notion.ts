@@ -150,8 +150,7 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
   const notion = getNotionClient();
   const databaseId = CASES_DATABASE_ID();
 
-  const queryArgs: any = {
-    // Notion Client v5 uses dataSources.query (database API was migrated)
+  const queryBody: any = {
     filter: {
       property: 'published',
       checkbox: { equals: true },
@@ -165,13 +164,29 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
     page_size: 100,
   };
 
-  const anyNotion: any = notion as any;
-  const resp: any = typeof anyNotion.databases?.query === 'function'
-    ? await anyNotion.databases.query({ database_id: databaseId, ...queryArgs })
-    : await anyNotion.dataSources.query({ data_source_id: databaseId, ...queryArgs });
+  // SDK v5 removed databases.query in favor of dataSources.query.
+  // Unfortunately data_source_id may differ from the database page id.
+  // To keep this setup simple and stable, call the public REST endpoint directly.
+  const token = process.env.NOTION_TOKEN;
+  const resp = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Notion-Version': '2022-06-28',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(queryBody),
+  });
+
+  if (!resp.ok) {
+    const text = await resp.text().catch(() => '');
+    throw new Error(`Notion database query failed (${resp.status}): ${text}`);
+  }
+
+  const data: any = await resp.json();
 
   const out: CaseItem[] = [];
-  for (const page of resp.results || []) {
+  for (const page of data.results || []) {
     const props = page.properties || {};
     const title = propText(props.Name) || propText(props.name) || 'Untitled';
     const slug = propText(props.slug) || slugifyTitle(title);
