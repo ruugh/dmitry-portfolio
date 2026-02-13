@@ -11,8 +11,14 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
     <style>
       :root { --bg:#0b0c10; --fg:#e6e6e6; --muted:#a8a8a8; --card:#12141b; --link:#7dd3fc; --border: rgba(255,255,255,.10); }
       body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; background: radial-gradient(1200px 600px at 20% -10%, rgba(125,211,252,.10), transparent 60%), var(--bg); color: var(--fg); }
-      a { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.55); }
-      a:hover { text-decoration-color: rgba(255,255,255,.9); }
+      :global(a),
+      :global(a:visited) {
+        color: var(--fg);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: rgba(255,255,255,.55);
+      }
+      :global(a:hover) { text-decoration-color: rgba(255,255,255,.9); }
       header { position: sticky; top:0; background: rgba(11,12,16,.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.08); }
       .wrap { max-width: 980px; margin: 0 auto; padding: 16px 20px; }
       nav { display:flex; gap:14px; align-items:center; }
