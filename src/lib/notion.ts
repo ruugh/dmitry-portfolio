@@ -341,9 +341,17 @@ async function renderBlock(block: any): Promise<string> {
       const cap = richTextToPlain(v?.caption);
       if (!url) return '';
 
-      // Markup helpers: put #wide in caption to make image full-width.
-      const isWide = (cap || '').includes('#wide');
-      const cleanCap = (cap || '').replace(/\s*#wide\s*/g, ' ').trim();
+      // Markup helpers (caption tags):
+      // - #wide → full width of content column
+      // - #w600 / #w720 ... → cap image max-width in px
+      const rawCap = cap || '';
+      const isWide = rawCap.includes('#wide');
+      const wMatch = rawCap.match(/#w(\d{2,4})\b/i);
+      const widthPx = wMatch ? Math.max(120, Math.min(2000, Number(wMatch[1]))) : undefined;
+      const cleanCap = rawCap
+        .replace(/\s*#wide\s*/g, ' ')
+        .replace(/\s*#w\d{2,4}\b\s*/gi, ' ')
+        .trim();
 
       // Notion "file" URLs are signed and expire. Download them into dist and reference locally.
       let src = url;
@@ -356,7 +364,10 @@ async function renderBlock(block: any): Promise<string> {
         }
       }
 
-      return `<figure class="${isWide ? 'wide' : ''}"><img src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure>`;
+      const cls = isWide ? 'wide' : '';
+      const style = widthPx ? ` style=\"max-width:min(100%,${widthPx}px);\"` : '';
+
+      return `<figure class="${cls}"><img${style} src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure>`;
     }
     default:
       // ignore unsupported block types for MVP
