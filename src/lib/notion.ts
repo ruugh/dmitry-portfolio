@@ -154,27 +154,36 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
   // Fetch DB schema and map properties by case-insensitive keys.
   const schema: any = await notion.databases.retrieve({ database_id: databaseId });
   const propsSchema: Record<string, any> = schema?.properties ?? {};
-  const byLower: Record<string, string> = {};
+
+  const normalize = (s: string) => s.trim().toLowerCase().replace(/\s+/g, ' ');
+  const byNorm: Record<string, string> = {};
   for (const key of Object.keys(propsSchema)) {
-    byLower[key.toLowerCase()] = key;
+    byNorm[normalize(key)] = key;
   }
 
-  const pPublished = byLower['published'] ?? 'published';
-  const pOrder = byLower['order'] ?? 'order';
+  const pPublished = byNorm['published'];
+  const pOrder = byNorm['order'];
 
+  // Build query. If property names don't match (common), avoid Notion validation errors.
   const queryBody: any = {
-    filter: {
+    page_size: 100,
+  };
+
+  if (pPublished && propsSchema[pPublished]?.type === 'checkbox') {
+    queryBody.filter = {
       property: pPublished,
       checkbox: { equals: true },
-    },
-    sorts: [
+    };
+  }
+
+  if (pOrder && propsSchema[pOrder]?.type === 'number') {
+    queryBody.sorts = [
       {
         property: pOrder,
         direction: 'descending',
       },
-    ],
-    page_size: 100,
-  };
+    ];
+  }
 
   // SDK v5 removed databases.query in favor of dataSources.query.
   // Unfortunately data_source_id may differ from the database page id.
@@ -197,13 +206,13 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
 
   const data: any = await resp.json();
 
-  const pName = byLower['name'] ?? 'Name';
-  const pSlug = byLower['slug'] ?? 'slug';
-  const pSummary = byLower['summary'] ?? 'summary';
-  const pRole = byLower['role'] ?? 'role';
-  const pTimeline = byLower['timeline'] ?? 'timeline';
-  const pPlatforms = byLower['platforms'] ?? 'platforms';
-  const pTags = byLower['tags'] ?? 'tags';
+  const pName = byNorm['name'] ?? byNorm['название'] ?? 'Name';
+  const pSlug = byNorm['slug'] ?? byNorm['слаг'] ?? 'slug';
+  const pSummary = byNorm['summary'] ?? byNorm['описание'] ?? 'summary';
+  const pRole = byNorm['role'] ?? byNorm['роль'] ?? 'role';
+  const pTimeline = byNorm['timeline'] ?? byNorm['таймлайн'] ?? 'timeline';
+  const pPlatforms = byNorm['platforms'] ?? byNorm['платформы'] ?? 'platforms';
+  const pTags = byNorm['tags'] ?? byNorm['теги'] ?? 'tags';
 
   const out: CaseItem[] = [];
   for (const page of data.results || []) {
@@ -226,7 +235,7 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
           : page.cover?.type === 'file'
             ? page.cover.file?.url
             : undefined,
-      order: propNumber(props[pOrder]),
+      order: pOrder ? propNumber(props[pOrder]) : undefined,
     });
   }
 
