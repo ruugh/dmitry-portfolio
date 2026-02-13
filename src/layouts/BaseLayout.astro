@@ -55,8 +55,22 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         border-radius: 14px;
       }
       .callout-children { margin-top: 12px; }
-      .columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-      .column { min-width: 0; }
+      .columns {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 0;
+        border: 1px solid rgba(255,255,255,.55);
+        border-radius: 14px;
+        overflow: hidden;
+        background: rgba(255,255,255,.02);
+      }
+      .column {
+        min-width: 0;
+        padding: 12px 14px;
+      }
+      .column + .column {
+        border-left: 1px solid rgba(255,255,255,.55);
+      }
       details.toggle { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,.03); }
       details.toggle > summary { cursor: pointer; }
 
