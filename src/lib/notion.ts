@@ -357,19 +357,31 @@ async function renderBlock(notion: Client, block: any, depth: number): Promise<s
       return `<div class="column">${childHtml}</div>`;
     }
     case 'table': {
-      // Notion table rows are children (table_row)
       const hasColHeader = !!v?.has_column_header;
-      return `<div class="table-wrap"><table class="notion-table${hasColHeader ? ' has-header' : ''}">${childHtml}</table></div>`;
+      // Render rows with access to index for header semantics
+      const rows = await listAllChildren(notion, block.id);
+      const rowHtmlParts: string[] = [];
+      let idx = 0;
+      for (const r of rows as any[]) {
+        if (r?.type !== 'table_row') continue;
+        const isHeaderRow = hasColHeader && idx === 0;
+        const cells: any[] = r?.table_row?.cells ?? [];
+        const cellTag = isHeaderRow ? 'th' : 'td';
+        const cellsHtml = cells
+          .map((cell) => {
+            const txt = escapeHtml(richTextToPlain(cell));
+            return `<${cellTag}>${txt}</${cellTag}>`;
+          })
+          .join('');
+        rowHtmlParts.push(`<tr>${cellsHtml}</tr>`);
+        idx++;
+      }
+
+      return `<div class="table-wrap"><table class="notion-table${hasColHeader ? ' has-header' : ''}"><tbody>${rowHtmlParts.join('')}</tbody></table></div>`;
     }
     case 'table_row': {
-      const cells: any[] = v?.cells ?? [];
-      const tds = cells
-        .map((cell) => {
-          const txt = escapeHtml(richTextToPlain(cell));
-          return `<td>${txt}</td>`;
-        })
-        .join('');
-      return `<tr>${tds}</tr>`;
+      // table rows are rendered by the parent table
+      return '';
     }
     case 'divider':
       return `<hr />`;

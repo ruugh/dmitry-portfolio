@@ -61,11 +61,14 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       details.toggle > summary { cursor: pointer; }
 
       .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0; }
-      table.notion-table { border-collapse: collapse; width: 100%; min-width: 640px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.10); border-radius: 12px; overflow: hidden; }
-      table.notion-table td { border-top: 1px solid rgba(255,255,255,.08); border-right: 1px solid rgba(255,255,255,.08); padding: 10px 12px; vertical-align: top; color: var(--fg); font-size: 14px; }
-      table.notion-table tr:first-child td { border-top: none; }
-      table.notion-table td:last-child { border-right: none; }
-      table.notion-table.has-header tr:first-child td { font-weight: 700; background: rgba(255,255,255,.04); }
+      article :global(table) { border-collapse: collapse; width: 100%; }
+      article :global(th), article :global(td) { padding: 10px 12px; border: 1px solid rgba(255,255,255,.10); font-size: 14px; }
+      article :global(th) { font-weight: 700; background: rgba(255,255,255,.05); }
+      table.notion-table { border-collapse: collapse; width: 100%; min-width: 640px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.14); border-radius: 12px; overflow: hidden; }
+      table.notion-table td, table.notion-table th { border-top: 1px solid rgba(255,255,255,.10); border-right: 1px solid rgba(255,255,255,.10); padding: 10px 12px; vertical-align: top; color: var(--fg); font-size: 14px; }
+      table.notion-table tr:first-child td, table.notion-table tr:first-child th { border-top: none; }
+      table.notion-table td:last-child, table.notion-table th:last-child { border-right: none; }
+      table.notion-table.has-header tr:first-child th { background: rgba(255,255,255,.05); }
       footer { border-top: 1px solid rgba(255,255,255,.08); }
 
       /* Lightbox */
