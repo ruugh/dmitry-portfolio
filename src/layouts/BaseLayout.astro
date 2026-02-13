@@ -48,14 +48,14 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
       article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
       article :global(hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }
-      .callout {
+      :global(.callout) {
         background: rgba(255,255,255,.03);
         border: 1px solid rgba(255,255,255,.10);
         padding: 14px 16px;
         border-radius: 14px;
       }
-      .callout-children { margin-top: 12px; }
-      .columns {
+      :global(.callout-children) { margin-top: 12px; }
+      :global(.columns) {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 0;
@@ -64,17 +64,17 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         overflow: hidden;
         background: rgba(255,255,255,.02);
       }
-      .column {
+      :global(.column) {
         min-width: 0;
         padding: 12px 14px;
       }
-      .column + .column {
+      :global(.column + .column) {
         border-left: 1px solid rgba(255,255,255,.55);
       }
-      details.toggle { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,.03); }
-      details.toggle > summary { cursor: pointer; }
+      :global(details.toggle) { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,.03); }
+      :global(details.toggle > summary) { cursor: pointer; }
 
-      .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0; }
+      :global(.table-wrap) { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0; }
 
       /* Debug/High-contrast table styling (we can soften later) */
       article :global(table) {
@@ -93,7 +93,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         background: rgba(255,255,255,.08);
       }
 
-      table.notion-table {
+      :global(table.notion-table) {
         border-collapse: collapse;
         width: 100%;
         min-width: 640px;
@@ -102,8 +102,8 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         border-radius: 12px;
         overflow: hidden;
       }
-      table.notion-table td,
-      table.notion-table th {
+      :global(table.notion-table td),
+      :global(table.notion-table th) {
         border-top: 1px solid rgba(255,255,255,.55);
         border-right: 1px solid rgba(255,255,255,.55);
         padding: 10px 12px;
@@ -111,11 +111,11 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         color: var(--fg);
         font-size: 14px;
       }
-      table.notion-table tr:first-child td,
-      table.notion-table tr:first-child th { border-top: none; }
-      table.notion-table td:last-child,
-      table.notion-table th:last-child { border-right: none; }
-      table.notion-table.has-header tr:first-child th { background: rgba(255,255,255,.10); }
+      :global(table.notion-table tr:first-child td),
+      :global(table.notion-table tr:first-child th) { border-top: none; }
+      :global(table.notion-table td:last-child),
+      :global(table.notion-table th:last-child) { border-right: none; }
+      :global(table.notion-table.has-header tr:first-child th) { background: rgba(255,255,255,.10); }
       footer { border-top: 1px solid rgba(255,255,255,.08); }
 
       /* Lightbox */
