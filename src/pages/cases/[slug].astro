@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getNavItemsFromRoot, renderNotionPageToHtml } from '../../lib/notion';
+
+export async function getStaticPaths() {
+  const items = await getNavItemsFromRoot();
+  const cases = items.filter((x) => x.kind === 'case');
+  return cases.map((c) => ({ params: { slug: c.slug }, props: { pageId: c.id, title: c.title } }));
+}
+
+const { pageId, title } = Astro.props;
+const html = await renderNotionPageToHtml(pageId);
+---
+
+<BaseLayout title={`${title} — кейс`}>
+  <article>
+    <h1>{title}</h1>
+    <div set:html={html} />
+  </article>
+</BaseLayout>

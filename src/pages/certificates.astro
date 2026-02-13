@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getNavItemsFromRoot, renderNotionPageToHtml } from '../lib/notion';
+
+const items = await getNavItemsFromRoot();
+const cert = items.find((x) => x.kind === 'certificates');
+const html = cert ? await renderNotionPageToHtml(cert.id) : '<p>Страница “Сертификаты” не найдена в Notion.</p>';
+---
+
+<BaseLayout title="Сертификаты — Дмитрий Корчагин">
+  <article>
+    <h1>Сертификаты</h1>
+    <div set:html={html} />
+  </article>
+</BaseLayout>

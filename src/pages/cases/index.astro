@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getNavItemsFromRoot } from '../../lib/notion';
+
+const items = await getNavItemsFromRoot();
+const cases = items.filter((x) => x.kind === 'case');
+---
+
+<BaseLayout title="Кейсы — Дмитрий Корчагин">
+  <h1>Кейсы</h1>
+  <p class="muted">Список формируется из дочерних страниц Notion (кроме CV и Сертификатов).</p>
+
+  <div class="grid">
+    {cases.map((c) => (
+      <a class="card" href={`/cases/${c.slug}/`}>
+        <strong>{c.title}</strong>
+        <div class="muted">Открыть →</div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

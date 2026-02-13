@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getNavItemsFromRoot } from '../lib/notion';
+
+const items = await getNavItemsFromRoot();
+const cases = items.filter((x) => x.kind === 'case');
+---
+
+<BaseLayout title="Дмитрий Корчагин — портфолио" description="Портфолио Дмитрия Корчагина">
+  <h1>Дмитрий Корчагин</h1>
+  <p class="muted">Портфолио (контент из Notion → статический сайт на Astro). Для сборки нужны переменные окружения NOTION_TOKEN и ROOT_PAGE_ID.</p>
+
+  <div class="card">
+    <p><strong>Быстрые ссылки:</strong> <a href="/cases">Кейсы</a> · <a href="/cv">CV</a> · <a href="/certificates">Сертификаты</a></p>
+  </div>
+
+  <h2>Последние кейсы</h2>
+  <div class="grid">
+    {cases.slice(0, 6).map((c) => (
+      <a class="card" href={`/cases/${c.slug}/`}>
+        <strong>{c.title}</strong>
+        <div class="muted">Открыть →</div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
