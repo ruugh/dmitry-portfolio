@@ -26,9 +26,10 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       article :global(h1, h2, h3) { margin: 22px 0 10px; }
       article :global(p, li, blockquote) { line-height: 1.55; }
       article :global(figure) { margin: 18px 0; }
+      /* Default: do NOT full-stretch images. Keep them document-like, centered. */
       article :global(figure img) {
-        max-width: 100%;
-        width: 100%;
+        max-width: min(100%, 820px);
+        width: auto;
         height: auto;
         max-height: 72vh;
         object-fit: contain;
@@ -38,7 +39,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         display: block;
         margin: 0 auto;
       }
-      /* keep support for #wide marker (currently same as default) */
+      /* Use #wide in caption to make image fill the content column. */
       article :global(figure.wide img) {
         max-width: 100%;
         width: 100%;
