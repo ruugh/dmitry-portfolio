@@ -9,7 +9,7 @@ const cases = await getCasesFromDatabase();
   <h1>Кейсы</h1>
   <p class="muted">Список формируется из дочерних страниц Notion (кроме CV и Сертификатов).</p>
 
-  <div class="grid">
+  <div class="cases-grid">
     {cases.map((c) => (
       <a class="card" href={`/cases/${c.slug}/`}>
         {c.coverUrl ? <img src={c.coverUrl} alt={c.title} loading="lazy" /> : null}
