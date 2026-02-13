@@ -44,3 +44,7 @@ Slug строится транслитерацией заголовка.
 
 ## Ограничения MVP
 Рендер блоков Notion сейчас базовый (заголовки/параграфы/списки/картинки/цитаты/код). Сложные блоки игнорируются.
+
+
+## Build note
+Cloudflare Pages build requires env vars: NOTION_TOKEN, ROOT_PAGE_ID.
