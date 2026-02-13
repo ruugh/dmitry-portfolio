@@ -150,8 +150,8 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
   const notion = getNotionClient();
   const databaseId = CASES_DATABASE_ID();
 
-  const resp: any = await notion.databases.query({
-    database_id: databaseId,
+  const queryArgs: any = {
+    // Notion Client v5 uses dataSources.query (database API was migrated)
     filter: {
       property: 'published',
       checkbox: { equals: true },
@@ -163,7 +163,12 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
       },
     ],
     page_size: 100,
-  });
+  };
+
+  const anyNotion: any = notion as any;
+  const resp: any = typeof anyNotion.databases?.query === 'function'
+    ? await anyNotion.databases.query({ database_id: databaseId, ...queryArgs })
+    : await anyNotion.dataSources.query({ data_source_id: databaseId, ...queryArgs });
 
   const out: CaseItem[] = [];
   for (const page of resp.results || []) {
