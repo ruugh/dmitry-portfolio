@@ -44,10 +44,12 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         cursor: zoom-in;
       }
       /* Use #wide in caption to make image fill the content column. */
+      article :global(figure.wide) { text-align: center; }
       article :global(figure.wide img) {
         max-width: 100%;
-        width: 100%;
+        width: auto;
         max-height: 70vh;
+        margin: 0 auto;
       }
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
       article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
