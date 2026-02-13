@@ -4,9 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/download-notion-assets.mjs && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "notion:assets": "node scripts/download-notion-assets.mjs"
   },
   "dependencies": {
     "@notionhq/client": "^5.9.0",

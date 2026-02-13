@@ -90,7 +90,9 @@ async function getPageCoverUrl(notion: Client, pageId: string): Promise<string |
     const cover = page?.cover;
     if (!cover) return undefined;
     if (cover.type === 'external') return cover.external?.url;
-    if (cover.type === 'file') return cover.file?.url;
+    if (cover.type === 'file' && cover.file?.url) {
+      return mapToLocalAsset(coverKey(pageId), cover.file.url);
+    }
     return undefined;
   } catch {
     return undefined;
@@ -242,8 +244,8 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
       coverUrl:
         page.cover?.type === 'external'
           ? page.cover.external?.url
-          : page.cover?.type === 'file'
-            ? page.cover.file?.url
+          : page.cover?.type === 'file' && page.cover.file?.url
+            ? await mapToLocalAsset(coverKey(page.id), page.cover.file.url)
             : undefined,
       order: pOrder ? propNumber(props[pOrder]) : undefined,
     });
@@ -282,32 +284,38 @@ function guessExt(url: string, contentType?: string): string {
   return (m?.[1] || 'jpg').toLowerCase();
 }
 
-async function downloadToDistAsset(url: string): Promise<string> {
-  // Write directly into dist so it is guaranteed to be published.
-  const distDir = path.join(process.cwd(), 'dist');
-  const assetsDir = path.join(distDir, 'notion-assets');
-  await ensureDir(assetsDir);
+type AssetManifest = {
+  version: number;
+  assets?: Record<string, { file?: string | null }>;
+};
 
-  const hash = crypto.createHash('sha1').update(url).digest('hex');
-
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch asset: ${res.status}`);
-  const contentType = res.headers.get('content-type') ?? undefined;
-  const ext = guessExt(url, contentType);
-  const filename = `${hash}.${ext}`;
-  const filePath = path.join(assetsDir, filename);
-
-  // Skip if already downloaded in this build
+let _assetManifest: AssetManifest | null | undefined;
+async function getAssetManifest(): Promise<AssetManifest | null> {
+  if (_assetManifest !== undefined) return _assetManifest;
+  const manifestPath = path.join(process.cwd(), 'public', 'notion-assets', 'manifest.json');
   try {
-    await fs.access(filePath);
-    return `/notion-assets/${filename}`;
+    const txt = await fs.readFile(manifestPath, 'utf8');
+    _assetManifest = JSON.parse(txt) as AssetManifest;
+    return _assetManifest;
   } catch {
-    // continue
+    _assetManifest = null;
+    return null;
   }
+}
 
-  const buf = Buffer.from(await res.arrayBuffer());
-  await fs.writeFile(filePath, buf);
-  return `/notion-assets/${filename}`;
+function imageKey(blockId: string) {
+  return `img-${blockId}`;
+}
+
+function coverKey(pageId: string) {
+  return `cover-${pageId}`;
+}
+
+async function mapToLocalAsset(key: string, fallbackUrl: string): Promise<string> {
+  const m = await getAssetManifest();
+  const file = m?.assets?.[key]?.file;
+  if (file && typeof file === 'string') return `/${file.replace(/^\/+/, '')}`;
+  return fallbackUrl;
 }
 
 async function renderBlock(notion: Client, block: any, depth: number): Promise<string> {
@@ -404,14 +412,11 @@ async function renderBlock(notion: Client, block: any, depth: number): Promise<s
         .replace(/\s*#w\d{2,4}\b\s*/gi, ' ')
         .trim();
 
-      // Notion "file" URLs are signed and expire. Download them into dist and reference locally.
+      // Notion "file" URLs are signed and expire.
+      // During build we download them into public/notion-assets and map via manifest.
       let src = url;
       if (v?.type === 'file') {
-        try {
-          src = await downloadToDistAsset(url);
-        } catch {
-          src = url;
-        }
+        src = await mapToLocalAsset(imageKey(block.id), url);
       }
 
       const cls = isWide ? 'wide' : '';
