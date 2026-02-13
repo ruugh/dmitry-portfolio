@@ -20,7 +20,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       main { padding: 28px 0 64px; }
       .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 14px; }
       .card { background: var(--card); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 14px 16px; display:block; }
-      .card img { width:100%; height: 160px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; display:block; }
+      .card img { width:100%; height: 220px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; display:block; }
       .card .title { display:block; font-weight: 700; }
       .muted { color: var(--muted); }
       article :global(h1, h2, h3) { margin: 22px 0 10px; }
@@ -49,7 +49,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
       article :global(hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }
       :global(.callout) {
-        background: rgba(255,255,255,.03);
+        background: rgba(255,255,255,.02);
         border: 1px solid rgba(255,255,255,.10);
         padding: 20px;
         border-radius: 14px;
@@ -59,7 +59,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 0;
-        border: 1px solid rgba(255,255,255,.55);
+        border: 1px solid rgba(255,255,255,.12);
         border-radius: 14px;
         overflow: hidden;
         background: rgba(255,255,255,.02);
@@ -69,7 +69,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         padding: 12px 14px;
       }
       :global(.column + .column) {
-        border-left: 1px solid rgba(255,255,255,.55);
+        border-left: 1px solid rgba(255,255,255,.12);
       }
       :global(details.toggle) { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,.03); }
       :global(details.toggle > summary) { cursor: pointer; }
@@ -80,17 +80,17 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       article :global(table) {
         width: 100%;
         border-collapse: collapse;
-        border: 1px solid rgba(255,255,255,.55);
+        border: 1px solid rgba(255,255,255,.14);
       }
       article :global(th),
       article :global(td) {
         padding: 10px 12px;
-        border: 1px solid rgba(255,255,255,.55);
+        border: 1px solid rgba(255,255,255,.14);
         font-size: 14px;
       }
       article :global(th) {
         font-weight: 700;
-        background: rgba(255,255,255,.08);
+        background: rgba(255,255,255,.04);
       }
 
       :global(table.notion-table) {
@@ -98,14 +98,14 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         width: 100%;
         min-width: 640px;
         background: rgba(255,255,255,.02);
-        border: 1px solid rgba(255,255,255,.55);
+        border: 1px solid rgba(255,255,255,.14);
         border-radius: 12px;
         overflow: hidden;
       }
       :global(table.notion-table td),
       :global(table.notion-table th) {
-        border-top: 1px solid rgba(255,255,255,.55);
-        border-right: 1px solid rgba(255,255,255,.55);
+        border-top: 1px solid rgba(255,255,255,.14);
+        border-right: 1px solid rgba(255,255,255,.14);
         padding: 10px 12px;
         vertical-align: top;
         color: var(--fg);
@@ -115,7 +115,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       :global(table.notion-table tr:first-child th) { border-top: none; }
       :global(table.notion-table td:last-child),
       :global(table.notion-table th:last-child) { border-right: none; }
-      :global(table.notion-table.has-header tr:first-child th) { background: rgba(255,255,255,.10); }
+      :global(table.notion-table.has-header tr:first-child th) { background: rgba(255,255,255,.05); }
       footer { border-top: 1px solid rgba(255,255,255,.08); }
 
       /* Lightbox */
