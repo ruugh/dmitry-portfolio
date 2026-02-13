@@ -356,6 +356,21 @@ async function renderBlock(notion: Client, block: any, depth: number): Promise<s
     case 'column': {
       return `<div class="column">${childHtml}</div>`;
     }
+    case 'table': {
+      // Notion table rows are children (table_row)
+      const hasColHeader = !!v?.has_column_header;
+      return `<div class="table-wrap"><table class="notion-table${hasColHeader ? ' has-header' : ''}">${childHtml}</table></div>`;
+    }
+    case 'table_row': {
+      const cells: any[] = v?.cells ?? [];
+      const tds = cells
+        .map((cell) => {
+          const txt = escapeHtml(richTextToPlain(cell));
+          return `<td>${txt}</td>`;
+        })
+        .join('');
+      return `<tr>${tds}</tr>`;
+    }
     case 'divider':
       return `<hr />`;
     case 'code':
