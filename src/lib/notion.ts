@@ -202,6 +202,10 @@ async function renderBlock(block: any): Promise<string> {
       const cap = richTextToPlain(v?.caption);
       if (!url) return '';
 
+      // Markup helpers: put #wide in caption to make image full-width.
+      const isWide = (cap || '').includes('#wide');
+      const cleanCap = (cap || '').replace(/\s*#wide\s*/g, ' ').trim();
+
       // Notion "file" URLs are signed and expire. Download them into dist and reference locally.
       let src = url;
       if (v?.type === 'file') {
@@ -213,7 +217,7 @@ async function renderBlock(block: any): Promise<string> {
         }
       }
 
-      return `<figure><img src="${escapeHtml(src)}" alt="${escapeHtml(cap || 'image')}" loading="lazy" />${cap ? `<figcaption>${escapeHtml(cap)}</figcaption>` : ''}</figure>`;
+      return `<figure class="${isWide ? 'wide' : ''}"><img src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure>`;
     }
     default:
       // ignore unsupported block types for MVP
