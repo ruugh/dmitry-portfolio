@@ -28,13 +28,15 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       article :global(figure) { margin: 18px 0; }
       article :global(figure img) {
         max-width: 100%;
-        width: 100%;
+        width: auto;
         height: auto;
         max-height: 72vh;
         object-fit: contain;
         border-radius: 12px;
         background: rgba(255,255,255,.03);
         border: 1px solid rgba(255,255,255,.08);
+        display: block;
+        margin: 0 auto;
       }
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
       article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
