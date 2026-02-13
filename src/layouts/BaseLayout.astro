@@ -27,8 +27,8 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       article :global(p, li, blockquote) { line-height: 1.55; }
       article :global(figure) { margin: 18px 0; }
       article :global(figure img) {
-        max-width: min(100%, 820px);
-        width: auto;
+        max-width: 100%;
+        width: 100%;
         height: auto;
         max-height: 72vh;
         object-fit: contain;
@@ -38,8 +38,10 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         display: block;
         margin: 0 auto;
       }
+      /* keep support for #wide marker (currently same as default) */
       article :global(figure.wide img) {
         max-width: 100%;
+        width: 100%;
       }
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
       article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
