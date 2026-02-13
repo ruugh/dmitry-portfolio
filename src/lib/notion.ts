@@ -78,6 +78,12 @@ async function listAllChildren(notion: Client, blockId: string) {
   return out;
 }
 
+async function renderChildrenHtml(notion: Client, blockId: string, depth: number): Promise<string> {
+  if (depth <= 0) return '';
+  const blocks = await listAllChildren(notion, blockId);
+  return renderBlocksToHtml(notion, blocks as any[], depth - 1);
+}
+
 async function getPageCoverUrl(notion: Client, pageId: string): Promise<string | undefined> {
   try {
     const page: any = await notion.pages.retrieve({ page_id: pageId });
@@ -304,44 +310,59 @@ async function downloadToDistAsset(url: string): Promise<string> {
   return `/notion-assets/${filename}`;
 }
 
-async function renderBlock(block: any): Promise<string> {
+async function renderBlock(notion: Client, block: any, depth: number): Promise<string> {
   const t = block.type;
   const v = block[t];
 
+  const childHtml = block?.has_children ? await renderChildrenHtml(notion, block.id, depth) : '';
+
   switch (t) {
     case 'heading_1':
-      return `<h1>${escapeHtml(richTextToPlain(v?.rich_text))}</h1>`;
+      return `<h1>${escapeHtml(richTextToPlain(v?.rich_text))}</h1>${childHtml}`;
     case 'heading_2':
-      return `<h2>${escapeHtml(richTextToPlain(v?.rich_text))}</h2>`;
+      return `<h2>${escapeHtml(richTextToPlain(v?.rich_text))}</h2>${childHtml}`;
     case 'heading_3':
-      return `<h3>${escapeHtml(richTextToPlain(v?.rich_text))}</h3>`;
+      return `<h3>${escapeHtml(richTextToPlain(v?.rich_text))}</h3>${childHtml}`;
     case 'paragraph': {
       const txt = richTextToPlain(v?.rich_text);
-      if (!txt) return '';
-      return `<p>${escapeHtml(txt)}</p>`;
+      const p = txt ? `<p>${escapeHtml(txt)}</p>` : '';
+      return `${p}${childHtml}`;
     }
     case 'bulleted_list_item': {
       const txt = richTextToPlain(v?.rich_text);
-      return `<li>${escapeHtml(txt)}</li>`;
+      return `<li>${escapeHtml(txt)}${childHtml ? `<div class="li-children">${childHtml}</div>` : ''}</li>`;
     }
     case 'numbered_list_item': {
       const txt = richTextToPlain(v?.rich_text);
-      return `<li>${escapeHtml(txt)}</li>`;
+      return `<li>${escapeHtml(txt)}${childHtml ? `<div class="li-children">${childHtml}</div>` : ''}</li>`;
     }
     case 'quote':
-      return `<blockquote>${escapeHtml(richTextToPlain(v?.rich_text))}</blockquote>`;
-    case 'callout':
-      return `<div class="callout">${escapeHtml(richTextToPlain(v?.rich_text))}</div>`;
+      return `<blockquote>${escapeHtml(richTextToPlain(v?.rich_text))}</blockquote>${childHtml}`;
+    case 'callout': {
+      const txt = escapeHtml(richTextToPlain(v?.rich_text));
+      return `<div class="callout">${txt}${childHtml ? `<div class="callout-children">${childHtml}</div>` : ''}</div>`;
+    }
+    case 'toggle': {
+      const summary = escapeHtml(richTextToPlain(v?.rich_text));
+      return `<details class="toggle"><summary>${summary}</summary>${childHtml}</details>`;
+    }
+    case 'column_list': {
+      // children are "column" blocks
+      return `<div class="columns">${childHtml}</div>`;
+    }
+    case 'column': {
+      return `<div class="column">${childHtml}</div>`;
+    }
     case 'divider':
       return `<hr />`;
     case 'code':
-      return `<pre><code>${escapeHtml(v?.rich_text?.map((x: any) => x.plain_text).join('') ?? '')}</code></pre>`;
+      return `<pre><code>${escapeHtml(v?.rich_text?.map((x: any) => x.plain_text).join('') ?? '')}</code></pre>${childHtml}`;
     case 'image': {
       const url = v?.type === 'external' ? v?.external?.url : v?.file?.url;
       const cap = richTextToPlain(v?.caption);
       if (!url) return '';
 
-      // Markup helpers (caption tags):
+      // Caption tags:
       // - #wide → full width of content column
       // - #w600 / #w720 ... → cap image max-width in px
       const rawCap = cap || '';
@@ -359,7 +380,6 @@ async function renderBlock(block: any): Promise<string> {
         try {
           src = await downloadToDistAsset(url);
         } catch {
-          // fallback to original URL
           src = url;
         }
       }
@@ -367,19 +387,16 @@ async function renderBlock(block: any): Promise<string> {
       const cls = isWide ? 'wide' : '';
       const style = widthPx ? ` style=\"max-width:min(100%,${widthPx}px);\"` : '';
 
+      // Note: child blocks on image are rare; ignore childHtml.
       return `<figure class="${cls}"><img${style} src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure>`;
     }
     default:
-      // ignore unsupported block types for MVP
-      return '';
+      return childHtml || '';
   }
 }
 
-export async function renderNotionPageToHtml(pageId: string): Promise<string> {
-  const notion = getNotionClient();
-  const blocks = await listAllChildren(notion, pageId);
-
-  // Group list items into UL/OL
+async function renderBlocksToHtml(notion: Client, blocks: any[], depth: number): Promise<string> {
+  // Group list items into UL/OL at current level
   const parts: string[] = [];
   let listMode: 'ul' | 'ol' | null = null;
   let listItems: string[] = [];
@@ -400,21 +417,27 @@ export async function renderNotionPageToHtml(pageId: string): Promise<string> {
     if (type === 'bulleted_list_item') {
       if (listMode && listMode !== 'ul') flushList();
       listMode = 'ul';
-      listItems.push(await renderBlock(b));
+      listItems.push(await renderBlock(notion, b, depth));
       continue;
     }
     if (type === 'numbered_list_item') {
       if (listMode && listMode !== 'ol') flushList();
       listMode = 'ol';
-      listItems.push(await renderBlock(b));
+      listItems.push(await renderBlock(notion, b, depth));
       continue;
     }
 
     flushList();
-    const html = await renderBlock(b);
+    const html = await renderBlock(notion, b, depth);
     if (html) parts.push(html);
   }
 
   flushList();
   return parts.join('\n');
+}
+
+export async function renderNotionPageToHtml(pageId: string): Promise<string> {
+  const notion = getNotionClient();
+  const blocks = await listAllChildren(notion, pageId);
+  return renderBlocksToHtml(notion, blocks as any[], 6);
 }
