@@ -161,23 +161,33 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
     byNorm[normalize(key)] = key;
   }
 
-  const pPublished = byNorm['published'] ?? 'published';
-  const pOrder = byNorm['order'] ?? 'order';
-
-  // Build query (strict): only published cases, sorted by order desc.
-  const queryBody: any = {
-    filter: {
-      property: pPublished,
-      checkbox: { equals: true },
-    },
-    sorts: [
-      {
-        property: pOrder,
-        direction: 'descending',
-      },
-    ],
-    page_size: 100,
+  const findProp = (candidates: string[], type?: string): string | undefined => {
+    for (const c of candidates) {
+      const exact = byNorm[c];
+      if (exact && (!type || propsSchema[exact]?.type === type)) return exact;
+    }
+    // fuzzy match
+    const candSet = new Set(candidates);
+    for (const key of Object.keys(propsSchema)) {
+      const n = normalize(key);
+      if ([...candSet].some((c) => n.includes(c))) {
+        if (!type || propsSchema[key]?.type === type) return key;
+      }
+    }
+    return undefined;
   };
+
+  const pPublished = findProp(['published', 'публик', 'опублик'], 'checkbox');
+  const pOrder = findProp(['order', 'порядок'], 'number');
+
+  // Build query: prefer strict filter/sort when we can resolve property names.
+  const queryBody: any = { page_size: 100 };
+  if (pPublished) {
+    queryBody.filter = { property: pPublished, checkbox: { equals: true } };
+  }
+  if (pOrder) {
+    queryBody.sorts = [{ property: pOrder, direction: 'descending' }];
+  }
 
   // SDK v5 removed databases.query in favor of dataSources.query.
   // Unfortunately data_source_id may differ from the database page id.
