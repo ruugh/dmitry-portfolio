@@ -161,29 +161,23 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
     byNorm[normalize(key)] = key;
   }
 
-  const pPublished = byNorm['published'];
-  const pOrder = byNorm['order'];
+  const pPublished = byNorm['published'] ?? 'published';
+  const pOrder = byNorm['order'] ?? 'order';
 
-  // Build query. If property names don't match (common), avoid Notion validation errors.
+  // Build query (strict): only published cases, sorted by order desc.
   const queryBody: any = {
-    page_size: 100,
-  };
-
-  if (pPublished && propsSchema[pPublished]?.type === 'checkbox') {
-    queryBody.filter = {
+    filter: {
       property: pPublished,
       checkbox: { equals: true },
-    };
-  }
-
-  if (pOrder && propsSchema[pOrder]?.type === 'number') {
-    queryBody.sorts = [
+    },
+    sorts: [
       {
         property: pOrder,
         direction: 'descending',
       },
-    ];
-  }
+    ],
+    page_size: 100,
+  };
 
   // SDK v5 removed databases.query in favor of dataSources.query.
   // Unfortunately data_source_id may differ from the database page id.
