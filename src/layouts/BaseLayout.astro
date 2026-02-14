@@ -33,18 +33,18 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       .muted { color: var(--muted); }
 
       /* HOME RESET: be strict about overflow and block defaults */
-      article { overflow-x: hidden; }
-      article :global(h1, h2, h3) { margin: 22px 0 10px; }
-      article :global(p, li, blockquote) { line-height: 1.55; }
+      :global(article) { overflow-x: hidden; }
+      :global(article h1, article h2, article h3) { margin: 22px 0 10px; }
+      :global(article p, article li, article blockquote) { line-height: 1.55; }
 
       /* Notion-ish defaults */
-      article :global(figure) { margin: 18px 0; }
-      article :global(img) { max-width: 100%; height: auto; display: block !important; }
-      article :global(.notion-image figure) { margin: 0; }
-      article :global(.notion-image img) { display: block !important; }
+      :global(article figure) { margin: 18px 0; }
+      :global(article img) { max-width: 100%; height: auto; display: block !important; }
+      :global(article .notion-image figure) { margin: 0; }
+      :global(article .notion-image img) { display: block !important; }
 
       /* Default images: centered, document-like */
-      article :global(figure img) {
+      :global(article figure img) {
         max-width: min(100%, 820px);
         width: auto;
         height: auto;
@@ -59,8 +59,8 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
 
       /* Wide images: fill their container only (no bleed).
          IMPORTANT: target the stable marker (figure.wide) so it works even if wrapper divs change. */
-      article :global(figure.wide) { margin: 18px 0; padding: 0; }
-      article :global(figure.wide img) {
+      :global(article figure.wide) { margin: 18px 0; padding: 0; }
+      :global(article figure.wide img) {
         width: 100% !important;
         max-width: 100% !important;
         height: auto;
@@ -72,9 +72,9 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         display: block !important;
       }
 
-      article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
-      article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
-      article :global(hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }
+      :global(article figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
+      :global(article blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
+      :global(article hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }
       :global(.callout) {
         background: rgba(255,255,255,.02);
         border: 1px solid rgba(255,255,255,.10);
