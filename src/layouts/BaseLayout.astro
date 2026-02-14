@@ -39,9 +39,9 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
 
       /* Notion-ish defaults */
       article :global(figure) { margin: 18px 0; }
-      article :global(img) { max-width: 100%; height: auto; }
+      article :global(img) { max-width: 100%; height: auto; display: block !important; }
       article :global(.notion-image figure) { margin: 0; }
-      article :global(.notion-image img) { display: block; }
+      article :global(.notion-image img) { display: block !important; }
 
       /* Default images: centered, document-like */
       article :global(figure img) {
@@ -69,7 +69,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         border: 0 !important;
         background: transparent !important;
         border-radius: 0;
-        display: block;
+        display: block !important;
       }
 
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
