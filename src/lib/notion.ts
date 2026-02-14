@@ -432,7 +432,8 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
       }
 
       const cls = isWide ? 'wide' : '';
-      const style = widthPx ? ` style=\"max-width:min(100%,${widthPx}px);\"` : '';
+      // If image is marked wide, do not apply #wNNN max-width cap.
+      const style = !isWide && widthPx ? ` style=\"max-width:min(100%,${widthPx}px);\"` : '';
 
       // Note: child blocks on image are rare; ignore childHtml.
       // Wrap in a div so layout/CSS can target the whole image block reliably.
