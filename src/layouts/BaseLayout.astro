@@ -20,7 +20,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       }
       :global(a:hover) { text-decoration-color: rgba(255,255,255,.9); }
       header { position: sticky; top:0; background: rgba(11,12,16,.85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.08); }
-      .wrap { max-width: 760px; margin: 0 auto; padding: 16px 0; }
+      .wrap { max-width: 760px; margin: 0 auto; padding: 16px 20px; }
       nav { display:flex; gap:14px; align-items:center; }
       nav a { color: var(--fg); opacity: .9; }
       main { padding: 28px 0 64px; }
@@ -52,6 +52,11 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       }
       /* Use #wide in caption to make image fill the content column. */
       article :global(figure.wide) { text-align: center; }
+      /* Make wide images reach the content column edges (like Notion) */
+      article :global(figure.wide) {
+        margin-left: -20px;
+        margin-right: -20px;
+      }
       article :global(figure.wide img) {
         max-width: 100%;
         width: 100%;
@@ -61,11 +66,8 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         border: none;
         background: transparent;
         border-radius: 0;
+        display: block;
       }
-
-      /* DEBUG: outline wide images to see what is constraining width */
-      article :global(figure.wide) { outline: 2px solid red; }
-      article :global(figure.wide img) { outline: 2px solid lime; }
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
       article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
       article :global(hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }
