@@ -431,7 +431,8 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
       const style = widthPx ? ` style=\"max-width:min(100%,${widthPx}px);\"` : '';
 
       // Note: child blocks on image are rare; ignore childHtml.
-      return `<figure class="${cls}"><img${style} src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure>`;
+      // Wrap in a div so layout/CSS can target the whole image block reliably.
+      return `<div class="notion-image ${cls}"><figure class="${cls}"><img${style} src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure></div>`;
     }
     case 'child_page': {
       const title = escapeHtml(v?.title ?? '');

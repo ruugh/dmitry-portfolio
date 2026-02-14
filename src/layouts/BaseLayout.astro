@@ -53,11 +53,14 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       /* Use #wide in caption to make image fill the content column. */
       article :global(figure.wide) { text-align: center; }
       /* Make wide images reach the content column edges (like Notion) */
-      article :global(figure.wide) {
+      article :global(.notion-image.wide) {
         margin: 18px -20px;
         padding: 0;
       }
-      article :global(figure.wide img) {
+      article :global(.notion-image.wide figure) {
+        margin: 0;
+      }
+      article :global(.notion-image.wide img) {
         max-width: 100%;
         width: 100%;
         height: auto;
