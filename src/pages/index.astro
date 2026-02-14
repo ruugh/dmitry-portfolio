@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCasesFromDatabase, renderNotionPageToHtml, ROOT_PAGE_ID } from '../lib/notion';
+import { renderNotionPageToHtml, ROOT_PAGE_ID } from '../lib/notion';
 
-const cases = await getCasesFromDatabase();
+// Home page is rendered purely from Notion for 1:1 layout control.
 const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCaption: true });
 ---
 
@@ -10,17 +10,4 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
   <article>
     <div set:html={homeHtml} />
   </article>
-
-  <h2>Портфолио</h2>
-  <div class="cases-grid">
-    {cases.map((c) => (
-      <a class="card case-card" href={`/cases/${c.slug}/`}>
-        {c.coverUrl ? <img class="case-card__img" src={c.coverUrl} alt={c.title} loading="lazy" /> : null}
-        <div class="case-card__body">
-          <span class="title">{c.title}</span>
-          <div class="muted">Открыть →</div>
-        </div>
-      </a>
-    ))}
-  </div>
 </BaseLayout>

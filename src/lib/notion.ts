@@ -415,9 +415,13 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
       const isWide = rawCap.includes('#wide') || (!!opts.wideImagesWithCaption && rawCap.trim().length > 0);
       const wMatch = rawCap.match(/#w(\d{2,4})\b/i);
       const widthPx = wMatch ? Math.max(120, Math.min(2000, Number(wMatch[1]))) : undefined;
+      const caseMatch = rawCap.match(/#case:([a-z0-9-]+)/i);
+      const caseSlug = caseMatch?.[1];
+
       const cleanCap = rawCap
         .replace(/\s*#wide\s*/g, ' ')
         .replace(/\s*#w\d{2,4}\b\s*/gi, ' ')
+        .replace(/\s*#case:[a-z0-9-]+\b\s*/gi, ' ')
         .trim();
 
       // Notion "file" URLs are signed and expire.
@@ -432,7 +436,10 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
 
       // Note: child blocks on image are rare; ignore childHtml.
       // Wrap in a div so layout/CSS can target the whole image block reliably.
-      return `<div class="notion-image ${cls}"><figure class="${cls}"><img${style} src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure></div>`;
+      const imgTag = `<img${style} src="${escapeHtml(src)}" alt="${escapeHtml(cleanCap || 'image')}" loading="lazy" />`;
+      const maybeLinkedImg = caseSlug ? `<a href="/cases/${escapeHtml(caseSlug)}/" class="case-link">${imgTag}</a>` : imgTag;
+
+      return `<div class="notion-image ${cls}"><figure class="${cls}">${maybeLinkedImg}${cleanCap ? `<figcaption>${escapeHtml(cleanCap)}</figcaption>` : ''}</figure></div>`;
     }
     case 'child_page': {
       const title = escapeHtml(v?.title ?? '');
