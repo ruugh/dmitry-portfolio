@@ -412,17 +412,22 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
       // - #wide → full width of content column
       // - #w600 / #w720 ... → cap image max-width in px
       const rawCap = cap || '';
-      const isWide = rawCap.includes('#wide') || (!!opts.wideImagesWithCaption && rawCap.trim().length > 0);
       const wMatch = rawCap.match(/#w(\d{2,4})\b/i);
       const widthPx = wMatch ? Math.max(120, Math.min(2000, Number(wMatch[1]))) : undefined;
       const caseMatch = rawCap.match(/#case:([a-z0-9-]+)/i);
       const caseSlug = caseMatch?.[1];
 
+      // Strip control tags from caption (they should not be visible).
       const cleanCap = rawCap
         .replace(/\s*#wide\s*/g, ' ')
         .replace(/\s*#w\d{2,4}\b\s*/gi, ' ')
         .replace(/\s*#case:[a-z0-9-]+\b\s*/gi, ' ')
         .trim();
+
+      // Wide mode rules:
+      // - Explicit: #wide
+      // - Home-only convenience: any REAL caption text (not just tags) makes it wide
+      const isWide = rawCap.includes('#wide') || (!!opts.wideImagesWithCaption && cleanCap.length > 0);
 
       // Notion "file" URLs are signed and expire.
       // During build we download them into public/notion-assets and map via manifest.
