@@ -79,21 +79,23 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         border-radius: 14px;
       }
       :global(.callout-children) { margin-top: 12px; }
+      /* Notion-like columns: no card frame/padding, just a gap */
       :global(.columns) {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 0;
-        border: 1px solid rgba(255,255,255,.12);
-        border-radius: 14px;
-        overflow: hidden;
-        background: rgba(255,255,255,.02);
+        gap: 32px;
+        border: none;
+        border-radius: 0;
+        overflow: visible;
+        background: transparent;
       }
       :global(.column) {
         min-width: 0;
-        padding: 12px 14px;
+        padding: 0;
+        border: none;
       }
       :global(.column + .column) {
-        border-left: 1px solid rgba(255,255,255,.12);
+        border-left: none;
       }
       :global(details.toggle) { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,.03); }
       :global(details.toggle > summary) { cursor: pointer; }
