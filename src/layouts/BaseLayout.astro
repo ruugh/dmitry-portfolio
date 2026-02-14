@@ -55,6 +55,12 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         margin: 18px 0;
         padding: 0;
       }
+      article :global(.notion-image figure) { margin: 0; }
+      article :global(.notion-image img) {
+        max-width: 100%;
+        display: block;
+      }
+
       article :global(.notion-image.wide figure) {
         margin: 0;
       }
@@ -93,6 +99,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         min-width: 0;
         padding: 0;
         border: none;
+        overflow: hidden;
       }
       :global(.column + .column) {
         border-left: none;
