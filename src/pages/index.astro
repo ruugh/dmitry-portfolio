@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCasesFromDatabase, renderNotionPageToHtml, ROOT_PAGE_ID } from '../lib/notion';
 
 const cases = await getCasesFromDatabase();
-const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID());
+const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCaption: true });
 ---
 
 <BaseLayout title="Дмитрий Корчагин — портфолио" description="Портфолио Дмитрия Корчагина">

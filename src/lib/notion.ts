@@ -78,10 +78,18 @@ async function listAllChildren(notion: Client, blockId: string) {
   return out;
 }
 
-async function renderChildrenHtml(notion: Client, blockId: string, depth: number): Promise<string> {
+type RenderOpts = {
+  /**
+   * For the root page we want images with any caption to behave like Notion "full content width".
+   * (Used for portfolio cover-like images embedded into the page content.)
+   */
+  wideImagesWithCaption?: boolean;
+};
+
+async function renderChildrenHtml(notion: Client, blockId: string, depth: number, opts: RenderOpts): Promise<string> {
   if (depth <= 0) return '';
   const blocks = await listAllChildren(notion, blockId);
-  return renderBlocksToHtml(notion, blocks as any[], depth - 1);
+  return renderBlocksToHtml(notion, blocks as any[], depth - 1, opts);
 }
 
 async function getPageCoverUrl(notion: Client, pageId: string): Promise<string | undefined> {
@@ -318,14 +326,14 @@ async function mapToLocalAsset(key: string, fallbackUrl: string): Promise<string
   return fallbackUrl;
 }
 
-async function renderBlock(notion: Client, block: any, depth: number): Promise<string> {
+async function renderBlock(notion: Client, block: any, depth: number, opts: RenderOpts): Promise<string> {
   const t = block.type;
   const v = block[t];
 
   // Some blocks are containers, others are references to separate pages.
   // We MUST NOT recursively inline child pages into the current page.
   const shouldInlineChildren = !!block?.has_children && !['child_page', 'child_database', 'link_to_page'].includes(t);
-  const childHtml = shouldInlineChildren ? await renderChildrenHtml(notion, block.id, depth) : '';
+  const childHtml = shouldInlineChildren ? await renderChildrenHtml(notion, block.id, depth, opts) : '';
 
   switch (t) {
     case 'heading_1':
@@ -404,7 +412,7 @@ async function renderBlock(notion: Client, block: any, depth: number): Promise<s
       // - #wide → full width of content column
       // - #w600 / #w720 ... → cap image max-width in px
       const rawCap = cap || '';
-      const isWide = rawCap.includes('#wide');
+      const isWide = rawCap.includes('#wide') || (!!opts.wideImagesWithCaption && rawCap.trim().length > 0);
       const wMatch = rawCap.match(/#w(\d{2,4})\b/i);
       const widthPx = wMatch ? Math.max(120, Math.min(2000, Number(wMatch[1]))) : undefined;
       const cleanCap = rawCap
@@ -438,7 +446,7 @@ async function renderBlock(notion: Client, block: any, depth: number): Promise<s
   }
 }
 
-async function renderBlocksToHtml(notion: Client, blocks: any[], depth: number): Promise<string> {
+async function renderBlocksToHtml(notion: Client, blocks: any[], depth: number, opts: RenderOpts): Promise<string> {
   // Group list items into UL/OL at current level
   const parts: string[] = [];
   let listMode: 'ul' | 'ol' | null = null;
@@ -460,18 +468,18 @@ async function renderBlocksToHtml(notion: Client, blocks: any[], depth: number):
     if (type === 'bulleted_list_item') {
       if (listMode && listMode !== 'ul') flushList();
       listMode = 'ul';
-      listItems.push(await renderBlock(notion, b, depth));
+      listItems.push(await renderBlock(notion, b, depth, opts));
       continue;
     }
     if (type === 'numbered_list_item') {
       if (listMode && listMode !== 'ol') flushList();
       listMode = 'ol';
-      listItems.push(await renderBlock(notion, b, depth));
+      listItems.push(await renderBlock(notion, b, depth, opts));
       continue;
     }
 
     flushList();
-    const html = await renderBlock(notion, b, depth);
+    const html = await renderBlock(notion, b, depth, opts);
     if (html) parts.push(html);
   }
 
@@ -479,8 +487,8 @@ async function renderBlocksToHtml(notion: Client, blocks: any[], depth: number):
   return parts.join('\n');
 }
 
-export async function renderNotionPageToHtml(pageId: string): Promise<string> {
+export async function renderNotionPageToHtml(pageId: string, opts: RenderOpts = {}): Promise<string> {
   const notion = getNotionClient();
   const blocks = await listAllChildren(notion, pageId);
-  return renderBlocksToHtml(notion, blocks as any[], 6);
+  return renderBlocksToHtml(notion, blocks as any[], 6, opts);
 }
