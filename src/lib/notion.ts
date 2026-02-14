@@ -425,9 +425,10 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
         .trim();
 
       // Wide mode rules:
-      // - Explicit: #wide
+      // - Explicit: #wide (robust detection)
       // - Optional convenience: when enabled, any REAL caption text (not just tags) makes it wide
-      const isWide = rawCap.includes('#wide') || (!!opts.wideImagesWithCaption && cleanCap.length > 0);
+      const hasWideTag = /(^|\s)#wide(\s|$)/i.test(rawCap);
+      const isWide = hasWideTag || (!!opts.wideImagesWithCaption && cleanCap.length > 0);
 
       // Notion "file" URLs are signed and expire.
       // During build we download them into public/notion-assets and map via manifest.
