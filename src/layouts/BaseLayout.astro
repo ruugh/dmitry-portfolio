@@ -57,16 +57,19 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         cursor: zoom-in;
       }
 
-      /* Wide images: fill their container only (no bleed) */
-      article :global(.notion-image.wide) { margin: 18px 0; padding: 0; }
-      article :global(.notion-image.wide img) {
-        width: 100%;
-        max-width: 100%;
+      /* Wide images: fill their container only (no bleed).
+         IMPORTANT: target the stable marker (figure.wide) so it works even if wrapper divs change. */
+      article :global(figure.wide) { margin: 18px 0; padding: 0; }
+      article :global(figure.wide img) {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto;
         max-height: none;
         margin: 0;
         border: 0 !important;
         background: transparent !important;
         border-radius: 0;
+        display: block;
       }
 
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
