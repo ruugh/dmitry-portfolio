@@ -31,10 +31,19 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       :global(.card img) { width:100%; height: 220px; object-fit: contain; border-radius: 12px; margin-bottom: 10px; display:block; background: rgba(255,255,255,.03); }
       .card .title { display:block; font-weight: 700; }
       .muted { color: var(--muted); }
+
+      /* HOME RESET: be strict about overflow and block defaults */
+      article { overflow-x: hidden; }
       article :global(h1, h2, h3) { margin: 22px 0 10px; }
       article :global(p, li, blockquote) { line-height: 1.55; }
+
+      /* Notion-ish defaults */
       article :global(figure) { margin: 18px 0; }
-      /* Default: do NOT full-stretch images. Keep them document-like, centered. */
+      article :global(img) { max-width: 100%; height: auto; }
+      article :global(.notion-image figure) { margin: 0; }
+      article :global(.notion-image img) { display: block; }
+
+      /* Default images: centered, document-like */
       article :global(figure img) {
         max-width: min(100%, 820px);
         width: auto;
@@ -44,37 +53,22 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         border-radius: 12px;
         background: rgba(255,255,255,.03);
         border: 1px solid rgba(255,255,255,.08);
-        display: block;
         margin: 0 auto;
         cursor: zoom-in;
       }
-      /* Use #wide in caption to make image fill the content column. */
-      article :global(figure.wide) { text-align: center; }
-      /* Wide images: fill the current content column, but do NOT bleed outside layout */
-      article :global(.notion-image.wide) {
-        margin: 18px 0;
-        padding: 0;
-      }
-      article :global(.notion-image figure) { margin: 0; }
-      article :global(.notion-image img) {
-        max-width: 100%;
-        display: block;
-      }
 
-      article :global(.notion-image.wide figure) {
-        margin: 0;
-      }
+      /* Wide images: fill their container only (no bleed) */
+      article :global(.notion-image.wide) { margin: 18px 0; padding: 0; }
       article :global(.notion-image.wide img) {
         width: 100%;
         max-width: 100%;
-        height: auto;
         max-height: none;
         margin: 0;
         border: 0 !important;
         background: transparent !important;
         border-radius: 0;
-        display: block;
       }
+
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
       article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
       article :global(hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }

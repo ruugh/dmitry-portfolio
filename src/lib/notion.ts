@@ -426,7 +426,7 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
 
       // Wide mode rules:
       // - Explicit: #wide
-      // - Home-only convenience: any REAL caption text (not just tags) makes it wide
+      // - Optional convenience: when enabled, any REAL caption text (not just tags) makes it wide
       const isWide = rawCap.includes('#wide') || (!!opts.wideImagesWithCaption && cleanCap.length > 0);
 
       // Notion "file" URLs are signed and expire.

@@ -3,7 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { renderNotionPageToHtml, ROOT_PAGE_ID } from '../lib/notion';
 
 // Home page is rendered purely from Notion for 1:1 layout control.
-const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCaption: true });
+// Do not auto-wide images on home; use explicit tags (#wide / #wNNN).
+const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCaption: false });
 ---
 
 <BaseLayout title="Дмитрий Корчагин — портфолио" description="Портфолио Дмитрия Корчагина">
