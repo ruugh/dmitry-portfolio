@@ -62,6 +62,10 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         background: transparent;
         border-radius: 0;
       }
+
+      /* DEBUG: outline wide images to see what is constraining width */
+      article :global(figure.wide) { outline: 2px solid red; }
+      article :global(figure.wide img) { outline: 2px solid lime; }
       article :global(figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
       article :global(blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
       article :global(hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }
