@@ -14,10 +14,12 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
   <h2>Портфолио</h2>
   <div class="cases-grid">
     {cases.map((c) => (
-      <a class="card" href={`/cases/${c.slug}/`}>
-        {c.coverUrl ? <img src={c.coverUrl} alt={c.title} loading="lazy" /> : null}
-        <span class="title">{c.title}</span>
-        <div class="muted">Открыть →</div>
+      <a class="card case-card" href={`/cases/${c.slug}/`}>
+        {c.coverUrl ? <img class="case-card__img" src={c.coverUrl} alt={c.title} loading="lazy" /> : null}
+        <div class="case-card__body">
+          <span class="title">{c.title}</span>
+          <div class="muted">Открыть →</div>
+        </div>
       </a>
     ))}
   </div>
