@@ -267,6 +267,29 @@ function richTextToPlain(richText: any[] | undefined): string {
   return richText.map((t) => t?.plain_text ?? '').join('');
 }
 
+function renderRichTextToHtml(richText: any[] | undefined): string {
+  if (!richText?.length) return '';
+
+  return richText
+    .map((t) => {
+      const text = escapeHtml(t?.plain_text ?? '');
+      if (!text) return '';
+
+      let html = text;
+      const ann = t?.annotations ?? {};
+      if (ann.code) html = `<code>${html}</code>`;
+      if (ann.bold) html = `<strong>${html}</strong>`;
+      if (ann.italic) html = `<em>${html}</em>`;
+      if (ann.strikethrough) html = `<s>${html}</s>`;
+      if (ann.underline) html = `<u>${html}</u>`;
+
+      const href = t?.href || t?.text?.link?.url;
+      if (href) html = `<a href="${escapeHtml(href)}">${html}</a>`;
+      return html;
+    })
+    .join('');
+}
+
 function escapeHtml(s: string) {
   return s
     .replace(/&/g, '&amp;')
@@ -337,32 +360,32 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
 
   switch (t) {
     case 'heading_1':
-      return `<h1>${escapeHtml(richTextToPlain(v?.rich_text))}</h1>${childHtml}`;
+      return `<h1>${renderRichTextToHtml(v?.rich_text)}</h1>${childHtml}`;
     case 'heading_2':
-      return `<h2>${escapeHtml(richTextToPlain(v?.rich_text))}</h2>${childHtml}`;
+      return `<h2>${renderRichTextToHtml(v?.rich_text)}</h2>${childHtml}`;
     case 'heading_3':
-      return `<h3>${escapeHtml(richTextToPlain(v?.rich_text))}</h3>${childHtml}`;
+      return `<h3>${renderRichTextToHtml(v?.rich_text)}</h3>${childHtml}`;
     case 'paragraph': {
-      const txt = richTextToPlain(v?.rich_text);
-      const p = txt ? `<p>${escapeHtml(txt)}</p>` : '';
+      const html = renderRichTextToHtml(v?.rich_text);
+      const p = html ? `<p>${html}</p>` : '';
       return `${p}${childHtml}`;
     }
     case 'bulleted_list_item': {
-      const txt = richTextToPlain(v?.rich_text);
-      return `<li>${escapeHtml(txt)}${childHtml ? `<div class="li-children">${childHtml}</div>` : ''}</li>`;
+      const html = renderRichTextToHtml(v?.rich_text);
+      return `<li>${html}${childHtml ? `<div class="li-children">${childHtml}</div>` : ''}</li>`;
     }
     case 'numbered_list_item': {
-      const txt = richTextToPlain(v?.rich_text);
-      return `<li>${escapeHtml(txt)}${childHtml ? `<div class="li-children">${childHtml}</div>` : ''}</li>`;
+      const html = renderRichTextToHtml(v?.rich_text);
+      return `<li>${html}${childHtml ? `<div class="li-children">${childHtml}</div>` : ''}</li>`;
     }
     case 'quote':
-      return `<blockquote>${escapeHtml(richTextToPlain(v?.rich_text))}</blockquote>${childHtml}`;
+      return `<blockquote>${renderRichTextToHtml(v?.rich_text)}</blockquote>${childHtml}`;
     case 'callout': {
-      const txt = escapeHtml(richTextToPlain(v?.rich_text));
-      return `<div class="callout">${txt}${childHtml ? `<div class="callout-children">${childHtml}</div>` : ''}</div>`;
+      const html = renderRichTextToHtml(v?.rich_text);
+      return `<div class="callout">${html}${childHtml ? `<div class="callout-children">${childHtml}</div>` : ''}</div>`;
     }
     case 'toggle': {
-      const summary = escapeHtml(richTextToPlain(v?.rich_text));
+      const summary = renderRichTextToHtml(v?.rich_text);
       return `<details class="toggle"><summary>${summary}</summary>${childHtml}</details>`;
     }
     case 'column_list': {

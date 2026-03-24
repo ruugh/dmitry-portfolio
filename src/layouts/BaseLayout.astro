@@ -189,8 +189,6 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         <nav>
           <a href="/">Главная</a>
           <a href="/cases">Кейсы</a>
-          <a href="/cv">CV</a>
-          <a href="/certificates">Сертификаты</a>
         </nav>
       </div>
     </header>
@@ -241,6 +239,10 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
           const el = target.closest('article img');
           if (!(el instanceof HTMLImageElement)) return;
           if (!el.src) return;
+
+          // If the image is already wrapped in a link (for example to a case page),
+          // let navigation happen instead of hijacking the click for lightbox.
+          if (el.closest('a[href]')) return;
 
           open(el.src, el.alt);
         });
