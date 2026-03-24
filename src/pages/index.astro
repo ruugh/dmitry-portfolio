@@ -29,6 +29,9 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
         const href = link.getAttribute('href');
         if (!href) continue;
 
+        const p = link.closest('p');
+        if (p) p.classList.add('case-cta');
+
         // Find the nearest previous image in DOM order inside the home content.
         let targetImg = null;
         for (const img of images) {
