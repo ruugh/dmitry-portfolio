@@ -240,6 +240,10 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
           if (!(el instanceof HTMLImageElement)) return;
           if (!el.src) return;
 
+          // On the home page, images should behave like normal links to cases,
+          // not open the lightbox.
+          if (window.location.pathname === '/') return;
+
           // If the image is already wrapped in a link (for example to a case page),
           // let navigation happen instead of hijacking the click for lightbox.
           if (el.closest('a[href]')) return;
