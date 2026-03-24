@@ -86,6 +86,68 @@ type RenderOpts = {
   wideImagesWithCaption?: boolean;
 };
 
+type InternalRouteMap = Record<string, string>;
+
+let _internalRouteMapPromise: Promise<InternalRouteMap> | null = null;
+
+function compactPageId(id: string | undefined | null): string | null {
+  if (!id) return null;
+  const m = String(id).toLowerCase().match(/[0-9a-f]{32}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+  if (!m) return null;
+  return m[0].replace(/-/g, '');
+}
+
+function extractNotionPageIdFromHref(href: string | undefined | null): string | null {
+  if (!href) return null;
+  try {
+    const decoded = decodeURIComponent(href);
+    return compactPageId(decoded);
+  } catch {
+    return compactPageId(href);
+  }
+}
+
+async function getInternalRouteMap(): Promise<InternalRouteMap> {
+  if (_internalRouteMapPromise) return _internalRouteMapPromise;
+  _internalRouteMapPromise = (async () => {
+    const routes: InternalRouteMap = {};
+
+    const rootId = compactPageId(ROOT_PAGE_ID());
+    if (rootId) routes[rootId] = '/';
+
+    const navItems = await getNavItemsFromRoot();
+    for (const item of navItems) {
+      const key = compactPageId(item.id);
+      if (!key) continue;
+      if (item.kind === 'cv') routes[key] = '/cv';
+      else if (item.kind === 'certificates') routes[key] = '/certificates';
+      else routes[key] = `/cases/${item.slug}/`;
+    }
+
+    try {
+      const cases = await getCasesFromDatabase();
+      for (const item of cases) {
+        const key = compactPageId(item.id);
+        if (!key) continue;
+        routes[key] = `/cases/${item.slug}/`;
+      }
+    } catch {
+      // Keep nav-based routes even if DB fetch fails.
+    }
+
+    return routes;
+  })();
+  return _internalRouteMapPromise;
+}
+
+async function resolveHref(href: string | undefined | null): Promise<string | null> {
+  if (!href) return null;
+  const pageId = extractNotionPageIdFromHref(href);
+  if (!pageId) return href;
+  const routes = await getInternalRouteMap();
+  return routes[pageId] || href;
+}
+
 async function renderChildrenHtml(notion: Client, blockId: string, depth: number, opts: RenderOpts): Promise<string> {
   if (depth <= 0) return '';
   const blocks = await listAllChildren(notion, blockId);
@@ -267,11 +329,11 @@ function richTextToPlain(richText: any[] | undefined): string {
   return richText.map((t) => t?.plain_text ?? '').join('');
 }
 
-function renderRichTextToHtml(richText: any[] | undefined): string {
+async function renderRichTextToHtml(richText: any[] | undefined): Promise<string> {
   if (!richText?.length) return '';
 
-  return richText
-    .map((t) => {
+  const parts = await Promise.all(
+    richText.map(async (t) => {
       const text = escapeHtml(t?.plain_text ?? '');
       if (!text) return '';
 
@@ -283,11 +345,13 @@ function renderRichTextToHtml(richText: any[] | undefined): string {
       if (ann.strikethrough) html = `<s>${html}</s>`;
       if (ann.underline) html = `<u>${html}</u>`;
 
-      const href = t?.href || t?.text?.link?.url;
+      const href = await resolveHref(t?.href || t?.text?.link?.url);
       if (href) html = `<a href="${escapeHtml(href)}">${html}</a>`;
       return html;
-    })
-    .join('');
+    }),
+  );
+
+  return parts.join('');
 }
 
 function escapeHtml(s: string) {
@@ -360,32 +424,32 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
 
   switch (t) {
     case 'heading_1':
-      return `<h1>${renderRichTextToHtml(v?.rich_text)}</h1>${childHtml}`;
+      return `<h1>${await renderRichTextToHtml(v?.rich_text)}</h1>${childHtml}`;
     case 'heading_2':
-      return `<h2>${renderRichTextToHtml(v?.rich_text)}</h2>${childHtml}`;
+      return `<h2>${await renderRichTextToHtml(v?.rich_text)}</h2>${childHtml}`;
     case 'heading_3':
-      return `<h3>${renderRichTextToHtml(v?.rich_text)}</h3>${childHtml}`;
+      return `<h3>${await renderRichTextToHtml(v?.rich_text)}</h3>${childHtml}`;
     case 'paragraph': {
-      const html = renderRichTextToHtml(v?.rich_text);
+      const html = await renderRichTextToHtml(v?.rich_text);
       const p = html ? `<p>${html}</p>` : '';
       return `${p}${childHtml}`;
     }
     case 'bulleted_list_item': {
-      const html = renderRichTextToHtml(v?.rich_text);
+      const html = await renderRichTextToHtml(v?.rich_text);
       return `<li>${html}${childHtml ? `<div class="li-children">${childHtml}</div>` : ''}</li>`;
     }
     case 'numbered_list_item': {
-      const html = renderRichTextToHtml(v?.rich_text);
+      const html = await renderRichTextToHtml(v?.rich_text);
       return `<li>${html}${childHtml ? `<div class="li-children">${childHtml}</div>` : ''}</li>`;
     }
     case 'quote':
-      return `<blockquote>${renderRichTextToHtml(v?.rich_text)}</blockquote>${childHtml}`;
+      return `<blockquote>${await renderRichTextToHtml(v?.rich_text)}</blockquote>${childHtml}`;
     case 'callout': {
-      const html = renderRichTextToHtml(v?.rich_text);
+      const html = await renderRichTextToHtml(v?.rich_text);
       return `<div class="callout">${html}${childHtml ? `<div class="callout-children">${childHtml}</div>` : ''}</div>`;
     }
     case 'toggle': {
-      const summary = renderRichTextToHtml(v?.rich_text);
+      const summary = await renderRichTextToHtml(v?.rich_text);
       return `<details class="toggle"><summary>${summary}</summary>${childHtml}</details>`;
     }
     case 'column_list': {
@@ -473,12 +537,16 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
     }
     case 'child_page': {
       const title = escapeHtml(v?.title ?? '');
-      return title ? `<p><a href="/cases">${title}</a></p>` : '';
+      const href = (await getInternalRouteMap())[compactPageId(block.id) || ''] || `/cases/${slugifyTitle(v?.title ?? '')}/`;
+      return title ? `<p><a href="${escapeHtml(href)}">${title}</a></p>` : '';
     }
     case 'child_database':
       return '';
-    case 'link_to_page':
-      return '';
+    case 'link_to_page': {
+      const pageId = compactPageId(v?.page_id || v?.database_id || v?.comment_id);
+      const href = pageId ? (await getInternalRouteMap())[pageId] : null;
+      return href ? `<p><a href="${escapeHtml(href)}">${escapeHtml(href)}</a></p>` : '';
+    }
     default:
       return childHtml || '';
   }
