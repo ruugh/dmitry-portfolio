@@ -50,6 +50,19 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
         }
       }
 
+      // If Notion rendered plain text instead of links for Telegram/CV, force-wrap them.
+      const exactTextNodes = Array.from(root.querySelectorAll('p, li, div, span')).filter((el) => {
+        const txt = (el.textContent || '').trim().toLowerCase();
+        return (txt === 'telegram' || txt === 'телеграм' || txt === 'cv') && !el.querySelector('a[href]');
+      });
+
+      for (const el of exactTextNodes) {
+        const txt = (el.textContent || '').trim();
+        const lower = txt.toLowerCase();
+        const href = lower === 'cv' ? '/cv' : 'https://t.me/Ruugh';
+        el.innerHTML = `<a href="${href}">${txt}</a>`;
+      }
+
       // Then convert "Подробнее о проекте" to strong CTA and attach the same href to the nearest image above.
       for (const link of links) {
         const text = (link.textContent || '').trim().toLowerCase();

@@ -35,7 +35,10 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       /* HOME RESET: be strict about overflow and block defaults */
       :global(article) { overflow-x: hidden; }
       :global(article h1, article h2, article h3) { margin: 22px 0 10px; }
-      :global(body[data-page='home'] article > h1:first-of-type) { margin-bottom: 19px; }
+      :global(body[data-page='home'] #homeContent > .notion-image:first-of-type),
+      :global(body[data-page='home'] #homeContent > figure:first-of-type),
+      :global(body[data-page='home'] #homeContent > p:first-of-type + .notion-image),
+      :global(body[data-page='home'] #homeContent > p:first-of-type + figure) { margin-top: 34px; }
       :global(body[data-page='home'] article h2) { margin-top: 22px; }
       :global(body[data-page='home'] article h3) { margin-top: 22px; }
       :global(body[data-page='home'] article p.case-cta) { margin-bottom: 3.5em; }

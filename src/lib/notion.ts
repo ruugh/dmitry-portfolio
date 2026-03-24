@@ -490,6 +490,13 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
       return `<hr />`;
     case 'code':
       return `<pre><code>${escapeHtml(v?.rich_text?.map((x: any) => x.plain_text).join('') ?? '')}</code></pre>${childHtml}`;
+    case 'file':
+    case 'pdf': {
+      const url = v?.type === 'external' ? v?.external?.url : v?.file?.url;
+      const caption = escapeHtml(richTextToPlain(v?.caption) || (t === 'pdf' ? 'Открыть PDF' : 'Открыть файл'));
+      if (!url) return '';
+      return `<p><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${caption}</a></p>${childHtml}`;
+    }
     case 'image': {
       const url = v?.type === 'external' ? v?.external?.url : v?.file?.url;
       const cap = richTextToPlain(v?.caption);
