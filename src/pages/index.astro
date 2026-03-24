@@ -17,9 +17,40 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
       const root = document.getElementById('homeContent');
       if (!root) return;
 
-      const links = Array.from(root.querySelectorAll('a[href]'));
+      const normalizeTelegramHref = (href, text) => {
+        const raw = (href || '').trim();
+        const label = (text || '').trim().toLowerCase();
+        const fromResolve = raw.match(/tg:\/\/resolve\?domain=([^&]+)/i);
+        if (fromResolve) return `https://t.me/${fromResolve[1].replace(/^@/, '')}`;
+        const fromTmeAt = raw.match(/^https?:\/\/t\.me\/@([^/?#]+)/i);
+        if (fromTmeAt) return `https://t.me/${fromTmeAt[1]}`;
+        if (/^@[^\s/]+$/.test(raw)) return `https://t.me/${raw.replace(/^@/, '')}`;
+        if ((label === 'telegram' || label === 'телеграм' || label === 'tg') && (!raw || raw === '#' || raw === '/')) {
+          return 'https://t.me/Ruugh';
+        }
+        return raw;
+      };
+
+      const links = Array.from(root.querySelectorAll('a'));
       const images = Array.from(root.querySelectorAll('img'));
 
+      // Normalize obvious special links first.
+      for (const link of links) {
+        const text = (link.textContent || '').trim();
+        const lower = text.toLowerCase();
+        const href = link.getAttribute('href') || '';
+
+        if (lower === 'cv') {
+          link.setAttribute('href', '/cv');
+        }
+
+        const tgHref = normalizeTelegramHref(href, text);
+        if (tgHref && tgHref !== href) {
+          link.setAttribute('href', tgHref);
+        }
+      }
+
+      // Then convert "Подробнее о проекте" to strong CTA and attach the same href to the nearest image above.
       for (const link of links) {
         const text = (link.textContent || '').trim().toLowerCase();
         if (text !== 'подробнее о проекте') continue;
@@ -32,7 +63,6 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
         const p = link.closest('p');
         if (p) p.classList.add('case-cta');
 
-        // Find the nearest previous image in DOM order inside the home content.
         let targetImg = null;
         for (const img of images) {
           const pos = img.compareDocumentPosition(link);
