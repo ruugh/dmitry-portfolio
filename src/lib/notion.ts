@@ -42,6 +42,7 @@ export function getNotionClient() {
 }
 
 export const ROOT_PAGE_ID = () => assertEnv('ROOT_PAGE_ID');
+export const CV_PAGE_ID_FALLBACK = () => '2841c5f7-ffdf-80aa-ba7f-ec3570bb4eb6';
 
 export function slugifyTitle(title: string): string {
   const base = tr(title)

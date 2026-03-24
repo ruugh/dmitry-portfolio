@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getNavItemsFromRoot, renderNotionPageToHtml } from '../lib/notion';
+import { CV_PAGE_ID_FALLBACK, getNavItemsFromRoot, renderNotionPageToHtml } from '../lib/notion';
 
 const items = await getNavItemsFromRoot();
 const cv = items.find((x) => x.kind === 'cv');
-const html = cv ? await renderNotionPageToHtml(cv.id) : '<p>CV страница не найдена в Notion.</p>';
+const cvPageId = cv?.id || CV_PAGE_ID_FALLBACK();
+const html = await renderNotionPageToHtml(cvPageId);
 ---
 
 <BaseLayout title="CV — Дмитрий Корчагин">

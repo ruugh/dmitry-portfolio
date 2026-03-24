@@ -19,13 +19,18 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
 
       const normalizeTelegramHref = (href, text) => {
         const raw = (href || '').trim();
-        const label = (text || '').trim().toLowerCase();
+        const label = (text || '').trim();
+        const lower = label.toLowerCase();
         const fromResolve = raw.match(/tg:\/\/resolve\?domain=([^&]+)/i);
         if (fromResolve) return `https://t.me/${fromResolve[1].replace(/^@/, '')}`;
         const fromTmeAt = raw.match(/^https?:\/\/t\.me\/@([^/?#]+)/i);
         if (fromTmeAt) return `https://t.me/${fromTmeAt[1]}`;
+        const fromTme = raw.match(/^https?:\/\/t\.me\/([^/?#]+)/i);
+        if (fromTme) return `https://t.me/${fromTme[1].replace(/^@/, '')}`;
+        const fromAnyText = label.match(/@([a-zA-Z0-9_]+)/);
+        if (fromAnyText) return `https://t.me/${fromAnyText[1]}`;
         if (/^@[^\s/]+$/.test(raw)) return `https://t.me/${raw.replace(/^@/, '')}`;
-        if ((label === 'telegram' || label === 'телеграм' || label === 'tg') && (!raw || raw === '#' || raw === '/')) {
+        if ((lower.includes('telegram') || lower.includes('телеграм') || lower === 'tg') && (!raw || raw === '#' || raw === '/' || !/^https?:/i.test(raw))) {
           return 'https://t.me/Ruugh';
         }
         return raw;
@@ -40,7 +45,7 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
         const lower = text.toLowerCase();
         const href = link.getAttribute('href') || '';
 
-        if (lower === 'cv') {
+        if (lower === 'cv' || lower.startsWith('cv ')) {
           link.setAttribute('href', '/cv');
         }
 
@@ -51,17 +56,24 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
       }
 
       // If Notion rendered plain text instead of links for Telegram/CV, force-wrap them.
-      const exactTextNodes = Array.from(root.querySelectorAll('p, li, div, span')).filter((el) => {
-        const txt = (el.textContent || '').trim().toLowerCase();
-        return (txt === 'telegram' || txt === 'телеграм' || txt === 'cv') && !el.querySelector('a[href]');
-      });
+      const textNodes = Array.from(root.querySelectorAll('p, li, div, span')).filter((el) => !el.querySelector('a[href]'));
 
-      for (const el of exactTextNodes) {
+      for (const el of textNodes) {
         const txt = (el.textContent || '').trim();
         const lower = txt.toLowerCase();
-        const href = lower === 'cv' ? '/cv' : 'https://t.me/Ruugh';
-        el.innerHTML = `<a href="${href}">${txt}</a>`;
+        if (lower === 'cv') {
+          el.innerHTML = `<a href="/cv">${txt}</a>`;
+          continue;
+        }
+        if (lower.includes('telegram') || lower.includes('телеграм') || /@[a-zA-Z0-9_]+/.test(txt)) {
+          const href = normalizeTelegramHref('', txt) || 'https://t.me/Ruugh';
+          el.innerHTML = `<a href="${href}">${txt}</a>`;
+        }
       }
+
+      // Add extra spacing between the portfolio title and the first media block.
+      const firstMedia = root.querySelector('figure, .notion-image');
+      if (firstMedia) firstMedia.classList.add('home-first-media');
 
       // Then convert "Подробнее о проекте" to strong CTA and attach the same href to the nearest image above.
       for (const link of links) {
