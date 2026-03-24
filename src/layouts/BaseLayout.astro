@@ -56,6 +56,9 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         margin: 0 auto;
         cursor: zoom-in;
       }
+      :global(body[data-page='home'] article figure img) {
+        cursor: pointer;
+      }
 
       /* Wide images: fill their container only (no bleed).
          IMPORTANT: target the stable marker (figure.wide) so it works even if wrapper divs change. */
@@ -183,7 +186,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       }
     </style>
   </head>
-  <body>
+  <body data-page={Astro.url.pathname === '/' ? 'home' : 'inner'}>
     <header>
       <div class="wrap">
         <nav>
