@@ -18,6 +18,8 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
       if (!root) return;
 
       const links = Array.from(root.querySelectorAll('a[href]'));
+      const images = Array.from(root.querySelectorAll('img'));
+
       for (const link of links) {
         const text = (link.textContent || '').trim().toLowerCase();
         if (text !== 'подробнее о проекте') continue;
@@ -27,24 +29,25 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
         const href = link.getAttribute('href');
         if (!href) continue;
 
-        const p = link.closest('p');
-        if (!p) continue;
-
-        let cursor = p.previousElementSibling;
-        while (cursor) {
-          const img = cursor.querySelector?.('img');
-          if (img) {
-            if (!img.closest('a[href]')) {
-              const a = document.createElement('a');
-              a.href = href;
-              a.className = 'case-image-link';
-              img.parentNode?.insertBefore(a, img);
-              a.appendChild(img);
-            }
-            break;
-          }
-          cursor = cursor.previousElementSibling;
+        // Find the nearest previous image in DOM order inside the home content.
+        let targetImg = null;
+        for (const img of images) {
+          const pos = img.compareDocumentPosition(link);
+          const isBefore = !!(pos & Node.DOCUMENT_POSITION_FOLLOWING);
+          if (isBefore) targetImg = img;
         }
+
+        if (!targetImg) continue;
+        if (targetImg.closest('a[href]')) continue;
+
+        const wrapper = targetImg.closest('figure, .notion-image, p, div') || targetImg;
+        if (wrapper.closest('a[href]')) continue;
+
+        const a = document.createElement('a');
+        a.href = href;
+        a.className = 'case-image-link';
+        wrapper.parentNode?.insertBefore(a, wrapper);
+        a.appendChild(wrapper);
       }
     })();
   </script>
