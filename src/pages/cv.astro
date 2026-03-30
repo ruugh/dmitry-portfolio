@@ -60,11 +60,9 @@ const html = await renderNotionPageToHtml(cvPageId);
     const phone = phoneMatch ? phoneMatch[0].trim() : null;
     const telegramText = tgHandleMatch ? `@${tgHandleMatch[1]}` : 'Telegram';
     const telegramHref = tgHandleMatch ? `https://t.me/${tgHandleMatch[1]}` : 'https://t.me/Ruugh';
-    const linkedinHref = linkedinUrlMatch ? linkedinUrlMatch[0] : 'https://www.linkedin.com/';
+    const linkedinHref = 'https://www.linkedin.com/in/dmitry-korchagin-b217419b/';
     const linkedinText = linkedinUrlMatch ? linkedinUrlMatch[0] : 'LinkedIn';
-    const siteHref = siteUrlMatch
-      ? (/^https?:\/\//i.test(siteUrlMatch[0]) ? siteUrlMatch[0] : `https://${siteUrlMatch[0]}`)
-      : 'https://dmitrykorchagin.org';
+    const siteHref = 'https://dmitry-portfolio.pages.dev/';
     const siteText = siteUrlMatch ? siteUrlMatch[0].replace(/^https?:\/\//i, '') : 'dmitrykorchagin.org';
 
     const wrapper = document.createElement('div');
