@@ -73,84 +73,96 @@ const html = await renderNotionPageToHtml(cvPageId);
       const urlInText = label.match(/((?:https?:\/\/)?(?:www\.)?[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s]*)?)/i);
       if (urlInText) {
         const candidate = urlInText[1];
-        return /^https?:\/\//i.test(candidate) ? candidate : `https://${candidate.replace(/^www\./i, 'www.')}`;
+        return /^https?:\/\//i.test(candidate) ? candidate : `https://${candidate}`;
       }
       return raw;
     };
 
-    const textNodes = Array.from(root.querySelectorAll('p, li, div, span')).filter((el) => !el.querySelector('a[href]'));
-    for (const el of textNodes) {
-      const txt = (el.textContent || '').trim();
-      const lower = txt.toLowerCase();
-      if (!txt) continue;
+    const makeLink = (href, text) => {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = text;
+      return a;
+    };
 
-      if (lower.includes('linkedin')) {
-        const href = normalizeLinkedInHref('', txt);
-        if (href) el.innerHTML = `<a href="${href}">${txt}</a>`;
-        continue;
-      }
-      if (lower.includes('telegram') || lower.includes('телеграм') || /@[a-zA-Z0-9_]+/.test(txt)) {
-        const href = normalizeTelegramHref('', txt);
-        if (href) el.innerHTML = `<a href="${href}">${txt}</a>`;
-        continue;
-      }
-      if (/dmitrykorchagin\.org|https?:\/\//i.test(txt)) {
-        const href = normalizeSiteHref('', txt);
-        if (href) el.innerHTML = `<a href="${href}">${txt}</a>`;
-      }
-    }
+    const blocks = Array.from(root.querySelectorAll('p, li, div'));
+    let site = null;
+    let telegram = null;
+    let linkedin = null;
+    let targetBlock = null;
+    const duplicateBlocks = [];
 
-    const links = Array.from(root.querySelectorAll('a[href]'));
-    for (const link of links) {
-      const text = (link.textContent || '').trim();
-      const href = link.getAttribute('href') || '';
+    for (const block of blocks) {
+      const text = (block.textContent || '').trim();
+      if (!text) continue;
       const lower = text.toLowerCase();
+      const links = Array.from(block.querySelectorAll('a[href]'));
+      const hrefs = links.map((a) => a.getAttribute('href') || '');
 
-      const tgHref = normalizeTelegramHref(href, text);
-      if (tgHref && tgHref !== href) link.setAttribute('href', tgHref);
+      const hasSite = /dmitrykorchagin\.org|portfolio|website|site/i.test(text) || hrefs.some((h) => /dmitrykorchagin\.org/i.test(h));
+      const hasTelegram = /telegram|телеграм|@ruugh/i.test(text) || hrefs.some((h) => /t\.me|telegram\.me/i.test(h));
+      const hasLinkedIn = /linkedin/i.test(lower) || hrefs.some((h) => /linkedin\.com/i.test(h));
 
-      const liHref = normalizeLinkedInHref(link.getAttribute('href') || '', text);
-      if (liHref && liHref !== (link.getAttribute('href') || '')) link.setAttribute('href', liHref);
+      if (!hasSite && !hasTelegram && !hasLinkedIn) continue;
 
-      const siteHref = normalizeSiteHref(link.getAttribute('href') || '', text);
-      if ((/dmitrykorchagin\.org|portfolio|site|website/i.test(lower) || /dmitrykorchagin\.org/i.test(siteHref)) && siteHref && siteHref !== (link.getAttribute('href') || '')) {
-        link.setAttribute('href', siteHref);
-      }
-    }
-
-    const allParagraphs = Array.from(root.querySelectorAll('p, li, div'));
-    let telegramLink = null;
-    let linkedinLink = null;
-    let siteLink = null;
-    let replaceTarget = null;
-
-    for (const el of allParagraphs) {
-      const localLinks = Array.from(el.querySelectorAll('a[href]'));
-      for (const a of localLinks) {
-        const href = (a.getAttribute('href') || '').toLowerCase();
-        const text = (a.textContent || '').toLowerCase();
-        if (!telegramLink && (href.includes('t.me') || href.includes('telegram.me') || text.includes('telegram') || text.includes('телеграм'))) telegramLink = a.cloneNode(true);
-        if (!linkedinLink && (href.includes('linkedin.com') || text.includes('linkedin'))) linkedinLink = a.cloneNode(true);
-        if (!siteLink && (/dmitrykorchagin\.org/.test(href) || /portfolio|website|site/.test(text))) siteLink = a.cloneNode(true);
-      }
-      if (!replaceTarget && localLinks.length >= 2) {
-        const hasTelegram = localLinks.some((a) => /t\.me|telegram\.me/i.test(a.getAttribute('href') || '') || /telegram|телеграм/i.test(a.textContent || ''));
-        const hasLinkedIn = localLinks.some((a) => /linkedin\.com/i.test(a.getAttribute('href') || '') || /linkedin/i.test(a.textContent || ''));
-        if (hasTelegram || hasLinkedIn) replaceTarget = el;
-      }
-    }
-
-    if (telegramLink || linkedinLink || siteLink) {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'cv-contact-links';
-      if (siteLink) wrapper.appendChild(siteLink);
-      if (telegramLink) wrapper.appendChild(telegramLink);
-      if (linkedinLink) wrapper.appendChild(linkedinLink);
-
-      if (replaceTarget) {
-        replaceTarget.replaceWith(wrapper);
+      if (!targetBlock && ((hasTelegram && hasLinkedIn) || (hasSite && hasTelegram) || (hasSite && hasLinkedIn))) {
+        targetBlock = block;
       } else {
-        root.prepend(wrapper);
+        duplicateBlocks.push(block);
+      }
+
+      for (const a of links) {
+        const href = a.getAttribute('href') || '';
+        const label = (a.textContent || '').trim();
+        if (!site && (/dmitrykorchagin\.org/i.test(href) || /portfolio|website|site/i.test(label.toLowerCase()))) {
+          const normalized = normalizeSiteHref(href, label || text);
+          if (normalized) site = { href: normalized, text: label || text };
+        }
+        if (!telegram && (/t\.me|telegram\.me/i.test(href) || /telegram|телеграм|@ruugh/i.test(label.toLowerCase()))) {
+          const normalized = normalizeTelegramHref(href, label || text);
+          if (normalized) telegram = { href: normalized, text: label || text };
+        }
+        if (!linkedin && (/linkedin\.com/i.test(href) || /linkedin/i.test(label.toLowerCase()))) {
+          const normalized = normalizeLinkedInHref(href, label || text);
+          if (normalized) linkedin = { href: normalized, text: label || text };
+        }
+      }
+
+      if (!site && hasSite) {
+        const normalized = normalizeSiteHref('', text);
+        if (normalized) site = { href: normalized, text };
+      }
+      if (!telegram && hasTelegram) {
+        const normalized = normalizeTelegramHref('', text);
+        if (normalized) telegram = { href: normalized, text };
+      }
+      if (!linkedin && hasLinkedIn) {
+        const normalized = normalizeLinkedInHref('', text);
+        if (normalized) linkedin = { href: normalized, text };
+      }
+    }
+
+    if (!targetBlock && (site || telegram || linkedin)) {
+      targetBlock = blocks.find((block) => {
+        const text = (block.textContent || '').trim();
+        return /dmitrykorchagin\.org|telegram|телеграм|@ruugh|linkedin/i.test(text);
+      }) || null;
+    }
+
+    if (!targetBlock) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'cv-contact-links';
+
+    if (site?.href) wrapper.appendChild(makeLink(site.href, site.text));
+    if (telegram?.href) wrapper.appendChild(makeLink(telegram.href, telegram.text));
+    if (linkedin?.href) wrapper.appendChild(makeLink(linkedin.href, linkedin.text));
+
+    targetBlock.replaceWith(wrapper);
+
+    for (const block of duplicateBlocks) {
+      if (block.isConnected && /dmitrykorchagin\.org|telegram|телеграм|@ruugh|linkedin/i.test((block.textContent || '').trim())) {
+        block.remove();
       }
     }
   })();
