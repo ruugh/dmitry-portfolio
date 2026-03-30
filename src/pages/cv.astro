@@ -16,7 +16,7 @@ const html = await renderNotionPageToHtml(cvPageId);
 </BaseLayout>
 
 <style>
-  :global(.cv-page .cv-contact-links) {
+  :global(.cv-page .cv-content .cv-contacts-row) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -24,7 +24,7 @@ const html = await renderNotionPageToHtml(cvPageId);
     margin: 1rem 0;
   }
 
-  :global(.cv-page .cv-contact-links a) {
+  :global(.cv-page .cv-content .cv-contacts-row a) {
     display: inline-block;
   }
 </style>
@@ -34,134 +34,90 @@ const html = await renderNotionPageToHtml(cvPageId);
     const root = document.querySelector('.cv-page .cv-content');
     if (!(root instanceof HTMLElement)) return;
 
-    const normalizeTelegramHref = (href, text) => {
-      const raw = (href || '').trim();
-      const label = (text || '').trim();
-      const lower = label.toLowerCase();
-      const fromResolve = raw.match(/tg:\/\/resolve\?domain=([^&]+)/i);
-      if (fromResolve) return `https://t.me/${fromResolve[1].replace(/^@/, '')}`;
-      const fromTmeAt = raw.match(/^https?:\/\/t\.me\/@([^/?#]+)/i);
-      if (fromTmeAt) return `https://t.me/${fromTmeAt[1]}`;
-      const fromTme = raw.match(/^https?:\/\/t\.me\/([^/?#]+)/i);
-      if (fromTme) return `https://t.me/${fromTme[1].replace(/^@/, '')}`;
-      const fromAnyText = label.match(/@([a-zA-Z0-9_]+)/);
-      if (fromAnyText) return `https://t.me/${fromAnyText[1]}`;
-      if (/^@[^\s/]+$/.test(raw)) return `https://t.me/${raw.replace(/^@/, '')}`;
-      if ((lower.includes('telegram') || lower.includes('телеграм') || lower === 'tg') && (!raw || raw === '#' || raw === '/' || !/^https?:/i.test(raw))) {
-        return 'https://t.me/Ruugh';
-      }
-      return raw;
-    };
-
-    const normalizeLinkedInHref = (href, text) => {
-      const raw = (href || '').trim();
-      const label = (text || '').trim();
-      const lower = label.toLowerCase();
-      if (/^https?:\/\/(www\.)?linkedin\.com\//i.test(raw)) return raw;
-      const slugMatch = label.match(/linkedin\.com\/in\/([a-zA-Z0-9-_%]+)/i);
-      if (slugMatch) return `https://www.linkedin.com/in/${slugMatch[1]}`;
-      if (lower.includes('linkedin') && (!raw || raw === '#' || raw === '/' || !/^https?:/i.test(raw))) {
-        return 'https://www.linkedin.com/';
-      }
-      return raw;
-    };
-
-    const normalizeSiteHref = (href, text) => {
-      const raw = (href || '').trim();
-      const label = (text || '').trim();
-      if (/^https?:\/\//i.test(raw)) return raw;
-      const urlInText = label.match(/((?:https?:\/\/)?(?:www\.)?[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s]*)?)/i);
-      if (urlInText) {
-        const candidate = urlInText[1];
-        return /^https?:\/\//i.test(candidate) ? candidate : `https://${candidate}`;
-      }
-      return raw;
-    };
-
-    const makeLink = (href, text) => {
-      const a = document.createElement('a');
-      a.href = href;
-      a.textContent = text;
-      return a;
-    };
-
     const blocks = Array.from(root.querySelectorAll('p, li, div'));
-    let site = null;
-    let telegram = null;
-    let linkedin = null;
-    let targetBlock = null;
-    const duplicateBlocks = [];
+    const seen = new Set();
+
+    const classify = (text, href = '') => {
+      const t = (text || '').trim();
+      const h = (href || '').trim();
+      const lower = t.toLowerCase();
+      const hrefLower = h.toLowerCase();
+
+      if (hrefLower.includes('linkedin.com') || lower.includes('linkedin')) {
+        return {
+          kind: 'linkedin',
+          href: hrefLower.includes('linkedin.com') ? h : 'https://www.linkedin.com/',
+          text: t,
+        };
+      }
+
+      if (hrefLower.includes('t.me') || hrefLower.includes('telegram.me') || lower.includes('telegram') || lower.includes('телеграм') || /@[a-zA-Z0-9_]+/.test(t)) {
+        const m = t.match(/@([a-zA-Z0-9_]+)/);
+        const href = hrefLower.includes('t.me') || hrefLower.includes('telegram.me')
+          ? h
+          : m ? `https://t.me/${m[1]}` : 'https://t.me/Ruugh';
+        return { kind: 'telegram', href, text: t };
+      }
+
+      if (hrefLower.includes('dmitrykorchagin.org') || /dmitrykorchagin\.org|portfolio|website|site/i.test(t)) {
+        let href = h;
+        if (!href) {
+          const m = t.match(/((?:https?:\/\/)?(?:www\.)?[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s]*)?)/i);
+          if (m) href = /^https?:\/\//i.test(m[1]) ? m[1] : `https://${m[1]}`;
+        }
+        return { kind: 'site', href: href || 'https://dmitrykorchagin.org', text: t };
+      }
+
+      return null;
+    };
+
+    let contactHost = null;
+    const collected = { site: null, telegram: null, linkedin: null };
 
     for (const block of blocks) {
-      const text = (block.textContent || '').trim();
-      if (!text) continue;
-      const lower = text.toLowerCase();
       const links = Array.from(block.querySelectorAll('a[href]'));
-      const hrefs = links.map((a) => a.getAttribute('href') || '');
-
-      const hasSite = /dmitrykorchagin\.org|portfolio|website|site/i.test(text) || hrefs.some((h) => /dmitrykorchagin\.org/i.test(h));
-      const hasTelegram = /telegram|телеграм|@ruugh/i.test(text) || hrefs.some((h) => /t\.me|telegram\.me/i.test(h));
-      const hasLinkedIn = /linkedin/i.test(lower) || hrefs.some((h) => /linkedin\.com/i.test(h));
-
-      if (!hasSite && !hasTelegram && !hasLinkedIn) continue;
-
-      if (!targetBlock && ((hasTelegram && hasLinkedIn) || (hasSite && hasTelegram) || (hasSite && hasLinkedIn))) {
-        targetBlock = block;
-      } else {
-        duplicateBlocks.push(block);
-      }
+      const blockText = (block.textContent || '').trim();
+      const local = [];
 
       for (const a of links) {
-        const href = a.getAttribute('href') || '';
-        const label = (a.textContent || '').trim();
-        if (!site && (/dmitrykorchagin\.org/i.test(href) || /portfolio|website|site/i.test(label.toLowerCase()))) {
-          const normalized = normalizeSiteHref(href, label || text);
-          if (normalized) site = { href: normalized, text: label || text };
-        }
-        if (!telegram && (/t\.me|telegram\.me/i.test(href) || /telegram|телеграм|@ruugh/i.test(label.toLowerCase()))) {
-          const normalized = normalizeTelegramHref(href, label || text);
-          if (normalized) telegram = { href: normalized, text: label || text };
-        }
-        if (!linkedin && (/linkedin\.com/i.test(href) || /linkedin/i.test(label.toLowerCase()))) {
-          const normalized = normalizeLinkedInHref(href, label || text);
-          if (normalized) linkedin = { href: normalized, text: label || text };
-        }
+        const item = classify(a.textContent || '', a.getAttribute('href') || '');
+        if (item) local.push(item);
       }
 
-      if (!site && hasSite) {
-        const normalized = normalizeSiteHref('', text);
-        if (normalized) site = { href: normalized, text };
+      if (!local.length) {
+        const item = classify(blockText, '');
+        if (item) local.push(item);
       }
-      if (!telegram && hasTelegram) {
-        const normalized = normalizeTelegramHref('', text);
-        if (normalized) telegram = { href: normalized, text };
-      }
-      if (!linkedin && hasLinkedIn) {
-        const normalized = normalizeLinkedInHref('', text);
-        if (normalized) linkedin = { href: normalized, text };
+
+      if (!local.length) continue;
+      if (!contactHost) contactHost = block;
+
+      for (const item of local) {
+        if (!collected[item.kind]) collected[item.kind] = item;
       }
     }
 
-    if (!targetBlock && (site || telegram || linkedin)) {
-      targetBlock = blocks.find((block) => {
-        const text = (block.textContent || '').trim();
-        return /dmitrykorchagin\.org|telegram|телеграм|@ruugh|linkedin/i.test(text);
-      }) || null;
-    }
-
-    if (!targetBlock) return;
+    if (!contactHost) return;
 
     const wrapper = document.createElement('div');
-    wrapper.className = 'cv-contact-links';
+    wrapper.className = 'cv-contacts-row';
 
-    if (site?.href) wrapper.appendChild(makeLink(site.href, site.text));
-    if (telegram?.href) wrapper.appendChild(makeLink(telegram.href, telegram.text));
-    if (linkedin?.href) wrapper.appendChild(makeLink(linkedin.href, linkedin.text));
+    for (const kind of ['site', 'telegram', 'linkedin']) {
+      const item = collected[kind];
+      if (!item || !item.href || seen.has(kind)) continue;
+      seen.add(kind);
+      const a = document.createElement('a');
+      a.href = item.href;
+      a.textContent = item.text;
+      wrapper.appendChild(a);
+    }
 
-    targetBlock.replaceWith(wrapper);
+    contactHost.replaceWith(wrapper);
 
-    for (const block of duplicateBlocks) {
-      if (block.isConnected && /dmitrykorchagin\.org|telegram|телеграм|@ruugh|linkedin/i.test((block.textContent || '').trim())) {
+    for (const block of blocks) {
+      if (!block.isConnected) continue;
+      const text = (block.textContent || '').trim();
+      if (/dmitrykorchagin\.org|linkedin|telegram|телеграм|@ruugh/i.test(text)) {
         block.remove();
       }
     }
