@@ -16,23 +16,51 @@ const html = await renderNotionPageToHtml(cvPageId);
 </BaseLayout>
 
 <style>
-  /* Contact links on CV should stack vertically instead of sitting on one messy line. */
-  :global(.cv-page .cv-content p:has(a[href*="t.me"])) {
+  :global(.cv-page .cv-contact-links) {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.35rem;
+    margin: 1rem 0;
   }
 
-  :global(.cv-page .cv-content p:has(a[href*="linkedin.com"])) {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
-  }
-
-  :global(.cv-page .cv-content p a[href*="t.me"]),
-  :global(.cv-page .cv-content p a[href*="linkedin.com"]) {
+  :global(.cv-page .cv-contact-links a) {
     display: inline-block;
   }
 </style>
+
+<script>
+  (() => {
+    const root = document.querySelector('.cv-page .cv-content');
+    if (!(root instanceof HTMLElement)) return;
+
+    const paragraphs = Array.from(root.querySelectorAll('p'));
+    for (const p of paragraphs) {
+      const links = Array.from(p.querySelectorAll('a[href]'));
+      if (links.length < 2) continue;
+
+      const contactLinks = links.filter((a) => {
+        const href = (a.getAttribute('href') || '').toLowerCase();
+        return href.includes('t.me') || href.includes('telegram.me') || href.includes('linkedin.com');
+      });
+
+      const hasTelegram = contactLinks.some((a) => {
+        const href = (a.getAttribute('href') || '').toLowerCase();
+        return href.includes('t.me') || href.includes('telegram.me');
+      });
+      const hasLinkedIn = contactLinks.some((a) => (a.getAttribute('href') || '').toLowerCase().includes('linkedin.com'));
+
+      if (!hasTelegram || !hasLinkedIn) continue;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'cv-contact-links';
+
+      for (const link of contactLinks) {
+        wrapper.appendChild(link.cloneNode(true));
+      }
+
+      p.replaceWith(wrapper);
+      break;
+    }
+  })();
+</script>
