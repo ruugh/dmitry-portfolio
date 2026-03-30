@@ -9,8 +9,30 @@ const html = await renderNotionPageToHtml(cvPageId);
 ---
 
 <BaseLayout title="CV — Дмитрий Корчагин">
-  <article>
+  <article class="cv-page">
     <h1>CV</h1>
-    <div set:html={html} />
+    <div class="cv-content" set:html={html} />
   </article>
 </BaseLayout>
+
+<style>
+  /* Contact links on CV should stack vertically instead of sitting on one messy line. */
+  :global(.cv-page .cv-content p:has(a[href*="t.me"])) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  :global(.cv-page .cv-content p:has(a[href*="linkedin.com"])) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  :global(.cv-page .cv-content p a[href*="t.me"]),
+  :global(.cv-page .cv-content p a[href*="linkedin.com"]) {
+    display: inline-block;
+  }
+</style>
