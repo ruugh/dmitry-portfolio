@@ -89,6 +89,10 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         border: 1px solid rgba(255,255,255,.08);
         border-radius: 12px;
         padding: 16px;
+        cursor: zoom-in;
+      }
+      :global(article .mermaid svg) {
+        cursor: zoom-in;
       }
       :global(.callout) {
         background: rgba(255,255,255,.02);
@@ -276,6 +280,16 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
           // Close when clicking backdrop or close button or the image itself
           if (target === lb || target === img || target === closeBtn) {
             close();
+            return;
+          }
+
+          const mermaidSvg = target.closest('.mermaid svg');
+          if (mermaidSvg instanceof SVGElement) {
+            const serializer = new XMLSerializer();
+            const svgText = serializer.serializeToString(mermaidSvg);
+            const encoded = encodeURIComponent(svgText);
+            const dataUrl = `data:image/svg+xml;charset=utf-8,${encoded}`;
+            open(dataUrl, 'Mermaid diagram');
             return;
           }
 
