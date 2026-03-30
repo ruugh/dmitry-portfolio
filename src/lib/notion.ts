@@ -489,8 +489,14 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
     }
     case 'divider':
       return `<hr />`;
-    case 'code':
-      return `<pre><code>${escapeHtml(v?.rich_text?.map((x: any) => x.plain_text).join('') ?? '')}</code></pre>${childHtml}`;
+    case 'code': {
+      const codeText = escapeHtml(v?.rich_text?.map((x: any) => x.plain_text).join('') ?? '');
+      const language = String(v?.language || '').toLowerCase();
+      if (language === 'mermaid') {
+        return `<div class="mermaid">${codeText}</div>${childHtml}`;
+      }
+      return `<pre><code>${codeText}</code></pre>${childHtml}`;
+    }
     case 'file':
     case 'pdf': {
       const url = v?.type === 'external' ? v?.external?.url : v?.file?.url;

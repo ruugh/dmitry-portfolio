@@ -82,6 +82,14 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       :global(article figcaption) { margin-top: 8px; font-size: 14px; color: var(--muted); }
       :global(article blockquote) { border-left: 3px solid rgba(255,255,255,.15); margin: 16px 0; padding: 6px 12px; color: var(--muted); }
       :global(article hr) { border:0; border-top: 1px solid rgba(255,255,255,.1); margin: 22px 0; }
+      :global(article .mermaid) {
+        margin: 18px 0;
+        overflow-x: auto;
+        background: rgba(255,255,255,.02);
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 12px;
+        padding: 16px;
+      }
       :global(.callout) {
         background: rgba(255,255,255,.02);
         border: 1px solid rgba(255,255,255,.10);
@@ -209,6 +217,34 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       <button class="lightbox__close" type="button" id="lightboxClose">Закрыть (Esc)</button>
       <img class="lightbox__img" id="lightboxImg" alt="" />
     </div>
+
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'dark',
+        securityLevel: 'loose',
+      });
+
+      const renderMermaid = async () => {
+        const blocks = Array.from(document.querySelectorAll('.mermaid'));
+        if (!blocks.length) return;
+        try {
+          await mermaid.run({ nodes: blocks });
+        } catch (err) {
+          console.error('Mermaid render failed', err);
+        }
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          renderMermaid();
+        }, { once: true });
+      } else {
+        renderMermaid();
+      }
+    </script>
 
     <script>
       (() => {
