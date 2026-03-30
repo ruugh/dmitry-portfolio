@@ -16,16 +16,12 @@ const html = await renderNotionPageToHtml(cvPageId);
 </BaseLayout>
 
 <style>
-  :global(.cv-page .cv-content .cv-contacts-row) {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
-    margin: 1rem 0;
+  :global(.cv-page .cv-contact-block) {
+    margin: 1rem 0 1.25rem;
   }
 
-  :global(.cv-page .cv-content .cv-contacts-row a) {
-    display: inline-block;
+  :global(.cv-page .cv-contact-block p) {
+    margin: 0.2rem 0;
   }
 </style>
 
@@ -34,91 +30,62 @@ const html = await renderNotionPageToHtml(cvPageId);
     const root = document.querySelector('.cv-page .cv-content');
     if (!(root instanceof HTMLElement)) return;
 
-    const blocks = Array.from(root.querySelectorAll('p, li, div'));
-    const seen = new Set();
+    const nodes = Array.from(root.querySelectorAll('p, li, div'));
+    let contactNode = null;
 
-    const classify = (text, href = '') => {
-      const t = (text || '').trim();
-      const h = (href || '').trim();
-      const lower = t.toLowerCase();
-      const hrefLower = h.toLowerCase();
-
-      if (hrefLower.includes('linkedin.com') || lower.includes('linkedin')) {
-        return {
-          kind: 'linkedin',
-          href: hrefLower.includes('linkedin.com') ? h : 'https://www.linkedin.com/',
-          text: t,
-        };
-      }
-
-      if (hrefLower.includes('t.me') || hrefLower.includes('telegram.me') || lower.includes('telegram') || lower.includes('телеграм') || /@[a-zA-Z0-9_]+/.test(t)) {
-        const m = t.match(/@([a-zA-Z0-9_]+)/);
-        const href = hrefLower.includes('t.me') || hrefLower.includes('telegram.me')
-          ? h
-          : m ? `https://t.me/${m[1]}` : 'https://t.me/Ruugh';
-        return { kind: 'telegram', href, text: t };
-      }
-
-      if (hrefLower.includes('dmitrykorchagin.org') || /dmitrykorchagin\.org|portfolio|website|site/i.test(t)) {
-        let href = h;
-        if (!href) {
-          const m = t.match(/((?:https?:\/\/)?(?:www\.)?[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s]*)?)/i);
-          if (m) href = /^https?:\/\//i.test(m[1]) ? m[1] : `https://${m[1]}`;
-        }
-        return { kind: 'site', href: href || 'https://dmitrykorchagin.org', text: t };
-      }
-
-      return null;
-    };
-
-    let contactHost = null;
-    const collected = { site: null, telegram: null, linkedin: null };
-
-    for (const block of blocks) {
-      const links = Array.from(block.querySelectorAll('a[href]'));
-      const blockText = (block.textContent || '').trim();
-      const local = [];
-
-      for (const a of links) {
-        const item = classify(a.textContent || '', a.getAttribute('href') || '');
-        if (item) local.push(item);
-      }
-
-      if (!local.length) {
-        const item = classify(blockText, '');
-        if (item) local.push(item);
-      }
-
-      if (!local.length) continue;
-      if (!contactHost) contactHost = block;
-
-      for (const item of local) {
-        if (!collected[item.kind]) collected[item.kind] = item;
+    for (const node of nodes) {
+      const text = (node.textContent || '').trim();
+      if (!text) continue;
+      if (/email|mail|почта/i.test(text) && /telegram|телеграм|linkedin|portfolio|site|dmitrykorchagin\.org/i.test(text)) {
+        contactNode = node;
+        break;
       }
     }
 
-    if (!contactHost) return;
+    if (!contactNode) {
+      contactNode = nodes.find((node) => /telegram|телеграм|linkedin|portfolio|site|dmitrykorchagin\.org/i.test((node.textContent || '').trim())) || null;
+    }
+
+    if (!contactNode) return;
+
+    const text = (contactNode.textContent || '').trim();
+
+    const emailMatch = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+    const phoneMatch = text.match(/\+?\d[\d\s()\-]{8,}\d/);
+    const tgHandleMatch = text.match(/@([a-zA-Z0-9_]+)/);
+    const linkedinUrlMatch = text.match(/https?:\/\/(?:www\.)?linkedin\.com\/[^\s]+/i);
+    const siteUrlMatch = text.match(/https?:\/\/(?:www\.)?dmitrykorchagin\.org[^\s]*/i) || text.match(/(?:www\.)?dmitrykorchagin\.org[^\s]*/i);
+
+    const email = emailMatch ? emailMatch[0] : null;
+    const phone = phoneMatch ? phoneMatch[0].trim() : null;
+    const telegramText = tgHandleMatch ? `@${tgHandleMatch[1]}` : 'Telegram';
+    const telegramHref = tgHandleMatch ? `https://t.me/${tgHandleMatch[1]}` : 'https://t.me/Ruugh';
+    const linkedinHref = linkedinUrlMatch ? linkedinUrlMatch[0] : 'https://www.linkedin.com/';
+    const linkedinText = linkedinUrlMatch ? linkedinUrlMatch[0] : 'LinkedIn';
+    const siteHref = siteUrlMatch
+      ? (/^https?:\/\//i.test(siteUrlMatch[0]) ? siteUrlMatch[0] : `https://${siteUrlMatch[0]}`)
+      : 'https://dmitrykorchagin.org';
+    const siteText = siteUrlMatch ? siteUrlMatch[0].replace(/^https?:\/\//i, '') : 'dmitrykorchagin.org';
 
     const wrapper = document.createElement('div');
-    wrapper.className = 'cv-contacts-row';
+    wrapper.className = 'cv-contact-block';
 
-    for (const kind of ['site', 'telegram', 'linkedin']) {
-      const item = collected[kind];
-      if (!item || !item.href || seen.has(kind)) continue;
-      seen.add(kind);
-      const a = document.createElement('a');
-      a.href = item.href;
-      a.textContent = item.text;
-      wrapper.appendChild(a);
-    }
+    const lines = [];
+    if (email) lines.push(`<p>Email: ${email}</p>`);
+    if (phone) lines.push(`<p>Телефон: ${phone}</p>`);
+    lines.push(`<p>Telegram: <a href="${telegramHref}">${telegramText}</a></p>`);
+    lines.push(`<p>LinkedIn: <a href="${linkedinHref}">${linkedinText}</a></p>`);
+    lines.push(`<p>Портфолио: <a href="${siteHref}">${siteText}</a></p>`);
 
-    contactHost.replaceWith(wrapper);
+    wrapper.innerHTML = lines.join('');
+    contactNode.replaceWith(wrapper);
 
-    for (const block of blocks) {
-      if (!block.isConnected) continue;
-      const text = (block.textContent || '').trim();
-      if (/dmitrykorchagin\.org|linkedin|telegram|телеграм|@ruugh/i.test(text)) {
-        block.remove();
+    for (const node of nodes) {
+      if (!node.isConnected || node === contactNode) continue;
+      const t = (node.textContent || '').trim();
+      if (!t) continue;
+      if (/telegram|телеграм|linkedin|portfolio|site|dmitrykorchagin\.org/i.test(t) && !/email|mail|почта|телефон|phone/i.test(t)) {
+        node.remove();
       }
     }
   })();
