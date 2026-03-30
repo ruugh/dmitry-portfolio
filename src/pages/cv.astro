@@ -34,33 +34,126 @@ const html = await renderNotionPageToHtml(cvPageId);
     const root = document.querySelector('.cv-page .cv-content');
     if (!(root instanceof HTMLElement)) return;
 
-    const paragraphs = Array.from(root.querySelectorAll('p'));
-    for (const p of paragraphs) {
-      const links = Array.from(p.querySelectorAll('a[href]'));
-      if (links.length < 2) continue;
+    const normalizeTelegramHref = (href, text) => {
+      const raw = (href || '').trim();
+      const label = (text || '').trim();
+      const lower = label.toLowerCase();
+      const fromResolve = raw.match(/tg:\/\/resolve\?domain=([^&]+)/i);
+      if (fromResolve) return `https://t.me/${fromResolve[1].replace(/^@/, '')}`;
+      const fromTmeAt = raw.match(/^https?:\/\/t\.me\/@([^/?#]+)/i);
+      if (fromTmeAt) return `https://t.me/${fromTmeAt[1]}`;
+      const fromTme = raw.match(/^https?:\/\/t\.me\/([^/?#]+)/i);
+      if (fromTme) return `https://t.me/${fromTme[1].replace(/^@/, '')}`;
+      const fromAnyText = label.match(/@([a-zA-Z0-9_]+)/);
+      if (fromAnyText) return `https://t.me/${fromAnyText[1]}`;
+      if (/^@[^
+\s/]+$/.test(raw)) return `https://t.me/${raw.replace(/^@/, '')}`;
+      if ((lower.includes('telegram') || lower.includes('телеграм') || lower === 'tg') && (!raw || raw === '#' || raw === '/' || !/^https?:/i.test(raw))) {
+        return 'https://t.me/Ruugh';
+      }
+      return raw;
+    };
 
-      const contactLinks = links.filter((a) => {
+    const normalizeLinkedInHref = (href, text) => {
+      const raw = (href || '').trim();
+      const label = (text || '').trim();
+      const lower = label.toLowerCase();
+      if (/^https?:\/\/(www\.)?linkedin\.com\//i.test(raw)) return raw;
+      const slugMatch = label.match(/linkedin\.com\/in\/([a-zA-Z0-9-_%]+)/i);
+      if (slugMatch) return `https://www.linkedin.com/in/${slugMatch[1]}`;
+      if (lower.includes('linkedin') && (!raw || raw === '#' || raw === '/' || !/^https?:/i.test(raw))) {
+        return 'https://www.linkedin.com/';
+      }
+      return raw;
+    };
+
+    const normalizeSiteHref = (href, text) => {
+      const raw = (href || '').trim();
+      const label = (text || '').trim();
+      if (/^https?:\/\//i.test(raw)) return raw;
+      const urlInText = label.match(/((?:https?:\/\/)?(?:www\.)?[a-z0-9.-]+\.[a-z]{2,}(?:\/[^
+\s]*)?)/i);
+      if (urlInText) {
+        const candidate = urlInText[1];
+        return /^https?:\/\//i.test(candidate) ? candidate : `https://${candidate.replace(/^www\./i, 'www.')}`;
+      }
+      return raw;
+    };
+
+    const textNodes = Array.from(root.querySelectorAll('p, li, div, span')).filter((el) => !el.querySelector('a[href]'));
+    for (const el of textNodes) {
+      const txt = (el.textContent || '').trim();
+      const lower = txt.toLowerCase();
+      if (!txt) continue;
+
+      if (lower.includes('linkedin')) {
+        const href = normalizeLinkedInHref('', txt);
+        if (href) el.innerHTML = `<a href="${href}">${txt}</a>`;
+        continue;
+      }
+      if (lower.includes('telegram') || lower.includes('телеграм') || /@[a-zA-Z0-9_]+/.test(txt)) {
+        const href = normalizeTelegramHref('', txt);
+        if (href) el.innerHTML = `<a href="${href}">${txt}</a>`;
+        continue;
+      }
+      if (/dmitrykorchagin\.org|https?:\/\//i.test(txt)) {
+        const href = normalizeSiteHref('', txt);
+        if (href) el.innerHTML = `<a href="${href}">${txt}</a>`;
+      }
+    }
+
+    const links = Array.from(root.querySelectorAll('a[href]'));
+    for (const link of links) {
+      const text = (link.textContent || '').trim();
+      const href = link.getAttribute('href') || '';
+      const lower = text.toLowerCase();
+
+      const tgHref = normalizeTelegramHref(href, text);
+      if (tgHref && tgHref !== href) link.setAttribute('href', tgHref);
+
+      const liHref = normalizeLinkedInHref(link.getAttribute('href') || '', text);
+      if (liHref && liHref !== (link.getAttribute('href') || '')) link.setAttribute('href', liHref);
+
+      const siteHref = normalizeSiteHref(link.getAttribute('href') || '', text);
+      if ((/dmitrykorchagin\.org|portfolio|site|website/i.test(lower) || /dmitrykorchagin\.org/i.test(siteHref)) && siteHref && siteHref !== (link.getAttribute('href') || '')) {
+        link.setAttribute('href', siteHref);
+      }
+    }
+
+    const allParagraphs = Array.from(root.querySelectorAll('p, li, div'));
+    let telegramLink = null;
+    let linkedinLink = null;
+    let siteLink = null;
+    let replaceTarget = null;
+
+    for (const el of allParagraphs) {
+      const localLinks = Array.from(el.querySelectorAll('a[href]'));
+      for (const a of localLinks) {
         const href = (a.getAttribute('href') || '').toLowerCase();
-        return href.includes('t.me') || href.includes('telegram.me') || href.includes('linkedin.com');
-      });
+        const text = (a.textContent || '').toLowerCase();
+        if (!telegramLink && (href.includes('t.me') || href.includes('telegram.me') || text.includes('telegram') || text.includes('телеграм'))) telegramLink = a.cloneNode(true);
+        if (!linkedinLink && (href.includes('linkedin.com') || text.includes('linkedin'))) linkedinLink = a.cloneNode(true);
+        if (!siteLink && (/dmitrykorchagin\.org/.test(href) || /portfolio|website|site/.test(text))) siteLink = a.cloneNode(true);
+      }
+      if (!replaceTarget && localLinks.length >= 2) {
+        const hasTelegram = localLinks.some((a) => /t\.me|telegram\.me/i.test(a.getAttribute('href') || '') || /telegram|телеграм/i.test(a.textContent || ''));
+        const hasLinkedIn = localLinks.some((a) => /linkedin\.com/i.test(a.getAttribute('href') || '') || /linkedin/i.test(a.textContent || ''));
+        if (hasTelegram || hasLinkedIn) replaceTarget = el;
+      }
+    }
 
-      const hasTelegram = contactLinks.some((a) => {
-        const href = (a.getAttribute('href') || '').toLowerCase();
-        return href.includes('t.me') || href.includes('telegram.me');
-      });
-      const hasLinkedIn = contactLinks.some((a) => (a.getAttribute('href') || '').toLowerCase().includes('linkedin.com'));
-
-      if (!hasTelegram || !hasLinkedIn) continue;
-
+    if (telegramLink || linkedinLink || siteLink) {
       const wrapper = document.createElement('div');
       wrapper.className = 'cv-contact-links';
+      if (siteLink) wrapper.appendChild(siteLink);
+      if (telegramLink) wrapper.appendChild(telegramLink);
+      if (linkedinLink) wrapper.appendChild(linkedinLink);
 
-      for (const link of contactLinks) {
-        wrapper.appendChild(link.cloneNode(true));
+      if (replaceTarget) {
+        replaceTarget.replaceWith(wrapper);
+      } else {
+        root.prepend(wrapper);
       }
-
-      p.replaceWith(wrapper);
-      break;
     }
   })();
 </script>
