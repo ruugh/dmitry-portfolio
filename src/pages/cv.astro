@@ -71,11 +71,11 @@ const html = await renderNotionPageToHtml(cvPageId);
     wrapper.className = 'cv-contact-block';
 
     const lines = [];
-    if (email) lines.push(`<p>Email: ${email}</p>`);
-    if (phone) lines.push(`<p>Телефон: ${phone}</p>`);
-    lines.push(`<p>Telegram: <a href="${telegramHref}">${telegramText}</a></p>`);
-    lines.push(`<p>LinkedIn: <a href="${linkedinHref}">${linkedinText}</a></p>`);
-    lines.push(`<p>Портфолио: <a href="${siteHref}">${siteText}</a></p>`);
+    if (email) lines.push(`<p><strong>Email:</strong> ${email}</p>`);
+    if (phone) lines.push(`<p><strong>Телефон:</strong> ${phone}</p>`);
+    lines.push(`<p><strong>Telegram:</strong> <a href="${telegramHref}">${telegramText}</a></p>`);
+    lines.push(`<p><strong>LinkedIn:</strong> <a href="${linkedinHref}">${linkedinText}</a></p>`);
+    lines.push(`<p><strong>Портфолио:</strong> <a href="${siteHref}">${siteText}</a></p>`);
 
     wrapper.innerHTML = lines.join('');
     contactNode.replaceWith(wrapper);
