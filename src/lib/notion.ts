@@ -610,5 +610,14 @@ async function renderBlocksToHtml(notion: Client, blocks: any[], depth: number, 
 export async function renderNotionPageToHtml(pageId: string, opts: RenderOpts = {}): Promise<string> {
   const notion = getNotionClient();
   const blocks = await listAllChildren(notion, pageId);
-  return renderBlocksToHtml(notion, blocks as any[], 6, opts);
+  let html = await renderBlocksToHtml(notion, blocks as any[], 6, opts);
+
+  // Notion sometimes gives us a plain heading + table for Jobs To Be Done instead of a real toggle.
+  // Normalize that specific pattern into a toggle on the site.
+  html = html.replace(
+    /<h3>Jobs To Be Done<\/h3>\s*(<div class="table-wrap">[\s\S]*?<\/div>)/i,
+    '<details class="toggle"><summary>Jobs To Be Done</summary><div class="toggle-children">$1</div></details>',
+  );
+
+  return html;
 }
