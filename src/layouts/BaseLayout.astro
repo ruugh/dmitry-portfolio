@@ -120,8 +120,10 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       :global(.column + .column) {
         border-left: none;
       }
-      :global(details.toggle) { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,.03); }
+      :global(details.toggle) { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,.03); margin: 16px 0; }
       :global(details.toggle > summary) { cursor: pointer; }
+      :global(details.toggle .toggle-children) { margin-top: 10px; padding-left: 14px; border-left: 1px solid rgba(255,255,255,.08); }
+      :global(details.toggle .toggle-children > :first-child) { margin-top: 0; }
 
       :global(.table-wrap) { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 16px 0; }
 

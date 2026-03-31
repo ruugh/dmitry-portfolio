@@ -451,7 +451,7 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
     }
     case 'toggle': {
       const summary = await renderRichTextToHtml(v?.rich_text);
-      return `<details class="toggle"><summary>${summary}</summary>${childHtml}</details>`;
+      return `<details class="toggle"><summary>${summary}</summary><div class="toggle-children">${childHtml}</div></details>`;
     }
     case 'column_list': {
       // children are "column" blocks
