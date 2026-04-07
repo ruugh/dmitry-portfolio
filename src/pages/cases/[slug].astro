@@ -5,7 +5,7 @@ import { getCasesFromDatabase, renderNotionPageToHtml } from '../../lib/notion';
 export async function getStaticPaths() {
   // Preview builds on Cloudflare Pages sometimes run without Notion env.
   // In that mode we skip generating case pages (UI experiments still build).
-  if (process.env.ALLOW_MISSING_NOTION_ENV === '1' && !process.env.NOTION_TOKEN) {
+  if (import.meta.env.ALLOW_MISSING_NOTION_ENV === '1' && !import.meta.env.NOTION_TOKEN) {
     return [];
   }
 
