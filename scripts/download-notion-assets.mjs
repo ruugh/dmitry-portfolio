@@ -10,11 +10,20 @@ function assertEnv(name) {
   return v
 }
 
-const NOTION_TOKEN = assertEnv('NOTION_TOKEN')
-const ROOT_PAGE_ID = assertEnv('ROOT_PAGE_ID')
-const CASES_DATABASE_ID = assertEnv('CASES_DATABASE_ID')
+const NOTION_TOKEN = process.env.NOTION_TOKEN
+const ROOT_PAGE_ID = process.env.ROOT_PAGE_ID
+const CASES_DATABASE_ID = process.env.CASES_DATABASE_ID
 
-const notion = new Client({ auth: NOTION_TOKEN })
+// Preview/experimental deploys in Cloudflare Pages sometimes do not receive env vars.
+// Allow the build to proceed without pre-downloading assets (the site will fall back to remote URLs).
+const ALLOW_MISSING_ENV = process.env.ALLOW_MISSING_NOTION_ENV === '1'
+
+if ((!NOTION_TOKEN || !ROOT_PAGE_ID || !CASES_DATABASE_ID) && ALLOW_MISSING_ENV) {
+  console.warn('[notion-assets] missing NOTION_TOKEN/ROOT_PAGE_ID/CASES_DATABASE_ID; skipping asset download (ALLOW_MISSING_NOTION_ENV=1)')
+  process.exit(0)
+}
+
+const notion = new Client({ auth: assertEnv('NOTION_TOKEN') })
 
 async function ensureDir(p) {
   await fs.mkdir(p, { recursive: true })
