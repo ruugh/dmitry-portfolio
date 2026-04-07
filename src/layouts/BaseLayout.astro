@@ -23,6 +23,34 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       .wrap { max-width: 760px; margin: 0 auto; padding: 16px 20px; }
       nav { display:flex; gap:14px; align-items:center; }
       nav a { color: var(--fg); opacity: .9; }
+
+      /* Header layout */
+      .nav-row { display:flex; align-items:center; justify-content: space-between; gap: 16px; }
+      .brand { display:flex; align-items:center; gap: 10px; text-decoration: none !important; }
+      .brand:hover { opacity: .95; }
+      .brand__avatar { width: 32px; height: 32px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); flex: 0 0 auto; }
+      .brand__text { display:flex; flex-direction: column; line-height: 1.1; }
+      .brand__name { font-weight: 700; font-size: 14px; }
+      .brand__sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+      .nav-links { display:flex; align-items:center; gap:14px; }
+      .nav-cta { display:flex; align-items:center; gap:10px; }
+      .btn { display:inline-flex; align-items:center; justify-content:center; padding: 8px 10px; border-radius: 10px; font-size: 13px; line-height: 1; text-decoration: none !important; border: 1px solid rgba(255,255,255,.18); background: transparent; }
+      .btn:hover { border-color: rgba(255,255,255,.28); }
+      .btn--primary { background: rgba(125,211,252,.18); border-color: rgba(125,211,252,.45); }
+      .btn--primary:hover { background: rgba(125,211,252,.24); }
+
+      .burger { display:none; align-items:center; justify-content:center; width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.03); cursor: pointer; }
+      .burger:hover { border-color: rgba(255,255,255,.22); }
+      .mobile-menu { display:none; border-top: 1px solid rgba(255,255,255,.08); padding-top: 12px; margin-top: 12px; }
+      .mobile-menu a { display:block; padding: 10px 0; text-decoration: none !important; }
+      .mobile-menu .mobile-cta { display:flex; gap:10px; padding-top: 10px; }
+
+      @media (max-width: 700px) {
+        .nav-links, .nav-cta { display:none; }
+        .burger { display:inline-flex; }
+        .mobile-menu[data-open='true'] { display:block; }
+      }
       main { padding: 28px 0 64px; }
       .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 14px; }
       /* Home now renders purely from Notion content (see src/pages/index.astro) */
@@ -234,11 +262,38 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
   <body data-page={Astro.url.pathname === '/' ? 'home' : 'inner'}>
     <header>
       <div class="wrap">
-        <nav>
+        <div class="nav-row">
+          <a class="brand" href="/" aria-label="На главную">
+            <span class="brand__avatar" aria-hidden="true"></span>
+            <span class="brand__text">
+              <span class="brand__name">Дмитрий Корчагин</span>
+              <span class="brand__sub">Открыт к предложениям</span>
+            </span>
+          </a>
+
+          <nav class="nav-links" aria-label="Навигация">
+            <a href="/">Главная</a>
+            <a href="/cases">Кейсы</a>
+            <a href="/cv">CV</a>
+          </nav>
+
+          <div class="nav-cta" aria-label="Быстрые действия">
+            <a class="btn" href="/cv">Скачать CV</a>
+            <a class="btn btn--primary" href="https://t.me/ruugh" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+          </div>
+
+          <button class="burger" type="button" aria-label="Меню" aria-expanded="false" id="burgerBtn">☰</button>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu" data-open="false">
           <a href="/">Главная</a>
           <a href="/cases">Кейсы</a>
           <a href="/cv">CV</a>
-        </nav>
+          <div class="mobile-cta">
+            <a class="btn" href="/cv">Скачать CV</a>
+            <a class="btn btn--primary" href="https://t.me/ruugh" target="_blank" rel="noopener noreferrer">Telegram</a>
+          </div>
+        </div>
       </div>
     </header>
     <main>
@@ -251,6 +306,30 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       <button class="lightbox__close" type="button" id="lightboxClose">Закрыть (Esc)</button>
       <img class="lightbox__img" id="lightboxImg" alt="" />
     </div>
+
+    <script>
+      (() => {
+        const btn = document.getElementById('burgerBtn');
+        const menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
+
+        const setOpen = (open) => {
+          menu.dataset.open = open ? 'true' : 'false';
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        };
+
+        btn.addEventListener('click', () => {
+          const isOpen = menu.dataset.open === 'true';
+          setOpen(!isOpen);
+        });
+
+        // Close on navigation
+        menu.addEventListener('click', (e) => {
+          const a = e.target?.closest?.('a[href]');
+          if (a) setOpen(false);
+        });
+      })();
+    </script>
 
     <script type="module">
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
