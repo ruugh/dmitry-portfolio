@@ -82,12 +82,23 @@ const html = await renderNotionPageToHtml(cvPageId);
     wrapper.innerHTML = lines.join('');
     contactNode.replaceWith(wrapper);
 
-    for (const node of nodes) {
-      if (!node.isConnected || node === contactNode) continue;
+    const cleanupNodes = Array.from(root.querySelectorAll('p, li, div, a'));
+    for (const node of cleanupNodes) {
+      if (!node.isConnected || node === contactNode || wrapper.contains(node)) continue;
       const t = (node.textContent || '').trim();
       if (!t) continue;
-      if (/telegram|телеграм|linkedin|portfolio|site|dmitrykorchagin\.org/i.test(t) && !/email|mail|почта|телефон|phone/i.test(t)) {
-        node.remove();
+
+      const isStandaloneCvLabel = t === 'CV';
+      const isCvSelfLink = node instanceof HTMLAnchorElement && node.getAttribute('href') === '/cv';
+      const isContactDuplicate = /telegram|телеграм|linkedin|portfolio|site|dmitrykorchagin\.org/i.test(t) && !/email|mail|почта|телефон|phone/i.test(t);
+
+      if (isStandaloneCvLabel || isCvSelfLink || isContactDuplicate) {
+        const container = node.closest('p, li, div') || node;
+        if (container instanceof HTMLElement && container !== wrapper && !wrapper.contains(container)) {
+          container.remove();
+        } else {
+          node.remove();
+        }
       }
     }
   })();
