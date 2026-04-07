@@ -5,7 +5,8 @@ import { CV_PAGE_ID_FALLBACK, getNavItemsFromRoot, renderNotionPageToHtml } from
 const items = await getNavItemsFromRoot();
 const cv = items.find((x) => x.kind === 'cv');
 const cvPageId = cv?.id || CV_PAGE_ID_FALLBACK();
-const html = await renderNotionPageToHtml(cvPageId);
+let html = await renderNotionPageToHtml(cvPageId);
+html = html.replace(/<p>\s*(?:<a[^>]*href="\/cv"[^>]*>)?CV(?:<\/a>)?\s*<\/p>/gi, '');
 ---
 
 <BaseLayout title="CV — Дмитрий Корчагин">
@@ -22,10 +23,6 @@ const html = await renderNotionPageToHtml(cvPageId);
 
   :global(.cv-page .cv-contact-block p) {
     margin: 0.2rem 0;
-  }
-
-  :global(.cv-page .cv-content a[href="/cv"]) {
-    display: none;
   }
 </style>
 
