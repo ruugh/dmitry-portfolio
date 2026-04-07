@@ -32,8 +32,11 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       .card .title { display:block; font-weight: 700; }
       .muted { color: var(--muted); }
 
-      /* HOME RESET: be strict about overflow and block defaults */
+      /* HOME RESET: keep the page stable, but allow intentional full-bleed on home */
       :global(article) { overflow-x: hidden; }
+      :global(body[data-page='home'] article) { overflow-x: visible; }
+      :global(body[data-page='home'] main) { overflow-x: hidden; }
+      :global(body[data-page='home'] .wrap) { overflow-x: visible; }
       :global(article h1, article h2, article h3) { margin: 22px 0 10px; }
       :global(body[data-page='home'] #homeContent .home-first-media) { margin-top: 34px; }
       :global(body[data-page='home'] article h2) { margin-top: 22px; }
@@ -68,21 +71,19 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
          We do it by letting the figure "bleed" out of the 760px wrap while staying centered. */
       :global(body[data-page='home'] #homeContent > figure),
       :global(body[data-page='home'] #homeContent > .notion-image) {
+        /* Let these 4 Notion images break out of the 760px wrap but stay centered in the viewport */
         width: min(1000px, calc(100vw - 40px));
-        /* bleed out of the 760px wrap while staying centered */
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
+        margin-left: calc(50% - min(500px, calc(50vw - 20px)));
+        margin-right: calc(50% - min(500px, calc(50vw - 20px)));
         margin-top: 18px;
         margin-bottom: 18px;
-        margin-left: 0;
-        margin-right: 0;
       }
 
       :global(body[data-page='home'] #homeContent > figure img),
       :global(body[data-page='home'] #homeContent > .notion-image figure img) {
-        max-width: 100% !important;
         width: 100% !important;
+        max-width: 100% !important;
+        max-height: none;
         margin: 0;
       }
 
