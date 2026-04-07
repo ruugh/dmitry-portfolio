@@ -69,10 +69,11 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       :global(body[data-page='home'] #homeContent > figure),
       :global(body[data-page='home'] #homeContent > .notion-image) {
         width: min(1000px, calc(100vw - 40px));
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-        margin: 18px 0;
+        /* center relative to viewport (not the 760px wrap) */
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        margin-top: 18px;
+        margin-bottom: 18px;
       }
 
       :global(body[data-page='home'] #homeContent > figure img),
