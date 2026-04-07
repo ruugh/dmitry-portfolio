@@ -64,6 +64,12 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         cursor: pointer;
       }
 
+      /* Home portfolio images: allow wider cards without widening the text column */
+      :global(body[data-page='home'] #homeContent > figure img),
+      :global(body[data-page='home'] #homeContent > .notion-image figure img) {
+        max-width: min(100%, 1000px);
+      }
+
       /* Wide images: fill their container only (no bleed).
          IMPORTANT: target the stable marker (figure.wide) so it works even if wrapper divs change. */
       :global(article figure.wide) { margin: 18px 0; padding: 0; }
