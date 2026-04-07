@@ -45,9 +45,6 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
         const lower = text.toLowerCase();
         const href = link.getAttribute('href') || '';
 
-        if (lower === 'cv' || lower.startsWith('cv ')) {
-          link.setAttribute('href', '/cv');
-        }
 
         const tgHref = normalizeTelegramHref(href, text);
         if (tgHref && tgHref !== href) {
@@ -55,16 +52,12 @@ const homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCa
         }
       }
 
-      // If Notion rendered plain text instead of links for Telegram/CV, force-wrap them.
+      // If Notion rendered plain text instead of links for Telegram, force-wrap it.
       const textNodes = Array.from(root.querySelectorAll('p, li, div, span')).filter((el) => !el.querySelector('a[href]'));
 
       for (const el of textNodes) {
         const txt = (el.textContent || '').trim();
         const lower = txt.toLowerCase();
-        if (lower === 'cv') {
-          el.innerHTML = `<a href="/cv">${txt}</a>`;
-          continue;
-        }
         if (lower.includes('telegram') || lower.includes('телеграм') || /@[a-zA-Z0-9_]+/.test(txt)) {
           const href = normalizeTelegramHref('', txt) || 'https://t.me/Ruugh';
           el.innerHTML = `<a href="${href}">${txt}</a>`;

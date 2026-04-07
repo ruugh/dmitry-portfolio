@@ -26,9 +26,9 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       main { padding: 28px 0 64px; }
       .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 14px; }
       /* Home now renders purely from Notion content (see src/pages/index.astro) */
-      .card { background: var(--card); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 14px 16px; display:block; transition: transform .12s ease, border-color .12s ease, background .12s ease; }
+      .card { background: var(--card); border: 1px solid rgba(255,255,255,.08); border-radius: 0; padding: 14px 16px; display:block; transition: transform .12s ease, border-color .12s ease, background .12s ease; }
       .card:hover { transform: translateY(-1px); border-color: rgba(255,255,255,.14); }
-      :global(.card img) { width:100%; height: 220px; object-fit: contain; border-radius: 12px; margin-bottom: 10px; display:block; background: rgba(255,255,255,.03); }
+      :global(.card img) { width:100%; height: 220px; object-fit: contain; border-radius: 0; margin-bottom: 10px; display:block; background: rgba(255,255,255,.03); }
       .card .title { display:block; font-weight: 700; }
       .muted { color: var(--muted); }
 
@@ -54,7 +54,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         height: auto;
         max-height: 72vh;
         object-fit: contain;
-        border-radius: 12px;
+        border-radius: 0;
         background: rgba(255,255,255,.03);
         border: 1px solid rgba(255,255,255,.08);
         margin: 0 auto;
@@ -87,7 +87,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         overflow-x: auto;
         background: rgba(255,255,255,.02);
         border: 1px solid rgba(255,255,255,.08);
-        border-radius: 12px;
+        border-radius: 0;
         padding: 16px;
         cursor: zoom-in;
       }
@@ -98,7 +98,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         background: rgba(255,255,255,.02);
         border: 1px solid rgba(255,255,255,.10);
         padding: 20px;
-        border-radius: 14px;
+        border-radius: 0;
       }
       :global(.callout-children) { margin-top: 12px; }
       /* Notion-like columns: no card frame/padding, just a gap */
@@ -120,7 +120,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       :global(.column + .column) {
         border-left: none;
       }
-      :global(details.toggle) { border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 10px 12px; background: rgba(255,255,255,.03); margin: 16px 0; }
+      :global(details.toggle) { border: 1px solid rgba(255,255,255,.08); border-radius: 0; padding: 10px 12px; background: rgba(255,255,255,.03); margin: 16px 0; }
       :global(details.toggle > summary) { cursor: pointer; }
       :global(details.toggle .toggle-children) { margin-top: 10px; padding-left: 14px; border-left: 1px solid rgba(255,255,255,.08); min-width: 0; overflow: hidden; }
       :global(details.toggle .toggle-children > :first-child) { margin-top: 0; }
@@ -154,7 +154,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         min-width: 640px;
         background: rgba(255,255,255,.02);
         border: 1px solid rgba(255,255,255,.14);
-        border-radius: 12px;
+        border-radius: 0;
         overflow: hidden;
       }
       :global(table.notion-table td),
@@ -190,7 +190,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         width: auto;
         height: auto;
         object-fit: contain;
-        border-radius: 14px;
+        border-radius: 0;
         box-shadow: 0 20px 80px rgba(0,0,0,.6);
         cursor: zoom-out;
       }
@@ -201,7 +201,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         background: rgba(18,20,27,.9);
         color: var(--fg);
         border: 1px solid rgba(255,255,255,.12);
-        border-radius: 12px;
+        border-radius: 0;
         padding: 10px 12px;
         font-size: 14px;
         cursor: pointer;
@@ -214,6 +214,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         <nav>
           <a href="/">Главная</a>
           <a href="/cases">Кейсы</a>
+          <a href="/cv">CV</a>
         </nav>
       </div>
     </header>

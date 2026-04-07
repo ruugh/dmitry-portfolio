@@ -7,7 +7,6 @@ const cases = await getCasesFromDatabase();
 
 <BaseLayout title="Кейсы — Дмитрий Корчагин">
   <h1>Кейсы</h1>
-  <p class="muted">Список формируется из дочерних страниц Notion (кроме CV и Сертификатов).</p>
 
   <div class="cases-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,360px));gap:16px;justify-content:start;">
     {cases.map((c) => (
