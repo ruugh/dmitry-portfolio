@@ -3,11 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCasesFromDatabase, renderNotionPageToHtml } from '../../lib/notion';
 
 export async function getStaticPaths() {
-  // Preview builds on Cloudflare Pages sometimes run without Notion env.
-  // In that mode we skip generating case pages (UI experiments still build).
-  if (import.meta.env.ALLOW_MISSING_NOTION_ENV === '1' && !import.meta.env.NOTION_TOKEN) {
-    return [];
-  }
+  // Preview/UI-only builds: do not generate case pages.
+  if (process.env.OC_PREVIEW_HOME_ONLY === '1') return [];
 
   const cases = await getCasesFromDatabase();
   return cases.map((c) => ({ params: { slug: c.slug }, props: { pageId: c.id, title: c.title } }));

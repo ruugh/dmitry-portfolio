@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "ALLOW_MISSING_NOTION_ENV=1 node scripts/download-notion-assets.mjs && astro build",
+    "build": "ALLOW_MISSING_NOTION_ENV=1 OC_PREVIEW_HOME_ONLY=1 node scripts/download-notion-assets.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "notion:assets": "node scripts/download-notion-assets.mjs"

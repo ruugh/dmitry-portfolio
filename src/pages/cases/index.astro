@@ -2,7 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCasesFromDatabase } from '../../lib/notion';
 
-const cases = await getCasesFromDatabase();
+const isPreviewHomeOnly = process.env.OC_PREVIEW_HOME_ONLY === '1';
+const cases = isPreviewHomeOnly ? [] : await getCasesFromDatabase();
 ---
 
 <BaseLayout title="Кейсы — Дмитрий Корчагин">
