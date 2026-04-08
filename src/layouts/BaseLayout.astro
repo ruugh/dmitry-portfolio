@@ -26,16 +26,16 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       nav a { color: var(--fg); opacity: .9; }
 
       /* Header layout */
-      .nav-row { display:grid; grid-template-columns: 1fr auto auto; align-items:center; gap: 16px; }
-      .brand { display:flex; align-items:center; gap: 10px; text-decoration: none !important; justify-self: start; }
+      .nav-row { position: relative; display:flex; align-items:center; justify-content: space-between; gap: 16px; }
+      .brand { display:flex; align-items:center; gap: 10px; text-decoration: none !important; flex: 0 0 auto; }
       .brand:hover { opacity: .95; }
       .brand__avatar { width: 32px; height: 32px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); flex: 0 0 auto; }
       .brand__text { display:flex; flex-direction: column; line-height: 1.1; }
       .brand__name { font-weight: 700; font-size: 14px; }
       .brand__sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-      .nav-links { display:flex; align-items:center; gap:14px; justify-self: center; }
-      .nav-cta { display:flex; align-items:center; gap:10px; justify-self: end; }
+      .nav-links { position: absolute; left: 50%; transform: translateX(-50%); display:flex; align-items:center; gap:14px; }
+      .nav-cta { display:flex; align-items:center; gap:10px; margin-left: auto; }
       .btn { display:inline-flex; align-items:center; justify-content:center; padding: 8px 10px; border-radius: 10px; font-size: 13px; line-height: 1; text-decoration: none !important; border: 1px solid rgba(255,255,255,.18); background: transparent; }
       .btn:hover { border-color: rgba(255,255,255,.28); }
       .btn--primary { background: rgba(125,211,252,.18); border-color: rgba(125,211,252,.45); }
