@@ -225,6 +225,33 @@ function propMultiSelect(p: any): string[] | undefined {
   return p && p.type === 'multi_select' ? (p.multi_select || []).map((x: any) => x.name) : undefined;
 }
 
+function findPropertyKey(
+  props: Record<string, any>,
+  candidates: string[],
+  type?: string,
+): string | undefined {
+  const normalize = (s: string) => s.trim().toLowerCase().replace(/\s+/g, ' ');
+  const byNorm: Record<string, string> = {};
+
+  for (const key of Object.keys(props || {})) {
+    byNorm[normalize(key)] = key;
+  }
+
+  for (const candidate of candidates) {
+    const exact = byNorm[normalize(candidate)];
+    if (exact && (!type || props[exact]?.type === type)) return exact;
+  }
+
+  for (const key of Object.keys(props || {})) {
+    const normalizedKey = normalize(key);
+    if (candidates.some((candidate) => normalizedKey.includes(normalize(candidate)))) {
+      if (!type || props[key]?.type === type) return key;
+    }
+  }
+
+  return undefined;
+}
+
 export async function getCasesFromDatabase(): Promise<CaseItem[]> {
   const notion = getNotionClient();
   const databaseId = CASES_DATABASE_ID();
@@ -259,7 +286,7 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
   const pPublished = findProp(['published', 'публик', 'опублик'], 'checkbox');
   const pOrder = findProp(['order', 'порядок'], 'number');
 
-  // Build query: prefer strict filter/sort when we can resolve property names.
+  // Build query: prefer server-side filtering when the schema lookup can resolve it.
   const queryBody: any = { page_size: 100 };
   if (pPublished) {
     queryBody.filter = { property: pPublished, checkbox: { equals: true } };
@@ -298,8 +325,17 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
   const pTags = byNorm['tags'] ?? byNorm['теги'] ?? 'tags';
 
   const out: CaseItem[] = [];
+  let publishedPropertyResolved = false;
   for (const page of data.results || []) {
     const props = page.properties || {};
+    const runtimePublishedKey = findPropertyKey(props, ['published', 'публик', 'опублик'], 'checkbox');
+    if (runtimePublishedKey) {
+      publishedPropertyResolved = true;
+      if (!propCheckbox(props[runtimePublishedKey])) continue;
+    } else {
+      continue;
+    }
+
     const title = propText(props[pName]) || 'Untitled';
     const slug = propText(props[pSlug]) || slugifyTitle(title);
 
@@ -320,6 +356,10 @@ export async function getCasesFromDatabase(): Promise<CaseItem[]> {
             : undefined,
       order: pOrder ? propNumber(props[pOrder]) : undefined,
     });
+  }
+
+  if (!publishedPropertyResolved) {
+    throw new Error('Cases database is missing required checkbox property: published');
   }
 
   return out;
@@ -496,6 +536,12 @@ async function renderBlock(notion: Client, block: any, depth: number, opts: Rend
         return `<div class="mermaid">${codeText}</div>${childHtml}`;
       }
       return `<pre><code>${codeText}</code></pre>${childHtml}`;
+    }
+    case 'video': {
+      const rawVideoUrl = v?.type === 'external' ? v?.external?.url : v?.file?.url;
+      const videoSrc = (v?.type === 'file' && rawVideoUrl) ? await mapToLocalAsset('video-' + block.id, rawVideoUrl) : rawVideoUrl;
+      if (!videoSrc) return '';
+      return '<div class="notion-video"><video controls preload="metadata" style="width:100%;max-width:100%;border-radius:8px;"><source src="' + escapeHtml(videoSrc) + '" />Ваш браузер не поддерживает видео.</video></div>' + childHtml;
     }
     case 'file':
     case 'pdf': {

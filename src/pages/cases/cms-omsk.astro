@@ -1,0 +1,2226 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="CMS Омскинформ — кейс | Дмитрий Корчагин">
+  <div class="case">
+
+    <!-- ══ HERO ══ -->
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="hero-meta">
+          <span class="hero-date">Октябрь 2023 - Июнь 2024</span>
+          <span class="hero-client">Омск Информ</span>
+        </div>
+        <h1 class="hero-title">Редакция тратила 15 минут на публикацию и боялась системы. Теперь — 7 минут и инструмент который работает.</h1>
+        <div class="hero-tags">
+          <span class="tag">CMS</span>
+          <span class="tag">Media</span>
+          <span class="tag">Workflow redesign</span>
+          <span class="tag">Role-based UX</span>
+          <span class="tag">Operations</span>
+        </div>
+      </div>
+
+      <div class="full-bleed cover-wrap">
+        <figure class="hero-cover">
+          <img
+            class="hero-cover__img"
+            src="/hero-cms-omsk-cover.png"
+            alt="Интерфейс CMS Омск Информ"
+            loading="eager"
+          />
+        </figure>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat hero-stat--filled">
+          <svg class="hero-stat__arrow hero-stat__arrow--down" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.979 2.021L11.832 5.875L11.125 6.582L8.479 3.936V12.979H7.479V3.936L4.832 6.582L4.125 5.875L7.979 2.021Z" fill="currentColor"/>
+          </svg>
+          <span>Время публикации: 14 мин → 7 мин (−50%)</span>
+        </div>
+        <div class="hero-stat">
+          <svg class="hero-stat__arrow hero-stat__arrow--down" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.979 2.021L11.832 5.875L11.125 6.582L8.479 3.936V12.979H7.479V3.936L4.832 6.582L4.125 5.875L7.979 2.021Z" fill="currentColor"/>
+          </svg>
+          <span>Критические ошибки: −67%</span>
+        </div>
+        <div class="hero-stat">
+          <svg class="hero-stat__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.979 2.021L11.832 5.875L11.125 6.582L8.479 3.936V12.979H7.479V3.936L4.832 6.582L4.125 5.875L7.979 2.021Z" fill="currentColor"/>
+          </svg>
+          <span>Удовлетворённость команды: 3.2/5 → 4.6/5 (+44%)</span>
+        </div>
+        <div class="hero-stat">
+          <svg class="hero-stat__arrow hero-stat__arrow--down" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.979 2.021L11.832 5.875L11.125 6.582L8.479 3.936V12.979H7.479V3.936L4.832 6.582L4.125 5.875L7.979 2.021Z" fill="currentColor"/>
+          </svg>
+          <span>Ошибки в размещении рекламы: −45%</span>
+        </div>
+      </div>
+
+      <p class="intro">Омскинформ работал на устаревшей CMS, которой команда не доверяла. Моей задачей было перепроектировать систему так, чтобы редакция могла работать быстрее, увереннее и без постоянных обходных сценариев.</p>
+    </div>
+
+    <!-- ══ ПРОБЛЕМА ══ -->
+    <section class="problem-section full-bleed">
+      <div class="problem-panel">
+        <div class="problem-content">
+          <div class="problem-copy">
+            <h2 class="problem-title">Проблема</h2>
+            <div class="problem-stack">
+              <div class="prob-block">
+                <div class="prob-title">Пользователь</div>
+                <p>Публикация срочной новости занимала 15 минут и требовала переключения между 4 разделами. Не было автосохранения — журналисты писали в Word, боясь потерять материал. Модераторы вручную фильтровали все комментарии, тратя по 4 часа в день. Логику размещения баннеров знал только один человек.</p>
+              </div>
+              <div class="prob-block">
+                <div class="prob-title">Бизнес</div>
+                <p>CMS тормозила редакционный процесс, увеличивала количество ошибок в рекламных размещениях и создавала операционные риски. Проблема была не только в неудобстве: система съедала часы ручной работы, держала команду в зависимости от отдельных сотрудников и мешала редакции работать в нормальном темпе.</p>
+              </div>
+              <div class="prob-block">
+                <div class="prob-title">Вызовы</div>
+                <p>5 ролей с разными потребностями (журналист, редактор, корректор, модератор, администратор), нет мобильной версии, команда потеряла доверие к системе.</p>
+              </div>
+            </div>
+          </div>
+
+          <figure class="problem-visual">
+            <img
+              class="problem-visual__img"
+              src="/problem-cms-legacy.png"
+              alt="Старая CMS Омск Информ"
+              loading="lazy"
+            />
+            <div class="problem-visual__shade"></div>
+            <figcaption class="problem-quote">
+              <div class="problem-quote__author">
+                <div class="problem-quote__name">Иван Феодосов</div>
+                <div class="problem-quote__role">Главный редактор</div>
+              </div>
+              <p>Система больше мешает, а не помогает. Каждая публикация — это испытание нервов.</p>
+              <div class="problem-quote__time">12:00 ✓✓</div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ МОЯ РОЛЬ ══ -->
+    <section class="role-section full-bleed">
+      <div class="role-content">
+        <div class="role-copy">
+          <h2 class="role-title">Моя роль</h2>
+          <div class="role-text">
+            <p>Я был единственным дизайнером на проекте. Провёл 8 интервью и 3 раунда юзабилити-тестов, спроектировал систему для 5 ролей и сопровождал реализацию вместе с разработкой.</p>
+            <p><strong>Моя задача</strong> была не просто нарисовать экраны, а собрать CMS в рабочую систему, которой редакция сможет пользоваться без постоянного страха что-то сломать.</p>
+          </div>
+        </div>
+
+        <div class="role-matrix-block">
+          <div class="role-matrix-copy">
+            <h3 class="role-artifact-title">Матрица ролей и прав для редакционной CMS</h3>
+            <p>Схема ролей и прав, на которой я зафиксировал видимость разделов и уровень доступа для каждой роли. Этот артефакт помог перейти от хаотичной системы доступов к 5 фиксированным ролям с понятными границами.</p>
+          </div>
+          <div class="matrix-legend-wrap">
+            <div class="matrix-legend">
+              <span class="legend-item"><span class="legend-dot legend-dot--full"></span>Полный доступ</span>
+              <span class="legend-item"><span class="legend-dot legend-dot--part"></span>Ограниченный</span>
+              <span class="legend-item"><span class="legend-dot legend-dot--none"></span>Нет доступа</span>
+            </div>
+          </div>
+          <figure class="role-matrix-figure">
+            <img src="/roles-matrix-cms.png" alt="Матрица ролей и прав для редакционной CMS" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ИССЛЕДОВАНИЕ ══ -->
+    <section class="research-section full-bleed">
+      <div class="research-content">
+        <h2 class="research-title">Исследование</h2>
+
+        <div class="research-block">
+          <h3 class="research-label">Ключевые инсайты</h3>
+          <div class="research-insights-grid">
+            <div class="research-card research-card--wide">
+              <p>Фрагментированный workflow — для одной публикации нужно <span class="research-accent">4 раздела.</span> Когнитивная перегрузка → ошибки.</p>
+            </div>
+            <div class="research-card research-card--narrow">
+              <p><span class="research-accent">Нет защиты от ошибок</span> — журналисты могли удалить или заблокировать материалы друг друга.</p>
+            </div>
+            <div class="research-card research-card--narrow">
+              <p>Узкое место в знаниях — баннерную систему <span class="research-accent">знал один человек.</span> Критическая зависимость.</p>
+            </div>
+            <div class="research-card research-card--wide">
+              <p><span class="research-accent">Юридические риски</span> — нет контроля прав на изображения.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="research-block">
+          <h3 class="research-label">Job Story по ролям</h3>
+          <div class="research-jobs-grid">
+            <div class="research-card research-card--job-wide">
+              <div class="research-job-role">Журналист</div>
+              <p>Когда звонит редактор с горящей новостью, я хочу опубликовать её за 5 минут без страха что-то сломать.</p>
+            </div>
+            <div class="research-card research-card--job-narrow">
+              <div class="research-job-role">Редактор</div>
+              <p>Утро понедельника, нужно видеть полную картину всех материалов и контролировать дедлайны.</p>
+            </div>
+            <div class="research-card research-card--job-wide">
+              <div class="research-job-role">Модератор</div>
+              <p>Вечер пятницы, 200+ комментариев под горячей новостью — нужно очистить ленту, не тратя 4 часа.</p>
+            </div>
+            <div class="research-card research-card--job-narrow">
+              <div class="research-job-role">Администратор</div>
+              <p>Рекламный отдел просит баннер на главной — нужно разместить без ошибок и не сломать вёрстку.</p>
+            </div>
+          </div>
+          <details class="research-toggle">
+            <summary>Jobs To Be Done — детально</summary>
+            <div class="toggle-body">
+              <div class="tbl-wrap">
+                <table>
+                  <thead><tr>
+                    <th>Роль</th><th>Ситуация</th><th>Задача (Job)</th><th>Препятствия в старой системе</th><th>Решение в новой CMS</th>
+                  </tr></thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Журналист</strong></td>
+                      <td>Узнал о срочном событии, звонит главный редактор</td>
+                      <td>Опубликовать новость и быть первым источником</td>
+                      <td>4 раздела = 15 мин · Нет автосохранения · Нет мобильной версии</td>
+                      <td>Всё на одном экране · Автосохранение 30 сек · Публикация за 7 мин</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Редактор</strong></td>
+                      <td>Утро понедельника, планирую контент-план</td>
+                      <td>Видеть полную картину и контролировать дедлайны</td>
+                      <td>Нет единого дашборда · Журналисты блокируют друг друга</td>
+                      <td>Дашборд со статусами · Роли с чёткими правами · Уведомления</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Модератор</strong></td>
+                      <td>Вечер пятницы, 200+ комментариев</td>
+                      <td>Удалить токсичные комментарии до аудитории</td>
+                      <td>Все 200 читать вручную = 2–4 часа · Нет мобильной версии</td>
+                      <td>AI фильтрует 90% · Приоритизация спорных · Мобильная версия</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Корректор</strong></td>
+                      <td>Журналист передал текст, публикация через 30 мин</td>
+                      <td>Быстро проверить и вернуть автору</td>
+                      <td>Нет инструментов · Приходится копировать в Word</td>
+                      <td>Встроенная проверка · Подсветка длинных предложений · Очередь</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Администратор</strong></td>
+                      <td>Рекламный отдел просит баннер на главной</td>
+                      <td>Разместить без ошибок и не сломать вёрстку</td>
+                      <td>Сложная логика · Знает только 1 человек · Нет превью</td>
+                      <td>Визуальный конструктор · Превью на живом сайте · Валидация дат</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="research-block research-block--scenario">
+          <h3 class="research-label">Как изменился сценарий публикации</h3>
+          <div class="research-scenario-grid">
+            <div class="scenario-col">
+              <div class="scenario-heading">
+                <strong>Было:</strong>
+                <span>старый сценарий публикации</span>
+              </div>
+              <div class="scenario-cards">
+                <div class="scenario-card scenario-card--before"><strong>Список материалов</strong><p>Редактор начинал со списка, но дальше сценарий распадался на отдельные зоны интерфейса.</p></div>
+                <div class="scenario-card scenario-card--before"><strong>Отдельные настройки</strong><p>Заголовок, обложка, SEO и метаданные жили в другом разделе и часто просто пропускались.</p></div>
+                <div class="scenario-card scenario-card--before"><strong>Предпросмотр в стороне</strong><p>Функция была спрятана и не читалась как часть сценария редактирования.</p></div>
+                <div class="scenario-card scenario-card--before"><strong>Ручные переходы без автосохранения</strong><p>Любой сбой означал потерю текста, поэтому журналисты страховали себя Word-документами.</p></div>
+              </div>
+            </div>
+            <div class="scenario-col">
+              <div class="scenario-heading scenario-heading--after">
+                <strong>Стало:</strong>
+                <span>новый редакционный контур</span>
+              </div>
+              <div class="scenario-cards">
+                <div class="scenario-card scenario-card--after"><strong>Единый экран публикации</strong><p>Список материалов и редактор статьи превратились в одну непрерывную рабочую логику.</p></div>
+                <div class="scenario-card scenario-card--after"><strong>Настройки рядом с текстом</strong><p>Ключевые параметры статьи стали частью сценария, а не отдельным обязательным квестом.</p></div>
+                <div class="scenario-card scenario-card--after"><strong>Предпросмотр в потоке</strong><p>Редактор сразу видел результат и не тратил минуты на поиски функции.</p></div>
+                <div class="scenario-card scenario-card--after"><strong>Автосохранение и защита</strong><p>Система начала страховать пользователя сама: сохранять работу и снижать риск конфликтов.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ КАК ИСКАЛИ РЕШЕНИЕ (full-bleed) ══ -->
+    <section class="decision-section full-bleed">
+      <div class="decision-shell">
+        <div class="decision-title-row">
+          <span class="decision-title">Как искали решение</span>
+        </div>
+        <div class="decision-grid decision-grid--head" aria-hidden="true">
+          <div class="decision-head decision-head--topic">Тема</div>
+          <div class="decision-head">Альтернатива</div>
+          <div class="decision-head">Почему не подошло</div>
+          <div class="decision-head">Финальное решение</div>
+        </div>
+        <div class="decision-grid decision-grid--row">
+          <div class="decision-cell decision-cell--topic">
+            <strong>Дашборд</strong>
+            <p>Какой формат лучше выдерживает ежедневный темп редакции?</p>
+          </div>
+          <div class="decision-cell">
+            <strong>Канбан / календарь</strong>
+            <p>Кажутся удобными визуально, но по-разному ведут себя на объёме материалов.</p>
+          </div>
+          <div class="decision-cell decision-cell--warning">
+            <p>Канбан мельчает при 15–20 карточках в день, календарь хорош для планирования, но слаб для повседневной сортировки.</p>
+            <span class="decision-note decision-note--warning">Не масштабируется</span>
+          </div>
+          <div class="decision-cell decision-cell--success">
+            <div class="decision-stack">
+              <strong>Список</strong>
+              <p>Быстрее читается, фильтруется и лучше работает при высоком редакционном темпе.</p>
+            </div>
+            <span class="decision-note decision-note--success">Основа ежедневной работы</span>
+          </div>
+        </div>
+        <div class="decision-grid decision-grid--row">
+          <div class="decision-cell decision-cell--topic">
+            <strong>Редактор</strong>
+            <p>Какой формат даст удобство без взрыва сложности?</p>
+          </div>
+          <div class="decision-cell">
+            <strong>WYSIWYG / блоки</strong>
+            <p>Более “современный” путь на первый взгляд.</p>
+          </div>
+          <div class="decision-cell decision-cell--warning">
+            <p>WYSIWYG загрязняет HTML. Notion-style блоки слишком дороги по срокам и сложнее для интеграций.</p>
+            <span class="decision-note decision-note--warning">Слишком дорого или грязно технически</span>
+          </div>
+          <div class="decision-cell decision-cell--success">
+            <div class="decision-stack">
+              <strong>Markdown + быстрые действия</strong>
+              <p>Чистый HTML, реалистичный срок разработки, быстрое обучение команды.</p>
+            </div>
+            <span class="decision-note decision-note--success">Освоили за 3–4 дня</span>
+          </div>
+        </div>
+        <div class="decision-grid decision-grid--row">
+          <div class="decision-cell decision-cell--topic">
+            <strong>Роли</strong>
+            <p>Гибкость или предсказуемость?</p>
+          </div>
+          <div class="decision-cell">
+            <strong>Конструктор прав</strong>
+            <p>Максимум гибкости для администратора.</p>
+          </div>
+          <div class="decision-cell decision-cell--warning">
+            <p>Для маленькой редакции это не преимущество, а лишняя точка путаницы и новых ошибок.</p>
+            <span class="decision-note decision-note--warning">Усиливает хаос</span>
+          </div>
+          <div class="decision-cell decision-cell--success">
+            <div class="decision-stack">
+              <strong>5 фиксированных ролей</strong>
+              <p>Простое администрирование, понятные границы, легче онбординг.</p>
+            </div>
+            <span class="decision-note decision-note--success">Предсказуемость важнее гибкости</span>
+          </div>
+        </div>
+        <div class="decision-grid decision-grid--row">
+          <div class="decision-cell decision-cell--topic">
+            <strong>Медиабиблиотека</strong>
+            <p>Что важнее: быстрый старт или контроль?</p>
+          </div>
+          <div class="decision-cell">
+            <strong>Внешний сервис</strong>
+            <p>Скорость внедрения и готовые инструменты.</p>
+          </div>
+          <div class="decision-cell decision-cell--warning decision-cell--warning-soft">
+            <p>Не решает задачу контроля прав и метаданных внутри редакционного сценария.</p>
+            <span class="decision-note decision-note--warning-soft">Быстро, но не решает главную проблему</span>
+          </div>
+          <div class="decision-cell decision-cell--success">
+            <div class="decision-stack">
+              <strong>Собственная библиотека</strong>
+              <p>Компромисс в MVP, но полный контроль над юридически важной частью процесса.</p>
+            </div>
+            <span class="decision-note decision-note--success">Контроль встроен в продукт</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ЮЗАБИЛИТИ-ТЕСТИРОВАНИЕ ══ -->
+    <section class="cs">
+      <h2 class="s-h2">Юзабилити-тестирование</h2>
+      <p class="s-sub">5 респондентов, модерируемое онлайн-тестирование, think-aloud протокол.</p>
+
+      <div class="usability-carousel">
+        <input class="usability-carousel__toggle" type="radio" name="usability-slider" id="usability-slide-1" checked />
+        <input class="usability-carousel__toggle" type="radio" name="usability-slider" id="usability-slide-2" />
+        <input class="usability-carousel__toggle" type="radio" name="usability-slider" id="usability-slide-3" />
+
+        <div class="usability-carousel__viewport">
+          <div class="usability-carousel__track">
+            <article class="usability-slide">
+              <figure class="usability-slide__media">
+                <video controls playsinline preload="metadata" muted aria-label="Запись первого юзабилити-теста с редактором и интерфейсом CMS">
+                  <source src="/usability-slide-01.mp4" type="video/mp4" />
+                </video>
+              </figure>
+              <div class="usability-slide__summary usability-slide__summary--full">
+                <p><strong>100%</strong> журналистов игнорировали настройки статьи — начинали сразу с редактора, пропуская заголовок, обложку, SEO.</p>
+              </div>
+            </article>
+
+            <article class="usability-slide">
+              <figure class="usability-slide__media">
+                <video controls playsinline preload="metadata" muted aria-label="Запись второго юзабилити-теста с интерфейсом редактора и календарем публикации">
+                  <source src="/usability-slide-02.mp4" type="video/mp4" />
+                </video>
+              </figure>
+              <div class="usability-slide__summary usability-slide__summary--split">
+                <div class="usability-finding">
+                  <p><strong>75%</strong> не могли найти предпросмотр — функция была скрыта, время поиска 2+ минуты.</p>
+                </div>
+                <blockquote class="usability-quote">
+                  <strong>Журналист</strong>
+                  <p>«Предпросмотр пока не понимаю, как… Тут предпросмотр не вижу, следовательно, он где-то внутри.»</p>
+                </blockquote>
+              </div>
+            </article>
+
+            <article class="usability-slide">
+              <figure class="usability-slide__media">
+                <video controls playsinline preload="metadata" muted aria-label="Запись третьего юзабилити-теста с редактором статьи и навигационными иконками">
+                  <source src="/usability-slide-03.mp4" type="video/mp4" />
+                </video>
+              </figure>
+              <div class="usability-slide__summary usability-slide__summary--split">
+                <div class="usability-finding">
+                  <p><strong>100%</strong> путались в структуре заголовков — дублирование функционала в редакторе и настройках.</p>
+                </div>
+                <blockquote class="usability-quote">
+                  <strong>Журналист</strong>
+                  <p>«Когда наводишь на иконку, не всё подписывается. Сложнее быстро понять, что где есть.»</p>
+                </blockquote>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="usability-carousel__nav" aria-label="Навигация по юзабилити-слайдам">
+          <label class="usability-carousel__dot" for="usability-slide-1" title="Показать первый слайд"></label>
+          <label class="usability-carousel__dot" for="usability-slide-2" title="Показать второй слайд"></label>
+          <label class="usability-carousel__dot" for="usability-slide-3" title="Показать третий слайд"></label>
+        </div>
+      </div>
+
+      <div class="usability-followup">
+        <div class="usability-followup__group">
+          <h3 class="sec-label usability-followup__label">Что внедрили сразу</h3>
+          <div class="usability-fixes">
+            <div class="usability-fix-card usability-fix-card--tall">
+              <p>Автооткрытие панели настроек при создании статьи → ошибки незаполненных заголовков: <strong>100% → 5%</strong></p>
+            </div>
+            <div class="usability-fix-card usability-fix-card--tall">
+              <p><span class="acc-text">Кавычки-ёлочки и тире</span> в быстром доступе (запрос корректора)</p>
+            </div>
+            <div class="usability-fix-card">
+              <p><span class="acc-text">Тултипы</span> для всех иконок</p>
+            </div>
+            <div class="usability-fix-card">
+              <p><span class="acc-text">Кнопка предпросмотра</span> в списке новостей</p>
+            </div>
+          </div>
+          <details class="toggle validation-toggle">
+            <summary>Результаты валидации</summary>
+            <div class="toggle-body">
+              <div class="tbl-wrap">
+                <table>
+                  <thead><tr><th>Метрика</th><th>До тестов</th><th>После исправлений</th></tr></thead>
+                  <tbody>
+                    <tr><td>Среднее время на S01 (создание новости)</td><td>14.3 мин</td><td>7 мин</td></tr>
+                    <tr><td>Ошибок на сценарий S01</td><td>4.3</td><td>1.2</td></tr>
+                    <tr><td>Найденность функций</td><td>~60%</td><td>95%</td></tr>
+                    <tr><td>Требуется помощь модератора</td><td>80%</td><td>20%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="usability-followup__group">
+          <h3 class="sec-label usability-followup__label">Реакция команды разработки</h3>
+          <div class="team-reaction-card">
+            <div class="team-reaction-card__avatar">
+              <img src="/team-feedback-avatar.png" alt="Фронтенд-разработчик" loading="lazy" />
+            </div>
+            <div class="team-reaction-card__body">
+              <p>«Видно, как пользователи работают. Я сразу пошел и нафигарил себе список исправлений. Видно, что юзеру нужно, а не то, что мы думаем.»</p>
+              <div class="team-reaction-card__author">Фронтенд-разработчик</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ РЕШЕНИЯ ══ -->
+    <section class="cs">
+      <h2 class="s-h2">Решения</h2>
+
+      <!-- Solution 1 -->
+      <div class="solution solution--featured">
+        <div class="solution-featured__content">
+          <h3 class="sec-label solution-featured__label">Редакционный контур: дашборд + редактор</h3>
+          <div class="solution-featured__copy">
+            <p>Два ключевых экрана — список материалов и редактор статьи — я перепроектировал как единый workflow. Раньше для публикации нужно было переключаться между 4 разделами. Теперь всё на одном экране.</p>
+            <p>Дашборд дал редакции единую картину: статусы материалов, фильтры по автору и дате, срезы под каждую роль.</p>
+          </div>
+          <figure class="solution-featured__figure">
+            <img src="/solution-editorial-flow.png" alt="Редактор статьи и дашборд в новой CMS Омск-информ" loading="lazy" />
+          </figure>
+          <div class="solution-featured__copy solution-featured__copy--result">
+            <p>Редактор получил автооткрытие панели настроек (100% журналистов игнорировали её раньше), автосохранение каждые 30 секунд, защиту от конфликтов при параллельной работе и быстрый доступ к типографике.</p>
+            <p class="solution-featured__result"><strong class="result-kw">Результат:</strong> время публикации 14 → 7 минут (−50%).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solution 2 -->
+      <div class="solution solution--visual">
+        <figure class="solution-visual__figure full-bleed">
+          <img src="/solution-roles-permissions.png" alt="Экран управления ролями и правами в CMS Омск-информ" loading="lazy" />
+        </figure>
+        <div class="solution-visual__content">
+          <h3 class="sec-label solution-visual__label">Безопасность и предсказуемость: роли и права</h3>
+          <div class="solution-visual__copy">
+            <p>Я заменил гибкую, но непредсказуемую систему прав на 5 фиксированных ролей с чёткими границами: журналист, редактор, корректор, модератор, администратор.</p>
+            <p>Для редакции из 40 человек этого оказалось достаточно: система стала проще в администрировании, журналисты больше не могли случайно удалить чужой материал, а онбординг нового сотрудника сократился с 30 до 5 минут.</p>
+            <p class="solution-visual__result"><strong class="result-kw">Результат:</strong> критические ошибки −67%.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solution 3 -->
+      <div class="solution solution--media">
+        <figure class="solution-media__figure solution-media__figure--top">
+          <img src="/solution-media-library-top.png" alt="Список материалов и библиотека изображений в CMS Омск-информ" loading="lazy" />
+        </figure>
+        <figure class="solution-media__figure solution-media__figure--bottom">
+          <img src="/solution-media-library-bottom.png" alt="Редактор статьи с медиапанелью и метаданными изображений" loading="lazy" />
+        </figure>
+        <div class="solution-media__content">
+          <h3 class="sec-label solution-media__label">Медиаконтент: библиотека изображений</h3>
+          <div class="solution-media__copy">
+            <p>Я спроектировал отдельную медиабиблиотеку с базовой обработкой, метаданными и учётом прав. Это дало редакции более понятную работу с изображениями и закрыло юридические риски, которые раньше вообще не контролировались.</p>
+            <p class="solution-media__result"><strong class="result-kw">Результат:</strong> качественный эффект здесь был важнее метрики: редакция впервые получила контроль над правами на изображения и более понятный сценарий работы с медиа.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solution 4 -->
+      <div class="solution solution--commerce">
+        <figure class="solution-commerce__figure solution-commerce__figure--top">
+          <img src="/solution-banner-moderation-top.png" alt="Медиабиблиотека и фильтры для коммерческого контента в CMS Омск-информ" loading="lazy" />
+        </figure>
+        <div class="solution-commerce__content">
+          <h3 class="sec-label solution-commerce__label">Коммерция и автоматизация: баннеры + модерация</h3>
+          <div class="solution-commerce__copy">
+            <p>Для баннеров я спроектировал визуальный конструктор с превью на живом сайте, валидацией дат и пресетами позиций. Это убрало зависимость от одного человека и сделало сценарий понятным для любого администратора.</p>
+            <p>Для модерации собрал гибридный workflow: AI фильтрует 90% типовых случаев, спорные комментарии уходят на ручную обработку. Задача здесь была не в ML как таковом, а в том, чтобы снять рутинную нагрузку и оставить контроль там, где он действительно нужен.</p>
+            <p class="solution-commerce__result"><strong class="result-kw">Результат:</strong> время модератора 4 часа → 1 час (−75%), ошибки в баннерах −45%.</p>
+          </div>
+        </div>
+        <figure class="solution-commerce__figure solution-commerce__figure--bottom">
+          <img src="/solution-banner-moderation-bottom.png" alt="Экран настройки рекламных блоков и модерации в CMS Омск-информ" loading="lazy" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- ══ ВЛИЯНИЕ ══ -->
+    <section class="cs case-outcome">
+      <div class="case-outcome__block">
+        <h2 class="case-outcome__heading">Влияние</h2>
+        <div class="case-outcome__copy">
+          <p class="case-outcome__title">На команду и ежедневную работу</p>
+          <p>Журналисты стали работать без постоянного страха что-то сломать, а команда начала воспринимать CMS как инструмент, а не как препятствие.</p>
+        </div>
+        <div class="impact-pills">
+          <div class="impact-pill">
+            <svg class="impact-pill__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M7.979 2.021L11.832 5.875L11.125 6.582L8.479 3.936V12.979H7.479V3.936L4.832 6.582L4.125 5.875L7.979 2.021Z" fill="currentColor"/>
+            </svg>
+            <span>Удовлетворённость системой: 3.2/5 → 4.6/5</span>
+          </div>
+          <div class="impact-pill">
+            <svg class="impact-pill__icon impact-pill__icon--down" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M7.979 2.021L11.832 5.875L11.125 6.582L8.479 3.936V12.979H7.479V3.936L4.832 6.582L4.125 5.875L7.979 2.021Z" fill="currentColor"/>
+            </svg>
+            <span>Онбординг нового сотрудника: 30 мин → 5 мин</span>
+          </div>
+          <div class="impact-pill impact-pill--wide">
+            <svg class="impact-pill__icon impact-pill__icon--down" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M7.979 2.021L11.832 5.875L11.125 6.582L8.479 3.936V12.979H7.479V3.936L4.832 6.582L4.125 5.875L7.979 2.021Z" fill="currentColor"/>
+            </svg>
+            <span>Меньше времени уходит на обходные сценарии, ручные проверки и внутренние уточнения</span>
+          </div>
+        </div>
+        <div class="case-outcome__copy case-outcome__copy--business">
+          <p class="case-outcome__title">На бизнес</p>
+          <p>Снижение ошибок в рекламных размещениях на <strong class="result-kw">45%</strong> напрямую уменьшило операционные потери. Зависимость от «незаменимого» сотрудника по баннерам удалось убрать.</p>
+        </div>
+      </div>
+
+      <div class="case-outcome__block">
+        <h2 class="case-outcome__heading">Итог</h2>
+        <div class="summary-card">
+          <p>Неделя интервью и наблюдений дала больше инсайтов, чем месяцы работы по ТЗ. Хороший UX в B2B — не про красоту, а про то, чтобы люди делали работу быстро и без страха. Автосохранение, блокировки, фиксированные роли — это не фичи, а ответ на реальный страх: нажать не туда и сломать чужую работу.</p>
+        </div>
+      </div>
+
+      <div class="case-outcome__block">
+        <h2 class="case-outcome__heading">Что сделал бы иначе</h2>
+        <div class="reflection-list">
+          <div class="reflection-item">
+            <p class="reflection-item__title">Раньше провёл бы юзабилити-тест на вайрфреймах.</p>
+            <p>Мы тестировали уже детально проработанный интерфейс. Когда 100% журналистов проигнорировали панель настроек — важный инсайт, но дорогой: часть решений пришлось переделывать на поздней стадии. Тест на бумажном прототипе за 3–4 недели до этого дал бы те же находки дешевле.</p>
+          </div>
+          <div class="reflection-item">
+            <p class="reflection-item__title">Раньше вовлёк бы разработку в исследование.</p>
+            <p>Разработчик, который после юзабилити-теста сам пошёл переписывать список задач — лучший момент проекта. Но он случился поздно. Если бы разработчики присутствовали на интервью с самого начала, часть технических компромиссов решалась бы иначе.</p>
+          </div>
+          <div class="reflection-item">
+            <p class="reflection-item__title">Договорился бы о метриках до начала.</p>
+            <p>Бизнес-метрики (потери от ошибок в баннерах, стоимость часа модератора) оцифровал только ретроспективно. Зафиксированный baseline с самого старта сделал бы итоговый импакт убедительнее — и для клиента, и для кейса.</p>
+          </div>
+        </div>
+      <p class="footnote case-outcome__footnote">Система запущена в продакшн в мае 2025 и используется редакцией ежедневно. Публичного доступа нет — внутренний корпоративный продукт.</p>
+      </div>
+    </section>
+
+    <div class="image-lightbox" data-lightbox hidden aria-hidden="true">
+      <button class="image-lightbox__backdrop" type="button" data-lightbox-close aria-label="Закрыть увеличенное изображение"></button>
+      <div class="image-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Увеличенное изображение">
+        <button class="image-lightbox__close" type="button" data-lightbox-close aria-label="Закрыть">×</button>
+        <img class="image-lightbox__image" data-lightbox-image src="" alt="" />
+      </div>
+    </div>
+
+  </div>
+</BaseLayout>
+
+<style>
+  :global(html) { overflow-x: hidden; }
+
+  /* ─── wrapper ─── */
+  .case { padding-bottom: 96px; }
+
+  /* ─── full-bleed ─── */
+  .full-bleed {
+    width: min(1200px, calc(100vw - 40px));
+    margin-left: calc(50% - min(600px, calc(50vw - 20px)));
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    padding-top: 29px;
+    margin-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .hero-copy,
+  .hero-stats,
+  .intro {
+    width: min(750px, 100%);
+    margin-inline: auto;
+  }
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 29px;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: #fff;
+  }
+  .hero-date { color: #979797; }
+  .hero-client { color: var(--fg); }
+  .hero-title {
+    margin: 0;
+    font-size: clamp(32px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 10px;
+    border: 1px solid #a2adce;
+    background: #fff;
+    color: #000;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* ─── Cover ─── */
+  .cover-wrap { margin-bottom: 0; }
+  .hero-cover {
+    margin: 0;
+    width: 100%;
+    border: 1px solid rgba(255,255,255,.72);
+    border-radius: 30px;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.03) 100%);
+    box-shadow: 0 24px 80px rgba(0,0,0,.28);
+  }
+  .hero-cover__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1200 / 675;
+    object-fit: cover;
+  }
+  .img-ph {
+    background: var(--card);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 13px; width: 100%;
+    border-radius: 12px; overflow: hidden;
+  }
+  .case img:not(.hero-cover__img) {
+    cursor: zoom-in;
+  }
+  .team-reaction-card__avatar img {
+    cursor: default;
+  }
+
+  /* ─── Hero stats ─── */
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 16px;
+    column-gap: 8px;
+  }
+  .hero-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 10px;
+    border: 1px solid #a2adce;
+    background: transparent;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .hero-stat--filled {
+    background: #fff;
+    color: #020202;
+  }
+  .hero-stat__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    transform-origin: center;
+  }
+  .hero-stat__arrow--down {
+    transform: rotate(180deg);
+  }
+
+  /* ─── Intro ─── */
+  .intro {
+    font-size: 24px;
+    line-height: 1.5;
+    margin: 16px auto 0;
+    color: var(--fg);
+  }
+
+  /* ─── Dividers ─── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 64px 0 0; }
+
+  /* ─── Sections ─── */
+  .cs { margin-top: 64px; }
+
+  /* ─── Section labels ─── */
+  .sec-label {
+    font-size: 14px; font-weight: 300; letter-spacing: 0;
+    text-transform: uppercase; color: #a2adce;
+    line-height: 1.5;
+    margin-bottom: 0; display: block;
+  }
+  .sec-label--accent { color: #37ca8c; }
+
+  /* ─── H2 ─── */
+  .s-h2 {
+    font-size: 24px;
+    font-weight: 700; line-height: 1.5;
+    margin: 0 0 24px; letter-spacing: -0.01em;
+  }
+  .s-sub { font-size: 16px; color: var(--muted); margin: -8px 0 28px; }
+
+  /* ─── Problem section ─── */
+  .problem-section {
+    margin-top: 64px;
+    margin-bottom: 64px;
+  }
+  .problem-panel {
+    border: 1px solid #1c1e25;
+    border-radius: 30px;
+    padding: 48px 221px;
+    background: transparent;
+  }
+  .problem-content {
+    width: min(750px, 100%);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .problem-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .problem-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .problem-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .prob-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .prob-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--fg);
+    margin: 0;
+  }
+  .prob-block p {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--fg);
+  }
+  .problem-visual {
+    position: relative;
+    margin: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #fff;
+    min-height: 363px;
+  }
+  .problem-visual__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 363px;
+    object-fit: cover;
+  }
+  .problem-visual__shade {
+    position: absolute;
+    inset: 0;
+    background: rgba(23, 22, 22, 0.5);
+  }
+  .problem-quote {
+    position: absolute;
+    right: 18px;
+    bottom: 12px;
+    width: 286px;
+    margin: 0;
+    padding: 0;
+    border-radius: 16px 16px 16px 8px;
+    background: #e1ffc7;
+    color: #000;
+    overflow: hidden;
+  }
+  .problem-quote__author {
+    margin: 10px 10px 0;
+    padding: 2px 9px 5px;
+    border-left: 3px solid #37ca8c;
+    background: rgba(55, 202, 140, 0.12);
+    border-radius: 4px;
+  }
+  .problem-quote__name {
+    font-size: 14px;
+    line-height: 1.45;
+    color: #37ca8c;
+  }
+  .problem-quote__role {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #000;
+  }
+  .problem-quote p {
+    margin: 0;
+    padding: 5px 10px 20px;
+    font-size: 16px;
+    line-height: 1.375;
+    color: #000;
+  }
+  .problem-quote__time {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 11px;
+    line-height: 1;
+    color: #37ca8c;
+  }
+
+  /* ─── Role section ─── */
+  .role-section {
+    margin-top: 64px;
+    margin-bottom: 64px;
+  }
+  .role-content {
+    width: min(750px, 100%);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+  .role-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .role-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .role-text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .role-artifact-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .role-text p,
+  .role-matrix-copy p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.625;
+    color: #f9f9f9;
+  }
+  .role-matrix-block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .role-matrix-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .matrix-legend-wrap {
+    display: flex;
+    align-items: flex-start;
+  }
+  .matrix-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: #a2adce;
+  }
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .legend-dot--full { background: #37ca8c; }
+  .legend-dot--part { background: #edb95a; }
+  .legend-dot--none { background: #4e5676; }
+  .role-matrix-figure {
+    margin: 0;
+    width: 754px;
+    max-width: 100%;
+  }
+  .role-matrix-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ─── Research section ─── */
+  .research-section {
+    margin-top: 64px;
+    margin-bottom: 64px;
+  }
+  .research-content {
+    width: min(754px, 100%);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .research-content > .research-block:first-of-type {
+    margin-top: 0;
+  }
+  .research-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .research-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .research-block--scenario {
+    gap: 24px;
+  }
+  .research-label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: #a2adce;
+  }
+  .research-insights-grid,
+  .research-jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 8px;
+  }
+  .research-card {
+    border: 1px solid #a2adce;
+    border-radius: 10px;
+    padding: 16px;
+    background: transparent;
+  }
+  .research-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .research-card--wide { grid-column: span 7; min-height: 117px; }
+  .research-card--narrow { grid-column: span 5; min-height: 117px; }
+  .research-card--job-wide { grid-column: span 6; }
+  .research-card--job-narrow { grid-column: span 6; }
+  .research-accent,
+  .research-job-role {
+    font-weight: 700;
+    color: #edb95a;
+  }
+  .research-job-role {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .research-toggle {
+    margin-top: 24px;
+    border: none;
+    padding: 0;
+  }
+  .research-toggle summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .research-toggle summary::-webkit-details-marker { display: none; }
+  .research-toggle summary::before {
+    content: "▶";
+    font-size: 12px;
+    line-height: 1;
+    color: #fff;
+    transition: transform .15s;
+  }
+  .research-toggle[open] summary::before { transform: rotate(90deg); }
+  .toggle-body { margin-top: 16px; }
+  .tbl-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid rgba(162, 173, 206, 0.36);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .tbl-wrap table {
+    min-width: 720px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .tbl-wrap thead th {
+    padding: 16px 14px;
+    border-bottom: 1px solid rgba(162, 173, 206, 0.28);
+    background: rgba(162, 173, 206, 0.08);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #f7f8fd;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tbl-wrap tbody tr + tr td {
+    border-top: 1px solid rgba(162, 173, 206, 0.18);
+  }
+  .tbl-wrap tbody td {
+    padding: 16px 14px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #a2adce;
+    text-align: left;
+    vertical-align: top;
+  }
+  .tbl-wrap tbody td strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+  .tbl-wrap tbody td:first-child {
+    width: 18%;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+  .tbl-wrap thead th:first-child {
+    width: 18%;
+  }
+  .research-scenario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .scenario-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .scenario-heading {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    line-height: 1.2;
+    color: #fff;
+  }
+  .scenario-heading strong {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .scenario-heading span {
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
+  }
+  .scenario-heading--after strong { color: #37ca8c; }
+  .scenario-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .scenario-card {
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .scenario-card strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .scenario-card p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .scenario-card--before {
+    border: 1px solid #1c1e25;
+    background: transparent;
+  }
+  .scenario-card--before strong { color: #a2adce; }
+  .scenario-card--after {
+    background: #1c1e25;
+  }
+  .scenario-card--after strong { color: #37ca8c; }
+
+  /* ─── Decision section ─── */
+  .decision-section {
+    margin-top: 64px;
+  }
+  .decision-shell {
+    width: min(1200px, 100%);
+    margin-inline: auto;
+  }
+  .decision-title-row {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #1c1e25;
+  }
+  .decision-title {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: #a2adce;
+  }
+  .decision-grid {
+    display: grid;
+    grid-template-columns: 300px 301px 299px 300px;
+  }
+  .decision-grid--head .decision-head,
+  .decision-grid--row .decision-cell {
+    border-top: 1px solid #1c1e25;
+  }
+  .decision-grid--head .decision-head {
+    padding: 15px 24px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    color: #a2adce;
+  }
+  .decision-head--topic {
+    padding-left: 42px;
+  }
+  .decision-cell {
+    min-height: 177px;
+    padding: 36px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .decision-cell--topic {
+    padding-inline: 43px;
+  }
+  .decision-cell--success {
+    gap: 24px;
+    padding-left: 17px;
+    padding-right: 20px;
+  }
+  .decision-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .decision-cell strong {
+    display: block;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.45;
+    color: #f7f8fd;
+  }
+  .decision-cell p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: #a2adce;
+  }
+  .decision-cell--warning p {
+    color: #f7f8fd;
+    line-height: 1.45;
+  }
+  .decision-note {
+    display: block;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+  .decision-note--warning {
+    color: #ff8d77;
+  }
+  .decision-note--warning-soft {
+    color: #edb95a;
+  }
+  .decision-note--success {
+    color: #37ca8c;
+  }
+
+  /* ─── Usability carousel ─── */
+  .usability-carousel {
+    width: min(754px, 100%);
+    margin-top: 24px;
+  }
+  .usability-carousel__toggle {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    border: 0;
+  }
+  .usability-carousel__viewport {
+    overflow: hidden;
+  }
+  .usability-carousel__track {
+    display: flex;
+    transition: transform 0.35s ease;
+    will-change: transform;
+  }
+  #usability-slide-1:checked ~ .usability-carousel__viewport .usability-carousel__track {
+    transform: translateX(0);
+  }
+  #usability-slide-2:checked ~ .usability-carousel__viewport .usability-carousel__track {
+    transform: translateX(-100%);
+  }
+  #usability-slide-3:checked ~ .usability-carousel__viewport .usability-carousel__track {
+    transform: translateX(-200%);
+  }
+  .usability-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+  .usability-slide__media {
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+  }
+  .usability-slide__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .usability-slide__media video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 754 / 406.9;
+    object-fit: cover;
+    background: #05070d;
+  }
+  .usability-slide__summary {
+    min-height: 118px;
+  }
+  .usability-slide__summary--full {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border: 1px solid #a2adce;
+    border-radius: 10px;
+  }
+  .usability-slide__summary--split {
+    display: grid;
+    grid-template-columns: 352px 390px;
+    gap: 8px;
+    width: 100%;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+  .usability-slide__summary p,
+  .usability-finding p,
+  .usability-quote p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .usability-slide__summary strong,
+  .usability-finding strong {
+    color: #ff8d77;
+  }
+  .usability-finding {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    min-height: 118px;
+    border: 1px solid #a2adce;
+    border-radius: 10px;
+    background: transparent;
+  }
+  .usability-quote {
+    margin: 0;
+    min-height: 118px;
+    padding: 24px 24px 24px 20px;
+    border-left: 4px solid #edb95a;
+    border-radius: 3px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+  .usability-quote strong {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .usability-quote p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .usability-carousel__nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .usability-carousel__dot {
+    width: 36px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(162, 173, 206, 0.28);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  #usability-slide-1:checked ~ .usability-carousel__nav label[for="usability-slide-1"],
+  #usability-slide-2:checked ~ .usability-carousel__nav label[for="usability-slide-2"],
+  #usability-slide-3:checked ~ .usability-carousel__nav label[for="usability-slide-3"] {
+    background: #a2adce;
+    transform: scaleX(1.08);
+  }
+
+  /* ─── Usability follow-up ─── */
+  .usability-followup {
+    width: min(757px, 100%);
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .usability-followup__group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .usability-followup__label {
+    margin-top: 0 !important;
+  }
+  .usability-fixes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .usability-fix-card {
+    min-height: 56px;
+    padding: 16px;
+    border: 1px solid #a2adce;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+  }
+  .usability-fix-card--tall {
+    min-height: 104px;
+  }
+  .usability-fix-card p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .usability-fix-card strong,
+  .acc-text {
+    color: #37ca8c;
+    font-weight: 700;
+  }
+  .validation-toggle {
+    margin-top: 8px;
+  }
+  .validation-toggle summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .validation-toggle .tbl-wrap {
+    margin-top: 8px;
+  }
+  .validation-toggle summary::-webkit-details-marker { display: none; }
+  .validation-toggle summary::before {
+    content: "▶";
+    font-size: 11px;
+    line-height: 1;
+    transition: transform .15s ease;
+  }
+  .validation-toggle[open] summary::before {
+    transform: rotate(90deg);
+  }
+  .team-reaction-card {
+    min-height: 118px;
+    padding: 16px;
+    border: 1px solid #a2adce;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .team-reaction-card__avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #fff;
+  }
+  .team-reaction-card__avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .team-reaction-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .team-reaction-card__body p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .team-reaction-card__author {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+
+  /* ─── Solutions ─── */
+  .solution { margin-top: 64px; }
+  .cs > .solution:first-of-type { margin-top: 24px; }
+  .solution:first-child { margin-top: 0; }
+  .solution p { font-size: 15px; line-height: 1.65; margin: 0 0 10px; }
+  .result-line { margin-top: 16px !important; }
+  .result-kw { color: #37ca8c; }
+  .sol-img { margin-top: 20px; }
+  .solution--featured {
+    margin-top: 64px;
+  }
+  .solution-featured__content {
+    width: min(756px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-featured__label {
+    margin-top: 0 !important;
+  }
+  .solution-featured__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-featured__copy p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .solution-featured__figure {
+    margin: 0;
+    width: 100%;
+  }
+  .solution-featured__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .solution-featured__copy--result {
+    align-items: flex-start;
+  }
+  .solution-featured__result {
+    margin-top: 0;
+    font-weight: 700;
+  }
+  .solution--visual {
+    margin-top: 56px;
+  }
+  .solution-visual__figure {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+  .solution-visual__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .solution-visual__content {
+    width: min(754px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-visual__label {
+    margin-top: 0 !important;
+  }
+  .solution-visual__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-visual__copy p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .solution-visual__result {
+    font-weight: 400;
+  }
+  .solution--media {
+    margin-top: 56px;
+  }
+  .solution-media__figure {
+    margin: 0;
+  }
+  .solution-media__figure--top {
+    width: min(753px, 100%);
+    margin-bottom: 48px;
+  }
+  .solution-media__figure--bottom {
+    width: min(748px, 100%);
+    margin-bottom: 64px;
+  }
+  .solution-media__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .solution-media__content {
+    width: min(748px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-media__label {
+    margin-top: 0 !important;
+  }
+  .solution-media__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-media__copy p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .solution-media__result {
+    font-weight: 400;
+  }
+  .solution--commerce {
+    margin-top: 56px;
+  }
+  .solution-commerce__figure {
+    margin: 0;
+  }
+  .solution-commerce__figure--top {
+    width: min(1197px, 100%);
+    margin-bottom: 64px;
+  }
+  .solution-commerce__figure--bottom {
+    width: min(1200px, 100%);
+    margin-top: 64px;
+  }
+  .solution-commerce__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .solution-commerce__content {
+    width: min(748px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-commerce__label {
+    margin-top: 0 !important;
+  }
+  .solution-commerce__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-commerce__copy p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .solution-commerce__result {
+    font-weight: 400;
+  }
+
+  /* ─── Outcome ─── */
+  .case-outcome {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .case-outcome__block {
+    width: min(754px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .case-outcome__heading {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .case-outcome__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .case-outcome__copy p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .case-outcome__title {
+    font-weight: 700;
+  }
+  .case-outcome__copy--business {
+    margin-top: 8px;
+  }
+  .impact-pills {
+    width: min(715px, 100%);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .impact-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px;
+    border: 1px solid #a2adce;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .impact-pill--wide {
+    width: 100%;
+  }
+  .impact-pill__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    transform-origin: center;
+  }
+  .impact-pill__icon--up { color: #37ca8c; }
+  .impact-pill__icon--down {
+    color: #fff;
+    transform: rotate(180deg);
+  }
+  .summary-card {
+    border: 1px solid #a2adce;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .summary-card p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .reflection-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .reflection-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .reflection-item p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .reflection-item__title {
+    font-weight: 700;
+  }
+  .footnote {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #a2adce;
+    margin: 0;
+  }
+  .case-outcome__footnote {
+    padding-top: 0;
+    border-top: none;
+  }
+  .image-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+  }
+  .image-lightbox[hidden] {
+    display: none;
+  }
+  .image-lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(5, 7, 13, 0.92);
+    cursor: zoom-out;
+  }
+  .image-lightbox__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(1200px, calc(100vw - 48px));
+    max-height: calc(100vh - 48px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .image-lightbox__image {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 48px);
+    width: auto;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+  }
+  .image-lightbox__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(162, 173, 206, 0.36);
+    border-radius: 999px;
+    background: rgba(5, 7, 13, 0.72);
+    color: #fff;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 640px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .ba-grid { grid-template-columns: 1fr; }
+    .hero {
+      padding-top: 20px;
+      margin-bottom: 40px;
+      gap: 20px;
+    }
+    .hero-copy {
+      gap: 24px;
+    }
+    .hero-meta {
+      gap: 16px;
+      font-size: 14px;
+      flex-wrap: wrap;
+    }
+    .hero-title {
+      font-size: 30px;
+      text-wrap: pretty;
+    }
+    .hero-cover {
+      border-radius: 22px;
+    }
+    .hero-stat {
+      white-space: normal;
+    }
+    .intro {
+      margin-top: 16px;
+      font-size: 24px;
+    }
+    .problem-section {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+    .problem-panel {
+      padding: 24px 20px;
+      border-radius: 22px;
+    }
+    .problem-content,
+    .problem-copy {
+      gap: 24px;
+    }
+    .problem-label {
+      font-size: 14px;
+    }
+    .prob-title,
+    .prob-block p {
+      font-size: 16px;
+    }
+    .problem-visual {
+      min-height: 260px;
+    }
+    .problem-visual__img {
+      min-height: 260px;
+    }
+    .problem-quote {
+      right: 10px;
+      left: 10px;
+      bottom: 10px;
+      width: auto;
+    }
+    .problem-quote p {
+      font-size: 14px;
+    }
+    .role-section {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+    .role-content {
+      gap: 40px;
+    }
+    .role-text p,
+    .role-matrix-copy p {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .matrix-legend {
+      gap: 12px 18px;
+      padding: 12px 14px;
+    }
+    .research-section {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+    .research-content {
+      gap: 40px;
+    }
+    .research-title {
+      font-size: 28px;
+    }
+    .research-insights-grid,
+    .research-jobs-grid,
+    .research-scenario-grid {
+      grid-template-columns: 1fr;
+    }
+    .research-card--wide,
+    .research-card--narrow,
+    .research-card--job-wide,
+    .research-card--job-narrow {
+      grid-column: auto;
+      min-height: unset;
+    }
+    .research-block--scenario {
+      gap: 24px;
+    }
+    .research-toggle summary,
+    .scenario-heading,
+    .scenario-heading strong,
+    .scenario-heading span {
+      font-size: 15px;
+    }
+    .decision-section {
+      margin-top: 40px;
+    }
+    .decision-title-row {
+      justify-content: flex-start;
+      padding: 10px 16px;
+    }
+    .decision-grid {
+      grid-template-columns: 1fr;
+    }
+    .decision-grid--head {
+      display: none;
+    }
+    .decision-grid--row {
+      border-top: 1px solid #1c1e25;
+    }
+    .decision-grid--row:last-of-type {
+      border-bottom: 1px solid #1c1e25;
+    }
+    .decision-cell,
+    .decision-cell--topic,
+    .decision-cell--success {
+      min-height: unset;
+      padding: 18px 16px;
+      gap: 10px;
+      border-top: none;
+    }
+    .decision-cell + .decision-cell {
+      border-top: 1px solid rgba(28, 30, 37, 0.85);
+    }
+    .decision-cell::before {
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 2.2px;
+      text-transform: uppercase;
+      color: #a2adce;
+    }
+    .decision-cell--topic::before {
+      content: "Тема";
+    }
+    .decision-grid--row .decision-cell:nth-child(2)::before {
+      content: "Альтернатива";
+    }
+    .decision-grid--row .decision-cell:nth-child(3)::before {
+      content: "Почему не подошло";
+    }
+    .decision-grid--row .decision-cell:nth-child(4)::before {
+      content: "Финальное решение";
+    }
+    .decision-cell strong {
+      font-size: 15px;
+    }
+    .usability-carousel {
+      margin-top: 24px;
+    }
+    .usability-slide__summary p,
+    .usability-finding p {
+      font-size: 15px;
+    }
+    .usability-slide__summary--full,
+    .usability-finding {
+      padding: 16px;
+      min-height: unset;
+    }
+    .usability-slide__summary--split {
+      grid-template-columns: 1fr;
+      justify-content: stretch;
+    }
+    .usability-quote {
+      min-height: unset;
+      padding: 18px 18px 18px 16px;
+    }
+    .usability-carousel__nav {
+      margin-top: 14px;
+    }
+    .usability-carousel__dot {
+      width: 28px;
+    }
+    .usability-followup {
+      margin-top: 40px;
+      gap: 40px;
+    }
+    .usability-fixes {
+      grid-template-columns: 1fr;
+    }
+    .usability-fix-card,
+    .usability-fix-card--tall {
+      min-height: unset;
+    }
+    .usability-fix-card p,
+    .validation-toggle summary,
+    .team-reaction-card__body p,
+    .team-reaction-card__author {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .team-reaction-card {
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .team-reaction-card__avatar {
+      width: 52px;
+      height: 52px;
+    }
+    .case-outcome {
+      gap: 40px;
+    }
+    .case-outcome__block,
+    .impact-pills,
+    .reflection-list {
+      gap: 14px;
+    }
+    .case-outcome__copy p,
+    .summary-card p,
+    .reflection-item p,
+    .footnote {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .impact-pill {
+      width: 100%;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .image-lightbox {
+      padding: 16px;
+    }
+    .image-lightbox__dialog,
+    .image-lightbox__image {
+      max-height: calc(100vh - 32px);
+    }
+    .image-lightbox__dialog {
+      width: min(100%, calc(100vw - 32px));
+    }
+    .solution--featured {
+      margin-top: 40px;
+    }
+    .solution--visual {
+      margin-top: 40px;
+    }
+    .solution--media {
+      margin-top: 40px;
+    }
+    .solution--commerce {
+      margin-top: 40px;
+    }
+    .solution-featured__content,
+    .solution-featured__copy,
+    .solution-visual__content,
+    .solution-visual__copy,
+    .solution-media__content,
+    .solution-media__copy,
+    .solution-commerce__content,
+    .solution-commerce__copy {
+      gap: 14px;
+    }
+    .solution-featured__copy p,
+    .solution-visual__copy p,
+    .solution-media__copy p,
+    .solution-commerce__copy p {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .solution-media__figure--top {
+      margin-bottom: 28px;
+    }
+    .solution-media__figure--bottom {
+      margin-bottom: 36px;
+    }
+    .solution-commerce__figure--top {
+      margin-bottom: 32px;
+    }
+    .solution-commerce__figure--bottom {
+      margin-top: 32px;
+    }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('.case');
+    const lightbox = document.querySelector('[data-lightbox]');
+    const lightboxImage = document.querySelector('[data-lightbox-image]');
+    const closeButtons = document.querySelectorAll('[data-lightbox-close]');
+
+    if (!root || !lightbox || !lightboxImage) return;
+
+    const closeLightbox = () => {
+      lightbox.hidden = true;
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.setAttribute('src', '');
+      lightboxImage.setAttribute('alt', '');
+      document.body.style.overflow = '';
+    };
+
+    root.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLImageElement)) return;
+      if (target.classList.contains('hero-cover__img')) return;
+      if (target.closest('.team-reaction-card__avatar')) return;
+
+      lightboxImage.setAttribute('src', target.currentSrc || target.src);
+      lightboxImage.setAttribute('alt', target.alt || '');
+      lightbox.hidden = false;
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+
+    closeButtons.forEach((button) => {
+      button.addEventListener('click', closeLightbox);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !lightbox.hidden) {
+        closeLightbox();
+      }
+    });
+  })();
+</script>

@@ -1,0 +1,1098 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const startupMapImage = 'https://www.figma.com/api/mcp/asset/f08fd04a-6459-4564-8042-ff410de8151d';
+const rolesMatrixImage = 'https://www.figma.com/api/mcp/asset/2f99432f-b4e3-4ba1-897e-dd8a589df6c3';
+const usersListImage = 'https://www.figma.com/api/mcp/asset/11f35341-7b8c-4769-9184-45464dab5970';
+const liveDashboardImage = 'https://www.figma.com/api/mcp/asset/37fe0f85-61dc-4d2f-b8e4-abb90caa9fe4';
+const chatManagementImage = 'https://www.figma.com/api/mcp/asset/8d82252e-74ea-43a4-9649-b7e44725143e';
+const typographySystemImage = 'https://www.figma.com/api/mcp/asset/e1cd77bf-cb3d-43d0-849a-01845076fd8a';
+const colorSystemImage = 'https://www.figma.com/api/mcp/asset/747e7445-fa04-4c97-b187-2eab07dd428e';
+---
+<BaseLayout title="Каждое мероприятие собиралось с нуля за две недели и съедало всю команду. Теперь — 4 дня, а клиент управляет значимой частью события сам. | Дмитрий Корчагин">
+  <div class="case">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="hero-meta">
+          <span class="hero-date">Октябрь 2023 - Июнь 2024</span>
+          <span class="hero-project">MetaKit</span>
+        </div>
+        <h1 class="hero-title">Каждое мероприятие собиралось с нуля за две недели и съедало всю команду. Теперь — 4 дня, а клиент управляет значимой частью события сам.</h1>
+        <div class="hero-tags">
+          <span class="tag">SaaS</span>
+          <span class="tag">Events</span>
+          <span class="tag">Admin panel</span>
+          <span class="tag">Self-service</span>
+          <span class="tag">Role-based UX</span>
+        </div>
+      </div>
+
+      <div class="full-bleed">
+        <figure class="hero-cover">
+          <img src="/notion-assets/cover-2f51c5f7-ffdf-8005-b105-e7060162fd3b.png" alt="Dashboard MetaKit в hero-блоке" />
+        </figure>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stats-row">
+          <div class="hero-stat hero-stat--w350">
+            <span class="hero-stat__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="M7.25 3.25h1.5v6.19l2.22-2.22 1.06 1.06L8 12.31 3.97 8.28l1.06-1.06 2.22 2.22V3.25Z" fill="currentColor"></path>
+              </svg>
+            </span>
+            <span>Подготовка события: 14 дней → 4 дня (−71%)</span>
+          </div>
+          <div class="hero-stat hero-stat--w324">
+            <span class="hero-stat__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="M7.25 3.25h1.5v6.19l2.22-2.22 1.06 1.06L8 12.31 3.97 8.28l1.06-1.06 2.22 2.22V3.25Z" fill="currentColor"></path>
+              </svg>
+            </span>
+            <span>Срок запуска проекта: ~6 мес → ~1 мес</span>
+          </div>
+        </div>
+        <div class="hero-stats-row">
+          <div class="hero-stat hero-stat--w116">
+            <span class="hero-stat__icon hero-stat__icon--up" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="M7.25 3.25h1.5v6.19l2.22-2.22 1.06 1.06L8 12.31 3.97 8.28l1.06-1.06 2.22 2.22V3.25Z" fill="currentColor"></path>
+              </svg>
+            </span>
+            <span>CSAT: 4.8/5</span>
+          </div>
+          <div class="hero-stat hero-stat--w541">
+            <span class="hero-stat__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="M7.25 3.25h1.5v6.19l2.22-2.22 1.06 1.06L8 12.31 3.97 8.28l1.06-1.06 2.22 2.22V3.25Z" fill="currentColor"></path>
+              </svg>
+            </span>
+            <span>Самостоятельное управление без разработчиков и саппорта: 0% → 80%</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="intro">Eventagrate делала виртуальные мероприятия в метаверсе для корпоратов из GCC: министерства, крупные компании, международные конференции. Не просто платформу — а мероприятие под ключ: 3D-пространство, зоны, трансляции, модерация, роли, контент и запуск.</p>
+    </section>
+
+    <section class="context-section">
+      <div class="context-content">
+        <div class="context-copy">
+          <h2 class="context-title">Контекст</h2>
+          <div class="context-text">
+            <p>Клиент приходил в Eventagrate не за интерфейсом, а за готовым мероприятием в метаверсе. Команда собирала 3D-пространство, зоны, экраны, трансляции, модерацию, роли и контент под конкретный запуск.</p>
+            <p>Каждый раз большая часть системы собиралась заново. Даже небольшие изменения — логотип на стенде, название комнаты, текст на экране — проходили через Eventagrate.</p>
+            <p>Пока один проект шёл к запуску, взять параллельно второй было почти невозможно. Eventagrate упирался в потолок не из-за нехватки клиентов, а из-за того, как работала система.</p>
+          </div>
+        </div>
+
+        <figure class="context-media">
+          <video class="context-video" src="/metakit-main-stage.mp4" controls muted playsinline preload="metadata"></video>
+        </figure>
+      </div>
+    </section>
+
+    <section class="problem-section full-bleed">
+      <div class="problem-panel problem-panel--metakit">
+        <div class="problem-copy">
+          <h2 class="problem-title">Проблема</h2>
+          <div class="problem-text">
+            <p>Эта модель работала. Но она не масштабировалась.</p>
+            <p>Команда Eventagrate была узким местом в каждом проекте — не потому что плохо работала, а потому что система так была устроена. Контент стендов, назначение модераторов, текст на экране — всё это шло через разработчиков. Клиент не мог ничего поменять сам, даже если изменение занимало бы минуту.</p>
+            <p>Пока один проект шёл к запуску, на параллельный почти не оставалось ресурса. Eventagrate упирался в потолок роста не из-за нехватки заказов — а из-за того, как была устроена работа внутри.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="role-section role-section--metakit">
+      <div class="role-content role-content--metakit">
+        <h2 class="role-title">Моя роль</h2>
+        <div class="role-text">
+          <p><strong>Моя задача</strong> была не нарисовать экраны, а помочь перевести Eventagrate из модели, где команда вручную ведёт каждый ивент, — в модель, где система делает большую часть работы сама, а клиент управляет остальным.</p>
+          <p>Я вёл проект end-to-end: от разбора клиентских требований и структуры системы — до UI, дизайн-системы и сопровождения реализации.</p>
+          <p><strong>Команда:</strong> PM, фронтенд, бэкенд, я как дизайнер и гендиректор в роли product owner.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="research-start">
+      <div class="research-start__content">
+        <div class="research-start__intro">
+          <h2 class="research-start__title">Что выяснилось на старте</h2>
+          <div class="research-start__copy">
+            <p>Классического discovery с интервью здесь не было. Вместо этого у нас был полезный материал: руководитель продаж собрала список из 23 требований — сводку самых частых клиентских запросов из прошлых проектов.</p>
+            <p>Дальше мы с командой разбирали этот список: что критично для продажи и запуска — делаем сразу, что полезно, но не блокирует запуск — откладываем, что вряд ли даст ценность — режем. MVP собирался только по этим требованиям — без интервью, без прототипов на пользователях. Первую проверку гипотез получили уже на живых проектах с лояльными клиентами, которые согласились работать с сырой версией.</p>
+          </div>
+        </div>
+
+        <figure class="research-start__figure">
+          <img src={startupMapImage} alt="Карта требований MetaKit для MVP" loading="lazy" />
+        </figure>
+
+        <div class="research-start__groups">
+          <div class="research-start__group">
+            <p class="section-label">Что мы стандартизировали</p>
+            <div class="research-start__columns">
+              <div class="research-start__column">
+                <h3 class="research-start__subhead">Вошло в платформу</h3>
+                <div class="research-start__stack">
+                  <div class="research-start__card research-start__card--outline">Контент по зонам и стендам</div>
+                  <div class="research-start__card research-start__card--outline">Названия комнат и agenda</div>
+                  <div class="research-start__card research-start__card--outline">Базовая модерация</div>
+                  <div class="research-start__card research-start__card--outline">Управление ролями</div>
+                </div>
+              </div>
+
+              <div class="research-start__column">
+                <h3 class="research-start__subhead">Причина</h3>
+                <div class="research-start__stack">
+                  <div class="research-start__card research-start__card--filled">Повторялось почти в каждом проекте</div>
+                  <div class="research-start__card research-start__card--filled">Частые правки перед запуском</div>
+                  <div class="research-start__card research-start__card--filled">Критично для live сценариев</div>
+                  <div class="research-start__card research-start__card--filled">Нужно для безопасного self-service</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="research-start__group">
+            <p class="section-label">Что мы оставили кастомным</p>
+            <div class="research-start__columns">
+              <div class="research-start__column">
+                <h3 class="research-start__subhead">Осталось проектным</h3>
+                <div class="research-start__stack">
+                  <div class="research-start__card research-start__card--outline">Digital twin</div>
+                  <div class="research-start__card research-start__card--outline">Аватары и motion capture</div>
+                  <div class="research-start__card research-start__card--outline">Сложные broadcast сценарии</div>
+                </div>
+              </div>
+
+              <div class="research-start__column">
+                <h3 class="research-start__subhead">Причина</h3>
+                <div class="research-start__stack">
+                  <div class="research-start__card research-start__card--filled">Сильно зависит от конкретного ивента</div>
+                  <div class="research-start__card research-start__card--filled">Дорогой и сложный кастом</div>
+                  <div class="research-start__card research-start__card--filled">Требовали отдельно настройки</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="research-start__summary">
+          <p><strong>Очень быстро стало видно три вещи.</strong></p>
+          <p><span>Контент — главное узкое место.</span> Больше трети запросов касались одного: клиент хочет сам менять логотипы, текстуры, agenda, экраны, названия комнат — без разработчиков. Это самая частая причина созвонов и правок через команду.</p>
+          <p><span>Live нельзя отдавать без защиты от ошибки.</span> Трансляции, модерация, Q&amp;A — всё это происходит во время события, когда 2000 человек онлайн. Ошибка здесь стоит слишком дорого. Значит если давать людям больше контроля — нужно думать о безопасности действий.</p>
+          <p><span>Одна общая панель не работает.</span> Разными частями события управляли разные люди: кто-то отвечал за запуск, кто-то за контент стендов, кто-то за модерацию чата. Один интерфейс для всех только увеличивал перегрузку и риск ошибок.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="system-rebuild">
+      <div class="system-rebuild__content">
+        <div class="system-rebuild__intro">
+          <h2 class="system-rebuild__title">Как перестраивали систему</h2>
+          <div class="system-rebuild__copy">
+            <p class="section-label">Разделили доступ по ролям</p>
+            <div class="system-rebuild__text">
+              <p>Вместо одной общей панели — пять ролей с чёткими границами: Organizer, Client Admin, Content Manager, Moderator, Tech Admin.</p>
+              <p>Каждая роль видит только свой сценарий. Это решало сразу две задачи: убирало лишние действия и делало управление предсказуемым. На этой же логике можно было безопасно строить самостоятельное управление: клиент получал доступ только к тому, что можно менять самому, не ломая критичный контур события.</p>
+            </div>
+          </div>
+        </div>
+
+        <figure class="system-rebuild__figure system-rebuild__figure--roles">
+          <img src={rolesMatrixImage} alt="Матрица ролей и доступов MetaKit" loading="lazy" />
+        </figure>
+
+        <figure class="system-rebuild__figure system-rebuild__figure--users">
+          <img src={usersListImage} alt="Список пользователей MetaKit по ролям" loading="lazy" />
+        </figure>
+
+        <p class="system-rebuild__outro">Когда границы ролей были зафиксированы, следующий шаг стал очевидным: передать клиенту управление той частью, которая съедала больше всего команды.</p>
+      </div>
+    </section>
+
+    <section class="scenario-split">
+      <div class="scenario-split__content">
+        <div class="scenario-split__intro">
+          <div class="scenario-split__copy">
+            <p class="section-label">Развели подготовку и live как два разных сценария</p>
+            <div class="scenario-split__text">
+              <p>Это понимание пришло в процессе и сильно повлияло на структуру дашборда.</p>
+              <p>Подготовка события — спокойный итеративный процесс: настраиваешь, проверяешь, публикуешь, переделываешь. Здесь важны гибкость и предпросмотр.</p>
+              <p>Live — другой режим.</p>
+              <p>Модератор открывает систему перед стартом, когда 2000 человек уже онлайн и цена ошибки высока. Первый прототип дашборда был аналитическим: графики, воронки, сравнение по зонам. Но в реальном сценарии стало ясно, что модератору не нужна аналитика. Ему нужно за несколько секунд понять: всё в порядке или что-то горит.</p>
+            </div>
+          </div>
+
+          <figure class="scenario-split__figure">
+            <img src={liveDashboardImage} alt="Операционный дашборд MetaKit для live-сценария" loading="lazy" />
+          </figure>
+        </div>
+
+        <p class="scenario-split__outro">Я переделал экран: убрал визуализации в раздел статистики, а на дашборде оставил только операционные сигналы — что требует внимания прямо сейчас, нагрузку по зонам, расписание и статус стрима.</p>
+      </div>
+    </section>
+
+    <section class="moderation-boundary">
+      <div class="moderation-boundary__content">
+        <div class="moderation-boundary__top">
+          <figure class="moderation-boundary__figure">
+            <img src={chatManagementImage} alt="Chat Management в MetaKit с подтверждением деструктивного действия" loading="lazy" />
+          </figure>
+
+          <div class="moderation-boundary__text">
+            <p>То же касалось модерации чата. Chat Management — не просто список сообщений, а рабочий инструмент для управления комнатами и пользователями в реальном времени.</p>
+            <p>Деструктивные действия — бан, отключение комнаты — требуют подтверждения. Не потому что модератору нельзя доверять, а потому что в стрессе легко промахнуться. Это не абстрактная предосторожность: на одном из предыдущих проектов EDGE мы обнаружили на лайве неактивную кнопку — её нельзя было нажать в нужный момент. Исправляли в кранче, это стоило и денег, и репутации. MetaKit проектировался уже с памятью об этом.</p>
+          </div>
+        </div>
+
+        <div class="moderation-boundary__bottom">
+          <p class="section-label">Что порезали и почему</p>
+          <div class="moderation-boundary__copy">
+            <p>Параллельно с этим шла работа по другую сторону стола — что вообще не стоило делать.</p>
+            <p>3D-пространство — это Unity-сцена. Её собирает команда под конкретный бриф, и это всегда кастом. Никакой админки здесь нет и быть не может. Но внутри любого пространства — логотипы, тексты на экранах, agenda, описания стендов — структура одна и та же от проекта к проекту.</p>
+            <p>Вопрос был не про фичи, а про границу: где заканчивается кастом и начинается типовое. Мы провели её там: пространство остаётся за командой, контент внутри — переходит к клиенту.</p>
+            <p>Content Manager строился именно под эту часть — не как редактор сцены, а как менеджер типового контента внутри кастомного пространства.</p>
+            <p>Всё что выходило за эту границу — нестандартные интеграции, цифровые двойники, захват движений спикеров — шло отдельным модулем. Иногда подключалось к MetaKit, иногда жило само по себе.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="design-system">
+      <div class="design-system__layout">
+        <div class="design-system__copy">
+          <h2 class="design-system__title">Дизайн-система</h2>
+          <div class="design-system__text">
+            <p>Проект с пятью ролями, двумя отдельными VueApp и десятками экранов не мог расти без общего визуального слоя. Иначе каждый новый экран превращался бы в отдельный набор решений.</p>
+            <p>Поэтому я собрал базовую систему: токены цвета, типографику, семантические статусы и переиспользуемые паттерны для таблиц, карточек, действий и сигналов во время события.</p>
+            <p>Тёмная тема с заглублением — карточки темнее фона. Это не эстетика, а решение под сценарий: модератор смотрит в экран несколько часов подряд. Меньше контраста — меньше усталости.</p>
+            <p>Цветовая логика строгая: зелёный — только primary actions и live-статусы. Красный — только деструктивные действия: бан, отключение, удаление. Нигде больше. Когда видишь красную кнопку во время эфира — знаешь что это необратимо.</p>
+            <p>Всё параметризовано через Figma Variables — смена акцентного цвета под конкретного клиента занимала часы, не дни.</p>
+          </div>
+        </div>
+
+        <div class="design-system__visuals">
+          <figure class="design-system__figure">
+            <img src={typographySystemImage} alt="Типографическая система MetaKit" loading="lazy" />
+          </figure>
+          <figure class="design-system__figure">
+            <img src={colorSystemImage} alt="Цветовая система MetaKit" loading="lazy" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-retrospective">
+      <div class="case-retrospective__content">
+        <div class="case-retrospective__block">
+          <h2 class="case-retrospective__title">Что изменилось после запуска</h2>
+          <div class="case-retrospective__text">
+            <p>После запуска Eventagrate перестал быть обязательным оператором каждого события.</p>
+            <p>Команда по-прежнему занималась сложными кастомными вещами — цифровыми двойниками, захватом движений спикеров и нестандартными интеграциями. Эти модули шли отдельно, но могли подключаться к MetaKit. Стандартный контур — контент зон, назначение ролей, модерация, базовая аналитика — перешёл к клиенту.</p>
+            <p>Проектов действительно стало больше, хотя масштаб у каждого был разным: часть — полноценные ивенты, часть — компактные запуски. Главное изменение было не в цифрах. До MetaKit команда вела мероприятие руками. После — у клиента появилась система для самостоятельного управления, а у команды — ресурс для роста.</p>
+          </div>
+        </div>
+
+        <div class="case-retrospective__block">
+          <h2 class="case-retrospective__title">Что сделал бы иначе</h2>
+          <div class="case-retrospective__text case-retrospective__text--accented">
+            <p><span>Зафиксировал бы метрики на старте.</span> Стоимость одной ручной правки и цена кранча перед запуском — эти числа я восстанавливал ретроспективно. Если бы договорился о базовой точке в начале, итоговый эффект можно было бы доказать точнее.</p>
+            <p><span>Раньше разделил бы подготовку и live как две отдельные задачи.</span> Это стало очевидным только когда я проверил реальный сценарий модератора перед стартом события. Если бы начал с этого разделения — часть решений появилась бы быстрее и с меньшими переделками.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  :global(html) { overflow-x: hidden; }
+  .case {
+    padding-bottom: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+  .full-bleed {
+    width: min(1200px, calc(100vw - 40px));
+    margin-left: calc(50% - min(600px, calc(50vw - 20px)));
+  }
+  .hero,
+  .context-section,
+  .role-section,
+  .research-section,
+  .solutions-section,
+  .outcome-section {
+    width: min(754px, 100%);
+    margin: 0 auto;
+  }
+  .hero {
+    padding-top: 29px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .hero-copy,
+  .context-content,
+  .role-content,
+  .research-content,
+  .solutions-section,
+  .outcome-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 29px;
+    font-size: 16px;
+    line-height: 1.2;
+    color: #fff;
+  }
+  .hero-date {
+    color: #979797;
+  }
+  .hero-project {
+    color: #fff;
+  }
+  .hero-title,
+  .section-title {
+    margin: 0;
+    font-size: clamp(32px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+  .hero-tags,
+  .impact-pills,
+  .modules-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: min(750px, 100%);
+    margin: 0 auto;
+  }
+  .hero-stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tag,
+  .hero-stat,
+  .impact-pill,
+  .module-card {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 8px;
+    border-radius: 10px;
+    border: 1px solid #a2adce;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .tag {
+    background: #fff;
+    color: #020202;
+    border-color: #fff;
+  }
+  .hero-stat {
+    box-sizing: border-box;
+    min-height: 32px;
+    padding: 8px;
+    gap: 4px;
+    color: #fff;
+    font-size: 14px;
+    line-height: 16px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+  .hero-stat--w116 { width: 116px; }
+  .hero-stat--w324 { width: 324px; }
+  .hero-stat--w350 { width: 350px; }
+  .hero-stat--w541 { width: 541px; }
+  .hero-stat__icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+    color: #ffffff;
+  }
+  .hero-stat__icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+  .hero-stat__icon--up {
+    transform: rotate(180deg);
+  }
+  .impact-pill,
+  .module-card {
+    min-height: 40px;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .impact-pill--wide {
+    width: 100%;
+  }
+  .module-card {
+    background: rgba(255,255,255,0.03);
+  }
+  .intro {
+    margin: 16px 0 0;
+    font-size: 24px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .hero-cover {
+    margin: 0;
+    border-radius: 30px;
+    overflow: hidden;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  .hero-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 30px;
+  }
+  .section-label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+    text-transform: uppercase;
+    color: #a2adce;
+  }
+  .context-content {
+    gap: 48px;
+  }
+  .context-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: #fff;
+  }
+  .context-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .context-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .context-text p {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .context-media {
+    margin: 0;
+    aspect-ratio: 1920 / 1080;
+    width: 100%;
+    overflow: hidden;
+  }
+  .context-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000;
+  }
+  .problem-panel--metakit {
+    width: min(1200px, calc(100vw - 40px));
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .problem-copy {
+    width: min(750px, 100%);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: #fff;
+  }
+  .problem-title,
+  .role-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .problem-text,
+  .role-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .problem-text p {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .role-section--metakit {
+    width: min(750px, 100%);
+  }
+  .role-content--metakit {
+    gap: 24px;
+  }
+  .role-text p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #f9f9f9;
+  }
+  .research-start {
+    width: min(750px, 100%);
+    margin: 0 auto;
+  }
+  .research-start__content {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .research-start__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .research-start__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .research-start__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .research-start__copy p,
+  .research-start__summary p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .research-start__figure {
+    margin: 0;
+    width: 100%;
+  }
+  .research-start__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .research-start__groups {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .research-start__group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .research-start__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .research-start__column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .research-start__subhead {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #56d284;
+  }
+  .research-start__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .research-start__card {
+    box-sizing: border-box;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .research-start__card--outline {
+    border: 1px solid #1c1e25;
+    background: transparent;
+  }
+  .research-start__card--filled {
+    background: #1c1e25;
+  }
+  .research-start__summary {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .research-start__summary strong {
+    font-weight: 700;
+  }
+  .research-start__summary span {
+    color: #37ca8c;
+    font-weight: 700;
+  }
+  .system-rebuild {
+    width: min(754px, 100%);
+    margin: 0 auto;
+  }
+  .system-rebuild__content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .system-rebuild__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .system-rebuild__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .system-rebuild__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .system-rebuild__text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .system-rebuild__text p,
+  .system-rebuild__outro {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .system-rebuild__figure {
+    margin: 0;
+    width: 100%;
+  }
+  .system-rebuild__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .scenario-split {
+    width: min(754px, 100%);
+    margin: 0 auto;
+  }
+  .scenario-split__content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .scenario-split__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .scenario-split__copy {
+    width: min(750px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .scenario-split__text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .scenario-split__text p,
+  .scenario-split__outro {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .scenario-split__figure {
+    margin: 0;
+    width: 100%;
+  }
+  .scenario-split__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .moderation-boundary {
+    width: min(755px, 100%);
+    margin: 0 auto;
+  }
+  .moderation-boundary__content {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .moderation-boundary__top {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .moderation-boundary__figure {
+    margin: 0;
+    width: 100%;
+  }
+  .moderation-boundary__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .moderation-boundary__text,
+  .moderation-boundary__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .moderation-boundary__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .moderation-boundary__text p,
+  .moderation-boundary__copy p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .design-system {
+    width: min(971px, 100%);
+    margin: 0 auto;
+  }
+  .design-system__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 519px) minmax(0, 405px);
+    justify-content: space-between;
+    align-items: start;
+    gap: 24px 47px;
+  }
+  .design-system__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: #fff;
+  }
+  .design-system__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .design-system__text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .design-system__text p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .design-system__visuals {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .design-system__figure {
+    margin: 0;
+    width: 100%;
+  }
+  .design-system__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .case-retrospective {
+    width: min(755px, 100%);
+    margin: 0 auto;
+  }
+  .case-retrospective__content {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    color: #fff;
+  }
+  .case-retrospective__block {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .case-retrospective__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .case-retrospective__text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .case-retrospective__text p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .case-retrospective__text--accented span {
+    color: #37ca8c;
+    font-weight: 700;
+  }
+  .problem-panel {
+    border: 1px solid #1c1e25;
+    border-radius: 30px;
+    padding: 48px 56px;
+  }
+  .problem-content {
+    width: min(754px, 100%);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .problem-grid,
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .problem-card,
+  .insight-card,
+  .role-card,
+  .outcome-card {
+    border: 1px solid #a2adce;
+    border-radius: 10px;
+    padding: 16px;
+    background: transparent;
+  }
+  .problem-card { grid-column: span 6; }
+  .problem-card--wide,
+  .insight-card--wide { grid-column: span 12; }
+  .problem-card h2,
+  .problem-card p,
+  .insight-card p,
+  .role-card p,
+  .solution-copy p,
+  .outcome-card p {
+    margin: 0;
+    color: #fff;
+  }
+  .problem-card h2 {
+    margin-bottom: 8px;
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  .problem-card p,
+  .role-card p,
+  .solution-copy p,
+  .outcome-card p,
+  .insight-card p {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .role-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .research-content {
+    gap: 48px;
+  }
+  .research-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .insight-card { grid-column: span 6; }
+  .insight-card strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #edb95a;
+  }
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .scenario-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .scenario-heading {
+    font-size: 16px;
+    line-height: 1.4;
+    color: #fff;
+  }
+  .scenario-heading--after {
+    color: #37ca8c;
+  }
+  .scenario-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .scenario-card {
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .scenario-card--before {
+    border: 1px solid #1c1e25;
+    color: #d9e0f7;
+  }
+  .scenario-card--after {
+    background: #1c1e25;
+    color: #fff;
+  }
+  .solutions-section {
+    gap: 48px;
+  }
+  .solution {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-visual {
+    border: 1px solid rgba(162, 173, 206, 0.36);
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .solution-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .screen-grid {
+    display: grid;
+    gap: 16px;
+  }
+  .screen-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .screen-grid--three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .screen-figure {
+    margin: 0;
+    border: 1px solid rgba(162, 173, 206, 0.36);
+    border-radius: 18px;
+    overflow: hidden;
+    background: #11131a;
+  }
+  .screen-figure--tight {
+    border-radius: 16px;
+  }
+  .screen-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .screen-caption {
+    margin: 0;
+    padding: 12px 14px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #a2adce;
+  }
+  @media (max-width: 700px) {
+    .case {
+      gap: 48px;
+      padding-bottom: 72px;
+    }
+    .hero-title,
+    .section-title {
+      font-size: 30px;
+    }
+    .hero-meta {
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .hero-stats-row {
+      flex-direction: column;
+    }
+    .hero-stat {
+      white-space: normal;
+      align-items: flex-start;
+      width: 100%;
+    }
+    .hero-cover {
+      border-radius: 20px;
+    }
+    .hero-cover img {
+      border-radius: 20px;
+    }
+    .problem-grid,
+    .insight-grid,
+    .scenario-grid,
+    .research-start__columns,
+    .design-system__layout,
+    .screen-grid--two,
+    .screen-grid--three {
+      grid-template-columns: 1fr;
+    }
+    .problem-card,
+    .problem-card--wide,
+    .insight-card,
+    .insight-card--wide {
+      grid-column: auto;
+    }
+    .problem-panel {
+      padding: 24px 20px;
+    }
+    .problem-panel--metakit {
+      width: calc(100vw - 40px);
+    }
+  }
+</style>

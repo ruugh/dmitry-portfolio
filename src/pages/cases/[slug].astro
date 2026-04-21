@@ -7,16 +7,40 @@ export async function getStaticPaths() {
   if (process.env.OC_PREVIEW_HOME_ONLY === '1') return [];
 
   const cases = await getCasesFromDatabase();
-  return cases.map((c) => ({ params: { slug: c.slug }, props: { pageId: c.id, title: c.title } }));
+  return cases.map((c) => ({
+    params: { slug: c.slug },
+    props: { pageId: c.id, title: c.title, timeline: c.timeline, role: c.role },
+  }));
 }
 
-const { pageId, title } = Astro.props;
+const legacyCaseRedirects: Record<string, string> = {
+  'redakciya-tratila-15-minut-na-publikaciyu-i-boyalas-sistemy-teper-7-minut-i-instrument-kotoryy-rabotaet': '/cases/cms-omsk',
+  'kazhdoe-meropriyatie-sobiralos-s-nulya-za-dve-nedeli-i-sedalo-vsyu-komandu-teper-4-dnya-i-klient-nastraivaet-sam': '/cases/meta-kit-test',
+};
+
+const redirectTarget = Astro.params.slug ? legacyCaseRedirects[Astro.params.slug] : undefined;
+if (redirectTarget) {
+  return Astro.redirect(redirectTarget, 301);
+}
+
+const { pageId, title, timeline, role } = Astro.props;
 const html = await renderNotionPageToHtml(pageId);
+const metaParts = [timeline, role].filter(Boolean);
+const metaLine = metaParts.join('    ');
 ---
 
 <BaseLayout title={`${title} — кейс`}>
   <article>
     <h1>{title}</h1>
+    {metaLine && <p class="case-meta">{metaLine}</p>}
     <div set:html={html} />
   </article>
 </BaseLayout>
+
+<style>
+  .case-meta {
+    color: var(--muted);
+    font-size: 14px;
+    margin: -8px 0 32px;
+  }
+</style>

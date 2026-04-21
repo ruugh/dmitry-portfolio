@@ -36,6 +36,10 @@ function guessExt(url, contentType) {
   if (fromType === 'image/webp') return 'webp'
   if (fromType === 'image/gif') return 'gif'
   if (fromType === 'image/svg+xml') return 'svg'
+  if (fromType === 'video/mp4') return 'mp4'
+  if (fromType === 'video/webm') return 'webm'
+  if (fromType === 'video/ogg') return 'ogg'
+  if (fromType === 'video/quicktime') return 'mov'
 
   const m = url.split('?')[0].match(/\.([a-zA-Z0-9]{2,5})$/)
   return (m?.[1] || 'jpg').toLowerCase()
@@ -79,12 +83,14 @@ function imageBlockFileKey(blockId) {
   return `img-${blockId}`
 }
 
+function videoBlockFileKey(blockId) {
+  return `video-${blockId}`
+}
+
 async function downloadAsset({ key, url }) {
   const publicDir = path.join(process.cwd(), 'public', 'notion-assets')
   await ensureDir(publicDir)
 
-  // If we already have a file for this key in manifest, we may still want to skip.
-  // But we detect by existing file with any ext: we store exact filename in manifest.
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Failed to fetch asset (${res.status}) ${url}`)
   const contentType = res.headers.get('content-type') ?? undefined
@@ -92,12 +98,20 @@ async function downloadAsset({ key, url }) {
   const filename = `${key}.${ext}`
   const filePath = path.join(publicDir, filename)
 
-  try {
-    await fs.access(filePath)
-    const stat = await fs.stat(filePath)
-    return { key, file: `notion-assets/${filename}`, bytes: stat.size, contentType }
-  } catch {
-    // continue
+  // Covers are always re-downloaded (user may replace them in Notion)
+  // Other assets are cached by filename
+  const iscover = key.startsWith('cover-')
+  if (!iscover) {
+    try {
+      await fs.access(filePath)
+      const stat = await fs.stat(filePath)
+      if (stat.size > 0) {
+        await res.body?.cancel?.()
+        return { key, file: `notion-assets/${filename}`, bytes: stat.size, contentType }
+      }
+    } catch {
+      // not cached, continue to download
+    }
   }
 
   const buf = Buffer.from(await res.arrayBuffer())
@@ -131,6 +145,9 @@ async function main() {
     if (b?.type === 'image' && b.image?.type === 'file' && b.image?.file?.url) {
       assets.push({ key: imageBlockFileKey(b.id), url: b.image.file.url })
     }
+    if (b?.type === 'video' && b.video?.type === 'file' && b.video?.file?.url) {
+      assets.push({ key: videoBlockFileKey(b.id), url: b.video.file.url })
+    }
   }
 
   // Cases: covers + content blocks
@@ -154,6 +171,9 @@ async function main() {
       for (const b of blocks) {
         if (b?.type === 'image' && b.image?.type === 'file' && b.image?.file?.url) {
           assets.push({ key: imageBlockFileKey(b.id), url: b.image.file.url })
+        }
+        if (b?.type === 'video' && b.video?.type === 'file' && b.video?.file?.url) {
+          assets.push({ key: videoBlockFileKey(b.id), url: b.video.file.url })
         }
       }
     } catch {

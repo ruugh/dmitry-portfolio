@@ -1,115 +1,342 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { renderNotionPageToHtml, ROOT_PAGE_ID } from '../lib/notion';
+import { getCasesFromDatabase } from '../lib/notion';
 
-// Home page is rendered purely from Notion for 1:1 layout control.
-// Do not auto-wide images on home; use explicit tags (#wide / #wNNN).
-let homeHtml = '';
+const isPreviewHomeOnly = process.env.OC_PREVIEW_HOME_ONLY === '1';
+const cases = isPreviewHomeOnly ? [] : await getCasesFromDatabase();
 
-// Preview builds may run without Notion env. In that mode, render a minimal stub so we can test header/UI.
-if (process.env.OC_PREVIEW_HOME_ONLY === '1') {
-  homeHtml = `<h1>Preview</h1><p class="muted">Notion content disabled for this preview build.</p>`;
-} else {
-  homeHtml = await renderNotionPageToHtml(ROOT_PAGE_ID(), { wideImagesWithCaption: false });
-  // If Notion emits a stray child_page/link_to_page pointing to the CV page, it may render as a standalone "CV" link.
-  // On home this reads like noise, so strip it.
-  homeHtml = homeHtml.replace(/<p>\s*<a[^>]*href="\/?cases\/cv\/?"[^>]*>\s*CV\s*<\/a>\s*<\/p>/gi, '');
-}
+const featuredCaseLinks = [
+  {
+    sourceSlug: 'redakciya-tratila-15-minut-na-publikaciyu-i-boyalas-sistemy-teper-7-minut-i-instrument-kotoryy-rabotaet',
+    href: '/cases/cms-omsk/',
+  },
+  {
+    sourceSlug: 'kazhdoe-meropriyatie-sobiralos-s-nulya-za-dve-nedeli-i-sedalo-vsyu-komandu-teper-4-dnya-i-klient-nastraivaet-sam',
+    href: '/cases/meta-kit-test/',
+  },
+] as const;
+
+const featuredCases = featuredCaseLinks
+  .map((item) => {
+    const source = cases.find((c) => c.slug === item.sourceSlug);
+    if (!source) return null;
+    return { ...source, href: item.href };
+  })
+  .filter((item): item is (typeof cases)[number] & { href: string } => item !== null);
+
+type Metric = { dir: 'up' | 'down'; text: string };
+const caseMetrics: Record<string, Metric[]> = {
+  'redakciya-tratila-15-minut-na-publikaciyu-i-boyalas-sistemy-teper-7-minut-i-instrument-kotoryy-rabotaet': [
+    { dir: 'down', text: 'Время публикации: 14 мин → 7 мин (−50%)' },
+    { dir: 'down', text: 'Критические ошибки: −67%' },
+    { dir: 'up',   text: 'Удовлетворённость команды: 3.2/5 → 4.6/5 (+44%)' },
+    { dir: 'down', text: 'Ошибки в размещении рекламы: −45%' },
+  ],
+  'kazhdoe-meropriyatie-sobiralos-s-nulya-za-dve-nedeli-i-sedalo-vsyu-komandu-teper-4-dnya-i-klient-nastraivaet-sam': [
+    { dir: 'down', text: 'Конфигурация события: 14 дней → 4 дня (−71%)' },
+    { dir: 'up',   text: 'Запусков в квартал: 1-2 → 3-6 (+60%)' },
+    { dir: 'up',   text: 'Self-service: 0% → 80%' },
+    { dir: 'up',   text: 'CSAT: 4.8/5' },
+  ],
+  'menedzhery-veli-bazu-v-excel-i-boyalis-poteryat-klienta-teper-segmentaciya-za-minutu-i-rassylka-bez-oshibok': [
+    { dir: 'down', text: 'Анонс турнира: 25 мин → 10 мин (−60%)' },
+    { dir: 'up',   text: 'Покрытие тегами: 30% → 70% (+40 п.п.)' },
+    { dir: 'down', text: 'Ошибки доставок: 1,8% → 0,4% (−1,4 п.п.)' },
+    { dir: 'up',   text: 'Удержание M+1: +12 п.п.' },
+  ],
+  'platforma-servisnogo-obsluzhivaniya-gruzovogo-transporta': [
+    { dir: 'down', text: 'Время принятия заявки: −30–40%' },
+    { dir: 'up',   text: 'Заявок с фото и чек-листом: до 70–80%' },
+    { dir: 'down', text: 'Спорных ситуаций по оплате (качественно)' },
+  ],
+};
 ---
 
 <BaseLayout title="Дмитрий Корчагин — портфолио" description="Портфолио Дмитрия Корчагина">
-  <article>
-    <div id="homeContent" set:html={homeHtml} />
-  </article>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__left">
+      <p class="hero__greeting">Привет, я Дмитрий Корчагин — продуктовый дизайнер</p>
+      <h1 class="hero__tagline">Помогаю сложным продуктам становиться понятными.</h1>
+      <p class="hero__sub">Проектирую B2B-интерфейсы, в которых меньше ошибок, меньше хаоса и больше контроля.</p>
+      <div class="hero__pills">
+        <span class="pill">5+ лет опыта</span>
+        <span class="pill">B2B SaaS</span>
+        <span class="pill">CRM</span>
+        <span class="pill">CMS</span>
+        <span class="pill">Mobile platforms</span>
+      </div>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="https://t.me/ruugh" target="_blank" rel="noopener noreferrer">Написать в Телеграм</a>
+        <a class="btn btn--outline" href="/cv">Смотреть CV</a>
+      </div>
+    </div>
+    <div class="hero__right">
+      <div class="hero__photo-wrap">
+        <img src="/avatar-dmitry.jpg" alt="Дмитрий Корчагин" class="hero__photo" />
+        <span class="hero__status">
+          <span class="hero__status-dot"></span>
+          открыт к предложениям
+        </span>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    (() => {
-      const root = document.getElementById('homeContent');
-      if (!root) return;
+  <!-- Cases -->
+  <div class="cases-list">
+    {featuredCases.map((c) => (
+      <a class="case-row" href={c.href}>
+        <div class="case-row__header">
+          {c.timeline && <span class="case-row__date">{c.timeline}</span>}
+          {c.role && <span class="case-row__source">{c.role}</span>}
+        </div>
+        <h2 class="case-row__title">{c.title}</h2>
+        {c.tags && c.tags.length > 0 && (
+          <div class="case-row__tags">
+            {c.tags.map((tag) => <span class="pill">{tag}</span>)}
+          </div>
+        )}
+        {c.coverUrl && (
+          <div class="case-row__cover">
+            <img src={c.coverUrl} alt={c.title} loading="lazy" />
+          </div>
+        )}
+        {caseMetrics[c.slug] && (
+          <div class="case-row__metrics">
+            {caseMetrics[c.slug].map((m) => (
+              <span class="metric-pill">
+                <svg class={`metric-arrow${m.dir === 'down' ? ' metric-arrow--down' : ''}`} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.979 2.021L11.832 5.875L11.125 6.582L8.479 3.936V12.979H7.479V3.936L4.832 6.582L4.125 5.875L7.979 2.021Z" fill="currentColor"/>
+                </svg>
+                {m.text}
+              </span>
+            ))}
+          </div>
+        )}
+      </a>
+    ))}
+  </div>
 
-      const normalizeTelegramHref = (href, text) => {
-        const raw = (href || '').trim();
-        const label = (text || '').trim();
-        const lower = label.toLowerCase();
-        const fromResolve = raw.match(/tg:\/\/resolve\?domain=([^&]+)/i);
-        if (fromResolve) return `https://t.me/${fromResolve[1].replace(/^@/, '')}`;
-        const fromTmeAt = raw.match(/^https?:\/\/t\.me\/@([^/?#]+)/i);
-        if (fromTmeAt) return `https://t.me/${fromTmeAt[1]}`;
-        const fromTme = raw.match(/^https?:\/\/t\.me\/([^/?#]+)/i);
-        if (fromTme) return `https://t.me/${fromTme[1].replace(/^@/, '')}`;
-        const fromAnyText = label.match(/@([a-zA-Z0-9_]+)/);
-        if (fromAnyText) return `https://t.me/${fromAnyText[1]}`;
-        if (/^@[^\s/]+$/.test(raw)) return `https://t.me/${raw.replace(/^@/, '')}`;
-        if ((lower.includes('telegram') || lower.includes('телеграм') || lower === 'tg') && (!raw || raw === '#' || raw === '/' || !/^https?:/i.test(raw))) {
-          return 'https://t.me/Ruugh';
-        }
-        return raw;
-      };
-
-      const links = Array.from(root.querySelectorAll('a'));
-      const images = Array.from(root.querySelectorAll('img'));
-
-      // Normalize obvious special links first.
-      for (const link of links) {
-        const text = (link.textContent || '').trim();
-        const lower = text.toLowerCase();
-        const href = link.getAttribute('href') || '';
-
-
-        const tgHref = normalizeTelegramHref(href, text);
-        if (tgHref && tgHref !== href) {
-          link.setAttribute('href', tgHref);
-        }
-      }
-
-      // If Notion rendered plain text instead of links for Telegram, force-wrap it.
-      const textNodes = Array.from(root.querySelectorAll('p, li, div, span')).filter((el) => !el.querySelector('a[href]'));
-
-      for (const el of textNodes) {
-        const txt = (el.textContent || '').trim();
-        const lower = txt.toLowerCase();
-        if (lower.includes('telegram') || lower.includes('телеграм') || /@[a-zA-Z0-9_]+/.test(txt)) {
-          const href = normalizeTelegramHref('', txt) || 'https://t.me/Ruugh';
-          el.innerHTML = `<a href="${href}">${txt}</a>`;
-        }
-      }
-
-      // Add extra spacing between the portfolio title and the first media block.
-      const firstMedia = root.querySelector('figure, .notion-image');
-      if (firstMedia) firstMedia.classList.add('home-first-media');
-
-      // Then convert "Подробнее о проекте" to strong CTA and attach the same href to the nearest image above.
-      for (const link of links) {
-        const text = (link.textContent || '').trim().toLowerCase();
-        if (text !== 'подробнее о проекте') continue;
-
-        link.innerHTML = `<strong>${link.innerHTML}</strong>`;
-
-        const href = link.getAttribute('href');
-        if (!href) continue;
-
-        const p = link.closest('p');
-        if (p) p.classList.add('case-cta');
-
-        let targetImg = null;
-        for (const img of images) {
-          const pos = img.compareDocumentPosition(link);
-          const isBefore = !!(pos & Node.DOCUMENT_POSITION_FOLLOWING);
-          if (isBefore) targetImg = img;
-        }
-
-        if (!targetImg) continue;
-        if (targetImg.closest('a[href]')) continue;
-
-        const wrapper = targetImg.closest('figure, .notion-image, p, div') || targetImg;
-        if (wrapper.closest('a[href]')) continue;
-
-        const a = document.createElement('a');
-        a.href = href;
-        a.className = 'case-image-link';
-        wrapper.parentNode?.insertBefore(a, wrapper);
-        a.appendChild(wrapper);
-      }
-    })();
-  </script>
 </BaseLayout>
+
+<style>
+  /* ── Hero ── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 56px;
+    align-items: flex-start;
+    padding: 64px 0 56px;
+  }
+  .hero__left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .hero__greeting {
+    color: #979797;
+    margin: 0 0 16px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .hero__tagline {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 16px;
+    color: #fff;
+  }
+  .hero__sub {
+    color: #fff;
+    margin: 0 0 24px;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 460px;
+  }
+  .hero__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .hero__actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* Photo */
+  .hero__right {
+    flex-shrink: 0;
+    padding-top: 4px;
+  }
+  .hero__photo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .hero__photo {
+    width: 184px;
+    height: 184px;
+    border-radius: 8px;
+    object-fit: cover;
+    object-position: top;
+    background: #fff;
+  }
+  .hero__status {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    color: #65ce4b;
+    white-space: nowrap;
+  }
+  .hero__status-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #65ce4b;
+    flex-shrink: 0;
+  }
+
+  /* Shared pill style (hero + case tags) */
+  :global(.pill) {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    background: #fff;
+    border: 1px solid #fff;
+    color: #000;
+    white-space: nowrap;
+  }
+
+  /* Buttons override for this page */
+  :global(.btn--outline) {
+    border-color: #378add;
+    color: #378add;
+    background: transparent;
+  }
+  :global(.btn--primary) {
+    background: #378add;
+    border-color: #378add;
+    color: #fff;
+  }
+
+  /* Mobile hero */
+  @media (max-width: 600px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .hero__right { order: -1; align-self: flex-start; }
+    .hero__photo { width: 120px; height: 120px; }
+  }
+
+  /* ── Cases list ── */
+  .cases-list {
+    display: flex;
+    flex-direction: column;
+    gap: 96px;
+    padding-top: 64px;
+    padding-bottom: 96px;
+  }
+  .case-row {
+    display: block;
+    text-decoration: none !important;
+    color: var(--fg);
+    transition: opacity .15s;
+  }
+  .case-row:hover { opacity: .85; }
+
+  .case-row__header {
+    display: flex;
+    align-items: center;
+    gap: 29px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .case-row__date { color: #979797; }
+  .case-row__source { color: #fff; }
+
+  .case-row__title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+    margin: 0 0 24px;
+  }
+
+  .case-row__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  /* Metric pills */
+  .case-row__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 16px;
+    column-gap: 8px;
+    margin-top: 24px;
+  }
+  .metric-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .metric-arrow {
+    flex-shrink: 0;
+  }
+  .metric-arrow--down {
+    transform: rotate(180deg);
+  }
+
+  /* Cover: full-bleed dark container */
+  .case-row__cover {
+    width: min(1200px, calc(100vw - 40px));
+    margin-left: calc(50% - min(600px, calc(50vw - 20px)));
+    background: rgba(109, 118, 137, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    overflow: hidden;
+  }
+  .case-row__cover img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 675px;
+    object-fit: cover;
+  }
+
+  @media (max-width: 600px) {
+    .cases-list { gap: 64px; }
+    .case-row__cover { border-radius: 16px; }
+    .case-row__header { gap: 16px; font-size: 14px; }
+    .case-row__title { font-size: 20px; }
+    .metric-pill { font-size: 12px; }
+  }
+
+  /* Remove main bottom padding so footer sits flush */
+  :global(body[data-page='home'] main) { padding-bottom: 0 !important; }
+</style>

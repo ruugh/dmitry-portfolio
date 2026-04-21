@@ -9,7 +9,35 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
     <meta name="description" content={description} />
     <title>{title}</title>
     <style>
-      :root { --bg:#1E1E1E; --bg-rgb: 30, 30, 30; --fg:#e6e6e6; --muted:#a8a8a8; --card:#12141b; --link:#7dd3fc; --border: rgba(255,255,255,.10); }
+      /* === LIGHT THEME TOKENS (reserved, not applied) ===
+      :root[data-theme="light"] {
+        --bg: #ffffff; --bg-rgb: 255,255,255;
+        --fg: #0f172a; --muted: #64748b;
+        --card: #f8fafc; --link: #185FA5;
+        --border: rgba(0,0,0,.08);
+        --primary: #185FA5; --primary-fg: #ffffff;
+        --accent: #185FA5; --success: #16a34a;
+      }
+      === END LIGHT THEME TOKENS === */
+      :root {
+        --bg: #0F1117; --bg-rgb: 15,17,23;
+        --fg: #e2e8f0; --muted: #94a3b8;
+        --card: #1A1D2E; --link: #93C5FD;
+        --border: rgba(255,255,255,.08);
+        --primary: #378ADD; --primary-fg: #ffffff;
+        --accent: #93C5FD; --success: #4ADE80;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
       body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; background: var(--bg); color: var(--fg); }
       :global(a),
       :global(a:visited) {
@@ -19,41 +47,52 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
         text-decoration-color: rgba(255,255,255,.55);
       }
       :global(a:hover) { text-decoration-color: rgba(255,255,255,.9); }
-      header { position: sticky; top:0; background: rgba(var(--bg-rgb), .85); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.08); }
+      header { position: sticky; top:0; z-index: 100; background: rgba(var(--bg-rgb), .92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.08); }
       .wrap { max-width: 760px; margin: 0 auto; padding: 16px 20px; }
-      header .wrap { max-width: none; }
+      header .wrap { max-width: none; padding-top: 0; padding-bottom: 0; min-height: 75px; display: flex; flex-direction: column; justify-content: center; }
       nav { display:flex; gap:14px; align-items:center; }
-      nav a { color: var(--fg); opacity: .9; }
+      nav a { color: var(--fg); opacity: 1; text-decoration: none !important; }
 
       /* Header layout */
-      .nav-row { position: relative; display:flex; align-items:center; justify-content: space-between; gap: 16px; }
-      .brand { display:flex; align-items:center; gap: 10px; text-decoration: none !important; flex: 0 0 auto; }
-      .brand:hover { opacity: .95; }
-      .brand__avatar { width: 32px; height: 32px; border-radius: 999px; background: url('/avatar-dmitry.jpg') center/cover no-repeat; border: 1px solid rgba(255,255,255,.12); flex: 0 0 auto; }
-      .brand__text { display:flex; flex-direction: column; line-height: 1.1; }
-      .brand__name { font-weight: 700; font-size: 14px; }
-      .brand__sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+      .nav-row { position: relative; display:flex; align-items:center; justify-content: center; }
 
-      .nav-links { position: absolute; left: 50%; transform: translateX(-50%); display:flex; align-items:center; gap:14px; }
-      .nav-cta { display:flex; align-items:center; gap:10px; margin-left: auto; }
-      .btn { display:inline-flex; align-items:center; justify-content:center; padding: 8px 10px; border-radius: 10px; font-size: 13px; line-height: 1; text-decoration: none !important; border: 1px solid rgba(255,255,255,.18); background: transparent; }
-      .btn:hover { border-color: rgba(255,255,255,.28); }
-      .btn--primary { background: rgba(125,211,252,.18); border-color: rgba(125,211,252,.45); }
-      .btn--primary:hover { background: rgba(125,211,252,.24); }
+      .nav-links { display:flex; align-items:center; gap:34px; }
+      .nav-socials { position: absolute; right: 0; display:flex; align-items:center; gap:16px; }
+      .nav-social {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        color: #ffffff;
+        text-decoration: none !important;
+      }
+      .nav-social svg {
+        display: block;
+        width: 24px;
+        height: 24px;
+      }
+      .nav-social:hover { opacity: .82; }
+      .btn, :global(.btn) { display:inline-flex; align-items:center; justify-content:center; height: 44px; padding: 0 20px; border-radius: 999px; font-size: 14px; font-weight: 600; line-height: 1; text-decoration: none !important; border: 1px solid rgba(255,255,255,.18); background: transparent; color: var(--fg); }
+      .btn:hover, :global(.btn):hover { border-color: rgba(255,255,255,.4); }
+      .btn--primary, :global(.btn--primary) { background: var(--primary); border-color: var(--primary); color: var(--primary-fg); }
+      .btn--primary:hover, :global(.btn--primary):hover { opacity: .88; }
+      .btn--outline, :global(.btn--outline) { background: transparent !important; border-color: #378ADD !important; color: #378ADD !important; }
+      .btn--outline:hover, :global(.btn--outline):hover { opacity: .8; }
 
       .burger { display:none; align-items:center; justify-content:center; width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.03); cursor: pointer; }
       .burger:hover { border-color: rgba(255,255,255,.22); }
       .mobile-menu { display:none; border-top: 1px solid rgba(255,255,255,.08); padding-top: 12px; margin-top: 12px; }
       .mobile-menu a { display:block; padding: 10px 0; text-decoration: none !important; }
-      .mobile-menu .mobile-cta { display:flex; gap:10px; padding-top: 10px; }
+      .mobile-menu .mobile-socials { display:flex; gap:14px; padding-top: 12px; }
 
       @media (max-width: 700px) {
         .nav-row { display:flex; }
-        .nav-links, .nav-cta { display:none; }
+        .nav-links, .nav-socials { display:none; }
         .burger { display:inline-flex; margin-left: auto; }
         .mobile-menu[data-open='true'] { display:block; }
       }
-      main { padding: 28px 0 64px; }
+      main { padding: 28px 0 0; }
       .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 14px; }
       /* Home now renders purely from Notion content (see src/pages/index.astro) */
       .card { background: var(--card); border: 0; border-radius: 0; padding: 14px 16px; display:block; transition: transform .12s ease, border-color .12s ease, background .12s ease; }
@@ -65,8 +104,9 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       /* HOME RESET: keep the page stable, but allow intentional full-bleed on home */
       :global(article) { overflow-x: hidden; }
       :global(body[data-page='home'] article) { overflow-x: visible; }
-      :global(body[data-page='home'] main) { overflow-x: hidden; }
+      :global(body[data-page='home'] main) { overflow-x: visible; }
       :global(body[data-page='home'] .wrap) { overflow-x: visible; }
+      :global(body[data-page='home']) { overflow-x: hidden; }
       :global(article h1, article h2, article h3) { margin: 22px 0 10px; }
       :global(body[data-page='home'] #homeContent .home-first-media) { margin-top: 34px; }
       :global(body[data-page='home'] article h2) { margin-top: 22px; }
@@ -77,6 +117,7 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       /* Notion-ish defaults */
       :global(article figure) { margin: 18px 0; }
       :global(article img) { max-width: 100%; height: auto; display: block !important; }
+
       :global(article .notion-image figure) { margin: 0; }
       :global(article .notion-image img) { display: block !important; }
 
@@ -225,6 +266,31 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       :global(table.notion-table th:last-child) { border-right: none; }
       :global(table.notion-table.has-header tr:first-child th) { background: rgba(255,255,255,.05); }
       footer { border-top: 0; }
+      .site-footer { padding-bottom: 0; }
+      .footer-cta {
+        background: #1c1e25;
+        border-radius: 30px 30px 0 0;
+        padding: 37px 30px 32px;
+        width: min(1200px, calc(100vw - 40px));
+        margin: 0 auto;
+      }
+      .footer-cta__body { display: flex; flex-direction: column; gap: 8px; margin-bottom: 64px; }
+      .footer-cta__heading { font-size: 36px; font-weight: 700; line-height: 1.2; color: #fff; margin: 0; }
+      .footer-cta__sub { font-size: 20px; font-weight: 400; color: #fff; margin: 0; }
+      .footer-cta__links { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; max-width: 1140px; margin-bottom: 40px; }
+      .footer-cta__socials { display: flex; align-items: center; gap: 64px; }
+      .footer-cta__link { display: inline-flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 400; color: #fff; text-decoration: none !important; transition: opacity .15s; }
+      .footer-cta__link:hover { opacity: .75; }
+      .footer-cta__copy { font-size: 13px; color: rgba(255,255,255,0.35); margin: 0; }
+      @media (max-width: 600px) {
+        .footer-cta { padding: 28px 20px 24px; }
+        .footer-cta__heading { font-size: 24px; }
+        .footer-cta__sub { font-size: 16px; }
+        .footer-cta__body { margin-bottom: 40px; }
+        .footer-cta__links { flex-direction: column; align-items: flex-start; gap: 20px; }
+        .footer-cta__socials { flex-wrap: wrap; gap: 24px; }
+        .footer-cta__link { font-size: 16px; }
+      }
 
       /* Lightbox */
       .lightbox {
@@ -265,35 +331,46 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
     <header>
       <div class="wrap">
         <div class="nav-row">
-          <a class="brand" href="/" aria-label="На главную">
-            <span class="brand__avatar" aria-hidden="true"></span>
-            <span class="brand__text">
-              <span class="brand__name">Дмитрий Корчагин</span>
-              <span class="brand__sub">Открыт к предложениям</span>
-            </span>
-          </a>
 
           <nav class="nav-links" aria-label="Навигация">
-            <a href="/">Главная</a>
-            <a href="/cases">Кейсы</a>
-            <a href="/cv">CV</a>
+            <a href=/cases>Кейсы</a>
+            <a href=/cv>CV</a>
           </nav>
 
-          <div class="nav-cta" aria-label="Быстрые действия">
-            <a class="btn" href="/cv">Скачать CV</a>
-            <a class="btn btn--primary" href="https://t.me/ruugh" target="_blank" rel="noopener noreferrer">Написать в Telegram</a>
+          <div class="nav-socials" aria-label="Социальные ссылки">
+            <a class="nav-social" href="https://www.linkedin.com/in/dmitry-korchagin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <span class="sr-only">LinkedIn</span>
+            </a>
+            <a class="nav-social" href="mailto:nemokor@gmail.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span class="sr-only">Email</span>
+            </a>
+            <a class="nav-social" href="https://t.me/ruugh" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.088 14.19l-2.95-.924c-.64-.203-.654-.64.136-.954l11.498-4.43c.535-.194 1.002.131.79.366z"/></svg>
+              <span class="sr-only">Telegram</span>
+            </a>
           </div>
 
           <button class="burger" type="button" aria-label="Меню" aria-expanded="false" id="burgerBtn">☰</button>
         </div>
 
         <div class="mobile-menu" id="mobileMenu" data-open="false">
-          <a href="/">Главная</a>
-          <a href="/cases">Кейсы</a>
-          <a href="/cv">CV</a>
-          <div class="mobile-cta">
-            <a class="btn" href="/cv">Скачать CV</a>
-            <a class="btn btn--primary" href="https://t.me/ruugh" target="_blank" rel="noopener noreferrer">Telegram</a>
+          <a href=/cases>Кейсы</a>
+          <a href=/cv>CV</a>
+          <div class="mobile-socials">
+            <a class="nav-social" href="https://www.linkedin.com/in/dmitry-korchagin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              <span class="sr-only">LinkedIn</span>
+            </a>
+            <a class="nav-social" href="mailto:nemokor@gmail.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <span class="sr-only">Email</span>
+            </a>
+            <a class="nav-social" href="https://t.me/ruugh" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.088 14.19l-2.95-.924c-.64-.203-.654-.64.136-.954l11.498-4.43c.535-.194 1.002.131.79.366z"/></svg>
+              <span class="sr-only">Telegram</span>
+            </a>
           </div>
         </div>
       </div>
@@ -425,8 +502,34 @@ const { title = 'Дмитрий Корчагин', description = 'Портфол
       })();
     </script>
 
-    <footer>
-      <div class="wrap muted">© {new Date().getFullYear()} Dmitry Korchagin</div>
+    <footer class="site-footer">
+      <div class="footer-cta">
+        <div class="footer-cta__body">
+          <h2 class="footer-cta__heading">Если дочитали до сюда — скорее всего, нам есть о чём поговорить</h2>
+          <p class="footer-cta__sub">Напишите в Telegram — отвечаю быстро</p>
+        </div>
+        <div class="footer-cta__links">
+          <div class="footer-cta__socials">
+            <a href="https://www.linkedin.com/in/dmitry-korchagin" target="_blank" rel="noopener noreferrer" class="footer-cta__link">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              Linkedin
+            </a>
+            <a href="mailto:nemokor@gmail.com" class="footer-cta__link">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              Email
+            </a>
+            <a href="https://t.me/ruugh" target="_blank" rel="noopener noreferrer" class="footer-cta__link">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.088 14.19l-2.95-.924c-.64-.203-.654-.64.136-.954l11.498-4.43c.535-.194 1.002.131.79.366z"/></svg>
+              Telegram
+            </a>
+          </div>
+          <a href="/cv" class="footer-cta__link">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Скачать резюме
+          </a>
+        </div>
+        <p class="footer-cta__copy">&copy; {new Date().getFullYear()} Dmitry Korchagin</p>
+      </div>
     </footer>
   </body>
 </html>
