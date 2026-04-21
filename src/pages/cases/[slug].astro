@@ -29,7 +29,7 @@ const metaParts = [timeline, role].filter(Boolean);
 const metaLine = metaParts.join('    ');
 ---
 
-<BaseLayout title={`${title} — кейс`}>
+<BaseLayout title={`${title} — кейс`} backHref="/" backLabel="Назад в Портфолио">
   <article>
     <h1>{title}</h1>
     {metaLine && <p class="case-meta">{metaLine}</p>}

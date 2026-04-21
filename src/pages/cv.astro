@@ -9,7 +9,7 @@ let html = await renderNotionPageToHtml(cvPageId);
 html = html.replace(/<p>\s*(?:<a[^>]*href="\/cv"[^>]*>)?CV(?:<\/a>)?\s*<\/p>/gi, '');
 ---
 
-<BaseLayout title="CV — Дмитрий Корчагин">
+<BaseLayout title="CV — Дмитрий Корчагин" backHref="/" backLabel="Назад в Портфолио">
   <article class="cv-page">
     <h1>CV</h1>
     <div class="cv-content" set:html={html} />
@@ -63,7 +63,7 @@ html = html.replace(/<p>\s*(?:<a[^>]*href="\/cv"[^>]*>)?CV(?:<\/a>)?\s*<\/p>/gi,
     const telegramHref = tgHandleMatch ? `https://t.me/${tgHandleMatch[1]}` : 'https://t.me/Ruugh';
     const linkedinHref = 'https://www.linkedin.com/in/dmitry-korchagin-b217419b/';
     const linkedinText = linkedinUrlMatch ? linkedinUrlMatch[0] : 'LinkedIn';
-    const siteHref = 'https://dmitry-portfolio.pages.dev/';
+    const siteHref = 'https://dmitrykorchagin.org/';
     const siteText = siteUrlMatch ? siteUrlMatch[0].replace(/^https?:\/\//i, '') : 'dmitrykorchagin.org';
 
     const wrapper = document.createElement('div');
