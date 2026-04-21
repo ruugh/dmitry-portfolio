@@ -6,7 +6,7 @@ const isPreviewHomeOnly = process.env.OC_PREVIEW_HOME_ONLY === '1';
 const cases = isPreviewHomeOnly ? [] : await getCasesFromDatabase();
 ---
 
-<BaseLayout title="Кейсы — Дмитрий Корчагин">
+<BaseLayout title="Кейсы — Дмитрий Корчагин" backHref="/" backLabel="Назад в Портфолио">
   <h1>Кейсы</h1>
 
   <div class="cases-grid">
