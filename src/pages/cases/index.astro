@@ -9,13 +9,29 @@ const cases = isPreviewHomeOnly ? [] : await getCasesFromDatabase();
 <BaseLayout title="Кейсы — Дмитрий Корчагин">
   <h1>Кейсы</h1>
 
-  <div class="cases-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,360px));gap:16px;justify-content:start;">
+  <div class="cases-grid">
     {cases.map((c) => (
-      <a class="card" style="max-width:360px;width:100%;" href={`/cases/${c.slug}/`}>
+      <a class="card case-card" href={`/cases/${c.slug}/`}>
         {c.coverUrl ? <img src={c.coverUrl} alt={c.title} loading="lazy" /> : null}
         <span class="title">{c.title}</span>
-        <div class="muted">Открыть →</div>
       </a>
     ))}
   </div>
 </BaseLayout>
+
+<style>
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 360px));
+    gap: 16px;
+    justify-content: start;
+  }
+  .case-card {
+    max-width: 360px;
+    width: 100%;
+    text-decoration: none !important;
+  }
+  .case-card .title {
+    text-decoration: none !important;
+  }
+</style>
