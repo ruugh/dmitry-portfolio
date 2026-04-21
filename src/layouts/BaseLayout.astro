@@ -94,8 +94,9 @@ const {
       .btn--outline, :global(.btn--outline) { background: transparent !important; border-color: #378ADD !important; color: #378ADD !important; }
       .btn--outline:hover, :global(.btn--outline):hover { opacity: .8; }
 
-      .burger { display:none; align-items:center; justify-content:center; width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.03); cursor: pointer; }
+      .burger { display:none; align-items:center; justify-content:center; width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.03); color: #fff; cursor: pointer; }
       .burger:hover { border-color: rgba(255,255,255,.22); }
+      .burger svg { width: 20px; height: 20px; display: block; stroke: currentColor; }
       .mobile-menu { display:none; border-top: 1px solid rgba(255,255,255,.08); padding-top: 12px; margin-top: 12px; }
       .mobile-menu a { display:block; padding: 10px 0; text-decoration: none !important; }
       .mobile-menu .mobile-socials { display:flex; gap:14px; padding-top: 12px; }
@@ -387,7 +388,13 @@ const {
             </a>
           </div>
 
-          <button class="burger" type="button" aria-label="Меню" aria-expanded="false" id="burgerBtn">☰</button>
+        <button class="burger" type="button" aria-label="Меню" aria-expanded="false" id="burgerBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M5 7h14"></path>
+            <path d="M5 12h14"></path>
+            <path d="M5 17h14"></path>
+          </svg>
+        </button>
         </div>
 
         <div class="mobile-menu" id="mobileMenu" data-open="false">
