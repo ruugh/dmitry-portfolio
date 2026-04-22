@@ -227,9 +227,11 @@ const colorSystemImage = 'https://www.figma.com/api/mcp/asset/747e7445-fa04-4c97
             </div>
           </div>
 
-          <figure class="scenario-split__figure">
-            <img src={liveDashboardImage} alt="Операционный дашборд MetaKit для live-сценария" loading="lazy" />
-          </figure>
+          <div class="full-bleed scenario-split__visual">
+            <figure class="scenario-split__figure">
+              <img src={liveDashboardImage} alt="Операционный дашборд MetaKit для live-сценария" loading="lazy" />
+            </figure>
+          </div>
         </div>
 
         <p class="scenario-split__outro">Я переделал экран: убрал визуализации в раздел статистики, а на дашборде оставил только операционные сигналы — что требует внимания прямо сейчас, нагрузку по зонам, расписание и статус стрима.</p>
@@ -810,6 +812,9 @@ const colorSystemImage = 'https://www.figma.com/api/mcp/asset/747e7445-fa04-4c97
   .scenario-split__figure {
     margin: 0;
     width: 100%;
+  }
+  .scenario-split__visual {
+    width: min(1200px, calc(100vw - 40px));
   }
   .scenario-split__figure img {
     display: block;
