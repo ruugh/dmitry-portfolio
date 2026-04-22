@@ -13,6 +13,7 @@ const featuredCaseLinks = [
   {
     sourceSlug: 'kazhdoe-meropriyatie-sobiralos-s-nulya-za-dve-nedeli-i-sedalo-vsyu-komandu-teper-4-dnya-i-klient-nastraivaet-sam',
     href: '/cases/meta-kit-test/',
+    coverUrl: '/metakit-cover-2026-04-22.png',
   },
 ] as const;
 
@@ -20,7 +21,7 @@ const featuredCases = featuredCaseLinks
   .map((item) => {
     const source = cases.find((c) => c.slug === item.sourceSlug);
     if (!source) return null;
-    return { ...source, href: item.href };
+    return { ...source, href: item.href, coverUrl: item.coverUrl ?? source.coverUrl };
   })
   .filter((item): item is (typeof cases)[number] & { href: string } => item !== null);
 
